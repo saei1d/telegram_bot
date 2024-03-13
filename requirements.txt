@@ -1,0 +1,6 @@
+telebot
+psycopg2-binary
+pyTelegramBotAPI
+tronapi
+minio
+
