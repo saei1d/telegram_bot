@@ -72,13 +72,13 @@ def get_education_buttons():
 
 
 def get_education_platform_buttons():
-    """    """
+
     markup = types.InlineKeyboardMarkup()
     buttons = [
-        types.InlineKeyboardButton("اندروید", callback_data="android"),
-        types.InlineKeyboardButton("iOS", callback_data="ios"),
-        types.InlineKeyboardButton("Windows", callback_data="windows"),
-        types.InlineKeyboardButton("Mac",callback_data="mac")
+        types.InlineKeyboardButton("اندروید", callback_data="AMOZESH_android"),
+        types.InlineKeyboardButton("iOS", callback_data="AMOZESH_ios"),
+        types.InlineKeyboardButton("Windows", callback_data="AMOZESH_windows"),
+        types.InlineKeyboardButton("Mac",callback_data="AMOZESH_mac")
     ]
     markup.add(*buttons)
     return markup

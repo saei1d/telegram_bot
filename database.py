@@ -3,8 +3,8 @@ import psycopg2
 # تنظیمات اتصال به دیتابیس را می‌توانید بر اساس نیاز خود تغییر دهید
 DATABASE = "telegram"
 USER = "saeid"
-PASSWORD = "1111"
-HOST = "localhost"
+PASSWORD = "1233212321321123"
+HOST = "49.13.88.213"
 
 
 def connect_db():
@@ -83,7 +83,7 @@ def buy_payment(user_id, amount):
     """
     conn = None
     try:
-        conn = psycopg2.connect(dbname="telegram", user="saeid", password="1111", host="localhost")
+        conn = psycopg2.connect(dbname=DATABASE, user=USER, password=PASSWORD, host=HOST)
         cur = conn.cursor()
         cur.execute("SELECT wallet_id FROM wallets WHERE user_id = %s", (user_id,))
         wallet_id = cur.fetchone()

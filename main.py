@@ -15,7 +15,7 @@ def handle_start(message):
     username = message.from_user.username or "NoUsername"  # برای کاربرانی که username ندارند
     save_user_and_create_wallet(client_code, username)
     reply_markup = get_main_buttons()
-    bot.send_message(message.chat.id, "♥️سلام دوست عزیز\n\nبه ربات خوش آمدید🚀\n\nلطفا یک گزینه را انتخاب کنید👇",
+    bot.send_message(message.chat.id, "♥️سلام دوست عزیز\n\nبه ربات جیمبو خوش آمدید🚀\n\nلطفا یک گزینه را انتخاب کنید👇",
                      reply_markup=reply_markup)
 
 
@@ -40,7 +40,7 @@ def handle_message(message):
 
 
 def send_purchase_confirmation(chat_id, tariff):
-    conn = psycopg2.connect(dbname="telegram", user="saeid", password="1111", host="localhost")
+    conn = connect_db()
     cur = conn.cursor()
 
     with conn.cursor() as cur:
@@ -57,24 +57,27 @@ def send_purchase_confirmation(chat_id, tariff):
                 with open(f'{address}{name}', 'r') as file:
                     bot.send_document(chat_id, file, caption="این فایل برای windows  میباشد امیدوارم لذت ببرید")
         elif tariff == "tarefe2":
-            cur.execute("SELECT link,address FROM android_links WHERE status = %s AND amount = %s;", (0, 1.5))
+            cur.execute("SELECT link,address,name FROM android_links WHERE status = %s AND amount = %s;", (0, 1.5))
             rows = cur.fetchall()
             for row in rows:
                 link = row[0]
                 address = row[1]
+                name = row[2]
                 bot.send_message(chat_id, link)
-                with open(address, 'r') as file:
-                    bot.send_document(chat_id, file, caption="فایل خریداری شده شما")
+                bot.send_message(chat_id, "لینک بالا برای ios , اندروید  است")
+                with open(f'{address}{name}', 'r') as file:
+                    bot.send_document(chat_id, file, caption="این فایل برای windows  میباشد امیدوارم لذت ببرید")
         elif tariff == "tarefe3":
-            cur.execute("SELECT link,address FROM android_links WHERE status = %s AND amount = %s;", (0, 2))
+            cur.execute("SELECT link,address,name FROM android_links WHERE status = %s AND amount = %s;", (0, 2))
             rows = cur.fetchall()
             for row in rows:
                 link = row[0]
                 address = row[1]
+                name = row[2]
                 bot.send_message(chat_id, link)
-                with open(address, 'r') as file:
-                    bot.send_document(chat_id, file,
-                                      caption="فایل خریداری شده شما")  # اینجا کدی برای انتخاب فایل بر اساس تعرفه انتخابی قرار دهید
+                bot.send_message(chat_id, "لینک بالا برای ios , اندروید  است")
+                with open(f'{address}{name}', 'r') as file:
+                    bot.send_document(chat_id, file, caption="این فایل برای windows  میباشد امیدوارم لذت ببرید")
 
 
 @bot.callback_query_handler(func=lambda call: call.data.startswith("tarefe"))
@@ -172,7 +175,7 @@ def process_transaction_hash(message):
         return
 
     # اتصال به دیتابیس
-    conn = psycopg2.connect(dbname="telegram", user="saeid", password="1111", host="localhost")
+    conn = connect_db()
     cur = conn.cursor()
 
     # بررسی تکراری بودن کد هش
@@ -205,6 +208,11 @@ def process_transaction_hash(message):
 def Amozesh_etesal(call):
     bot.send_message(call.message.chat.id, "دستگاه مد نظر خودتون رو انتخاب کنید",
                      reply_markup=get_education_platform_buttons())
+
+
+@bot.callback_query_handler(func=lambda call: call.data.startswith("AMOZESH"))
+def handle_buy_callback(call):
+    bot.send_video(call.message.chat.id, open("/telegram_bot/videos/vid.mp4", 'rb'))
 
 
 if __name__ == "__main__":
