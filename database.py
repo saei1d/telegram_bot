@@ -3,7 +3,7 @@ import psycopg2
 # تنظیمات اتصال به دیتابیس را می‌توانید بر اساس نیاز خود تغییر دهید
 DATABASE = "telegram"
 USER = "postgres"
-PASSWORD = "11111"
+PASSWORD = 1111
 HOST = "localhost"  # تنها آی‌پی میزبان را وارد کنید
 
 
