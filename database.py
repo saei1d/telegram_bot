@@ -90,9 +90,7 @@ def buy_payment(user_id, amount):
 
         cur.execute("SELECT balance FROM wallets WHERE wallet_id = %s", (wallet_id,))
         if cur.fetchone() is None:
-            print("Wallet ID not found.")
             return False
-        # کسر مبلغ از موجودی کیف پول
         cur.execute("UPDATE wallets SET balance = balance - %s WHERE user_id = %s", (amount, user_id))
 
         # ثبت پرداخت در جدول payments
@@ -102,7 +100,6 @@ def buy_payment(user_id, amount):
         cur.close()
         return True
     except Exception as e:
-        print(f"Error in buy_payment: {e}")
         if conn:
             conn.rollback()
         return False

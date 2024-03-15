@@ -47,37 +47,64 @@ def send_purchase_confirmation(chat_id, tariff):
 
         if tariff == "tarefe1":
             cur.execute("SELECT link,address,name FROM links WHERE status = %s AND amount = %s;", (0, 1))
-            rows = cur.fetchall()
-            for row in rows:
-                link = row[0]
-                address = row[1]
-                name = row[2]
-                bot.send_message(chat_id, link)
-                bot.send_message(chat_id, "لینک بالا برای ios , اندروید  است")
-                with open(f'{address}{name}', 'r') as file:
-                    bot.send_document(chat_id, file, caption="این فایل برای windows  میباشد امیدوارم لذت ببرید")
+            rows = cur.fetchone()
+            if rows:
+                for row in rows:
+                    link = row[0]
+                    address = row[1]
+                    name = row[2]
+                    bot.send_message(chat_id, link)
+                    bot.send_message(chat_id, "لینک بالا برای ios , اندروید  است")
+                    with open(f'{address}{name}', 'r') as file:
+                        bot.send_document(chat_id, file, caption="این فایل برای windows  میباشد امیدوارم لذت ببرید")
+                    cur.execute("UPDATE links SET status = %s WHERE link = %s;", (1, link))
+                    # commit تغییرات به دیتابیس
+                    conn.commit()
+                return True
+            else:
+                bot.send_message(chat_id,
+                                 "این تعرفه درحال حاضر موجود نیست لطفا از کانفیگ های دیگر استفاده کنید یا به پشتیبانی اطلاع دهید")
+                return False
         elif tariff == "tarefe2":
             cur.execute("SELECT link,address,name FROM links WHERE status = %s AND amount = %s;", (0, 1.5))
-            rows = cur.fetchall()
-            for row in rows:
-                link = row[0]
-                address = row[1]
-                name = row[2]
-                bot.send_message(chat_id, link)
-                bot.send_message(chat_id, "لینک بالا برای ios , اندروید  است")
-                with open(f'{address}{name}', 'r') as file:
-                    bot.send_document(chat_id, file, caption="این فایل برای windows  میباشد امیدوارم لذت ببرید")
+            rows = cur.fetchone()
+            if rows:
+                for row in rows:
+                    link = row[0]
+                    address = row[1]
+                    name = row[2]
+                    bot.send_message(chat_id, link)
+                    bot.send_message(chat_id, "لینک بالا برای ios , اندروید  است")
+                    with open(f'{address}{name}', 'r') as file:
+                        bot.send_document(chat_id, file, caption="این فایل برای windows  میباشد امیدوارم لذت ببرید")
+                    cur.execute("UPDATE links SET status = %s WHERE link = %s;", (1, link))
+                    # commit تغییرات به دیتابیس
+                    conn.commit()
+                return True
+            else:
+                bot.send_message(chat_id,
+                                 "این تعرفه درحال حاضر موجود نیست لطفا از کانفیگ های دیگر استفاده کنید یا به پشتیبانی اطلاع دهید")
+                return False
         elif tariff == "tarefe3":
             cur.execute("SELECT link,address,name FROM links WHERE status = %s AND amount = %s;", (0, 2))
-            rows = cur.fetchall()
-            for row in rows:
-                link = row[0]
-                address = row[1]
-                name = row[2]
-                bot.send_message(chat_id, link)
-                bot.send_message(chat_id, "لینک بالا برای ios , اندروید  است")
-                with open(f'{address}{name}', 'r') as file:
-                    bot.send_document(chat_id, file, caption="این فایل برای windows  میباشد امیدوارم لذت ببرید")
+            rows = cur.fetchone()
+            if rows:
+                for row in rows:
+                    link = row[0]
+                    address = row[1]
+                    name = row[2]
+                    bot.send_message(chat_id, link)
+                    bot.send_message(chat_id, "لینک بالا برای ios , اندروید  است")
+                    with open(f'{address}{name}', 'r') as file:
+                        bot.send_document(chat_id, file, caption="این فایل برای windows  میباشد امیدوارم لذت ببرید")
+                    cur.execute("UPDATE links SET status = %s WHERE link = %s;", (1, link))
+                    # commit تغییرات به دیتابیس
+                    conn.commit()
+                return True
+            else:
+                bot.send_message(chat_id,
+                                 "این تعرفه درحال حاضر موجود نیست لطفا از کانفیگ های دیگر استفاده کنید یا به پشتیبانی اطلاع دهید")
+                return False
 
 
 @bot.callback_query_handler(func=lambda call: call.data.startswith("tarefe"))
@@ -94,11 +121,9 @@ def handle_buy_callback(call):
             price = Decimal("2")
         if balance >= price != 0:
             # انجام تراکنش و بروزرسانی موجودی
-            if buy_payment(user_id,
-                           price):  # فرض بر این است که این تابع موجودی را بروزرسانی می‌کند و در صورت موفقیت True باز
-                # می‌گرداند
+            if send_purchase_confirmation(call.message.chat.id, call.data):
+                buy_payment(user_id, price)
                 balance -= price  # بروزرسانی موجودی پس از خرید
-                send_purchase_confirmation(call.message.chat.id, call.data)  # ارسال تاییدیه خرید و فایل
                 bot.send_message(call.message.chat.id, f"خرید شما با موفقیت انجام شد. موجودی جدید شما: {balance} دلار")
             else:
                 bot.send_message(call.message.chat.id, "خطایی در انجام تراکنش رخ داد.")
