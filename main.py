@@ -46,7 +46,7 @@ def send_purchase_confirmation(chat_id, tariff):
     with conn.cursor() as cur:
 
         if tariff == "tarefe1":
-            cur.execute("SELECT link,address,name FROM android_links WHERE status = %s AND amount = %s;", (0, 1))
+            cur.execute("SELECT link,address,name FROM links WHERE status = %s AND amount = %s;", (0, 1))
             rows = cur.fetchall()
             for row in rows:
                 link = row[0]
@@ -57,7 +57,7 @@ def send_purchase_confirmation(chat_id, tariff):
                 with open(f'{address}{name}', 'r') as file:
                     bot.send_document(chat_id, file, caption="این فایل برای windows  میباشد امیدوارم لذت ببرید")
         elif tariff == "tarefe2":
-            cur.execute("SELECT link,address,name FROM android_links WHERE status = %s AND amount = %s;", (0, 1.5))
+            cur.execute("SELECT link,address,name FROM links WHERE status = %s AND amount = %s;", (0, 1.5))
             rows = cur.fetchall()
             for row in rows:
                 link = row[0]
@@ -68,7 +68,7 @@ def send_purchase_confirmation(chat_id, tariff):
                 with open(f'{address}{name}', 'r') as file:
                     bot.send_document(chat_id, file, caption="این فایل برای windows  میباشد امیدوارم لذت ببرید")
         elif tariff == "tarefe3":
-            cur.execute("SELECT link,address,name FROM android_links WHERE status = %s AND amount = %s;", (0, 2))
+            cur.execute("SELECT link,address,name FROM links WHERE status = %s AND amount = %s;", (0, 2))
             rows = cur.fetchall()
             for row in rows:
                 link = row[0]
