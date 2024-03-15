@@ -21,9 +21,7 @@ def handle_start(message):
 
 @bot.message_handler(func=lambda message: True)
 def handle_message(message):
-    """
-    واکنش به پیام‌های معمولی و نمایش دکمه‌ها بر اساس انتخاب کاربر.
-    """
+
     if message.text == "خرید اشتراک💴":
         bot.send_message(message.chat.id, "تعرفه مورد نظر خودتون رو انتخاب کنید", reply_markup=get_tariff_buttons())
     elif message.text == 'پشتیبانی👥':
@@ -48,11 +46,13 @@ def send_purchase_confirmation(chat_id, tariff):
         if tariff == "tarefe1":
             cur.execute("SELECT link,address,name FROM links WHERE status = %s AND amount = %s;", (0, 1))
             rows = cur.fetchone()
+            print(rows)
             if rows:
                 for row in rows:
                     link = row[0]
                     address = row[1]
                     name = row[2]
+                    print(tariff)
                     bot.send_message(chat_id, link)
                     bot.send_message(chat_id, "لینک بالا برای ios , اندروید  است")
                     with open(f'{address}{name}', 'r') as file:
@@ -114,16 +114,18 @@ def handle_buy_callback(call):
         balance = show_user_wallet_balance(user_id)
         price = 0
         if call.data == "tarefe1":
-            price = Decimal("1")  # فرض بر این است که قیمت این تعرفه 1 دلار است
+            price = Decimal("1")
         elif call.data == "tarefe2":
             price = Decimal("1.5")
         elif call.data == "tarefe3":
             price = Decimal("2")
         if balance >= price != 0:
             # انجام تراکنش و بروزرسانی موجودی
-            if send_purchase_confirmation(call.message.chat.id, call.data):
-                buy_payment(user_id, price)
+            if buy_payment(user_id, price):
+
                 balance -= price  # بروزرسانی موجودی پس از خرید
+                send_purchase_confirmation(call.message.chat.id, call.data)
+
                 bot.send_message(call.message.chat.id, f"خرید شما با موفقیت انجام شد. موجودی جدید شما: {balance} دلار")
             else:
                 bot.send_message(call.message.chat.id, "خطایی در انجام تراکنش رخ داد.")
