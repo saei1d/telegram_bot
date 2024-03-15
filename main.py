@@ -52,7 +52,7 @@ def send_purchase_confirmation(chat_id, tariff):
                     link = row[0]
                     address = row[1]
                     name = row[2]
-                    print(tariff)
+                    print(link, address, name)
                     bot.send_message(chat_id, link)
                     bot.send_message(chat_id, "لینک بالا برای ios , اندروید  است")
                     with open(f'{address}{name}', 'r') as file:
