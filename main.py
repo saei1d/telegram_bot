@@ -48,7 +48,6 @@ def send_purchase_confirmation(chat_id, tariff):
                 link = row[0]
                 address = row[1]
                 name = row[2]
-                print(link, address, name)
                 bot.send_message(chat_id, link)
                 bot.send_message(chat_id, "لینک بالا برای ios , اندروید  است")
                 with open(f'{address}{name}', 'r') as file:
@@ -60,22 +59,21 @@ def send_purchase_confirmation(chat_id, tariff):
             else:
                 bot.send_message(chat_id,
                                  "این تعرفه درحال حاضر موجود نیست لطفا از کانفیگ های دیگر استفاده کنید یا به پشتیبانی اطلاع دهید")
-            return False
+                return False
         elif tariff == "tarefe2":
             cur.execute("SELECT link,address,name FROM links WHERE status = %s AND amount = %s;", (0, 1.5))
-            rows = cur.fetchone()
-            if rows:
-                for row in rows:
-                    link = row[0]
-                    address = row[1]
-                    name = row[2]
-                    bot.send_message(chat_id, link)
-                    bot.send_message(chat_id, "لینک بالا برای ios , اندروید  است")
-                    with open(f'{address}{name}', 'r') as file:
-                        bot.send_document(chat_id, file, caption="این فایل برای windows  میباشد امیدوارم لذت ببرید")
-                    cur.execute("UPDATE links SET status = %s WHERE link = %s;", (1, link))
-                    # commit تغییرات به دیتابیس
-                    conn.commit()
+            row = cur.fetchone()
+            if row:
+                link = row[0]
+                address = row[1]
+                name = row[2]
+                bot.send_message(chat_id, link)
+                bot.send_message(chat_id, "لینک بالا برای ios , اندروید  است")
+                with open(f'{address}{name}', 'r') as file:
+                    bot.send_document(chat_id, file, caption="این فایل برای windows  میباشد امیدوارم لذت ببرید")
+                cur.execute("UPDATE links SET status = %s WHERE link = %s;", (1, link))
+                # commit تغییرات به دیتابیس
+                conn.commit()
                 return True
             else:
                 bot.send_message(chat_id,
@@ -83,19 +81,18 @@ def send_purchase_confirmation(chat_id, tariff):
                 return False
         elif tariff == "tarefe3":
             cur.execute("SELECT link,address,name FROM links WHERE status = %s AND amount = %s;", (0, 2))
-            rows = cur.fetchone()
-            if rows:
-                for row in rows:
-                    link = row[0]
-                    address = row[1]
-                    name = row[2]
-                    bot.send_message(chat_id, link)
-                    bot.send_message(chat_id, "لینک بالا برای ios , اندروید  است")
-                    with open(f'{address}{name}', 'r') as file:
-                        bot.send_document(chat_id, file, caption="این فایل برای windows  میباشد امیدوارم لذت ببرید")
-                    cur.execute("UPDATE links SET status = %s WHERE link = %s;", (1, link))
-                    # commit تغییرات به دیتابیس
-                    conn.commit()
+            row = cur.fetchone()
+            if row:
+                link = row[0]
+                address = row[1]
+                name = row[2]
+                bot.send_message(chat_id, link)
+                bot.send_message(chat_id, "لینک بالا برای ios , اندروید  است")
+                with open(f'{address}{name}', 'r') as file:
+                    bot.send_document(chat_id, file, caption="این فایل برای windows  میباشد امیدوارم لذت ببرید")
+                cur.execute("UPDATE links SET status = %s WHERE link = %s;", (1, link))
+                # commit تغییرات به دیتابیس
+                conn.commit()
                 return True
             else:
                 bot.send_message(chat_id,
@@ -234,7 +231,14 @@ def Amozesh_etesal(call):
 
 @bot.callback_query_handler(func=lambda call: call.data.startswith("AMOZESH"))
 def handle_buy_callback(call):
-    bot.send_video(call.message.chat.id, open("/root/telegram_bot/videos/vid.mp4", 'rb'))
+    if call.date == "AMOZESH_android":
+        bot.send_video(call.message.chat.id, open("/root/telegram_bot/videos/android.mp4", 'rb'))
+        if call.date == "AMOZESH_ios":
+            bot.send_video(call.message.chat.id, open("/root/telegram_bot/videos/ios.mp4", 'rb'))
+        if call.date == "AMOZESH_windows":
+            bot.send_video(call.message.chat.id, open("/root/telegram_bot/videos/windows.mp4", 'rb'))
+        if call.date == "AMOZESH_mac":
+            bot.send_video(call.message.chat.id, open("/root/telegram_bot/videos/mac.mp4", 'rb'))
 
 
 if __name__ == "__main__":
