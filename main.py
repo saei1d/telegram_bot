@@ -212,7 +212,7 @@ def Amozesh_etesal(call):
 
 @bot.callback_query_handler(func=lambda call: call.data.startswith("AMOZESH"))
 def handle_buy_callback(call):
-    bot.send_video(call.message.chat.id, open("/telegram_bot/videos/vid.mp4", 'rb'))
+    bot.send_video(call.message.chat.id, open("/root/telegram_bot/videos/vid.mp4", 'rb'))
 
 
 if __name__ == "__main__":
