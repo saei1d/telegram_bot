@@ -21,7 +21,6 @@ def handle_start(message):
 
 @bot.message_handler(func=lambda message: True)
 def handle_message(message):
-
     if message.text == "خرید اشتراک💴":
         bot.send_message(message.chat.id, "تعرفه مورد نظر خودتون رو انتخاب کنید", reply_markup=get_tariff_buttons())
     elif message.text == 'پشتیبانی👥':
@@ -42,29 +41,26 @@ def send_purchase_confirmation(chat_id, tariff):
     cur = conn.cursor()
 
     with conn.cursor() as cur:
-
         if tariff == "tarefe1":
             cur.execute("SELECT link,address,name FROM links WHERE status = %s AND amount = %s;", (0, 1))
-            rows = cur.fetchone()
-            print(rows)
-            if rows:
-                for row in rows:
-                    link = row[0]
-                    address = row[1]
-                    name = row[2]
-                    print(link, address, name)
-                    bot.send_message(chat_id, link)
-                    bot.send_message(chat_id, "لینک بالا برای ios , اندروید  است")
-                    with open(f'{address}{name}', 'r') as file:
-                        bot.send_document(chat_id, file, caption="این فایل برای windows  میباشد امیدوارم لذت ببرید")
-                    cur.execute("UPDATE links SET status = %s WHERE link = %s;", (1, link))
-                    # commit تغییرات به دیتابیس
-                    conn.commit()
+            row = cur.fetchone()
+            if row:
+                link = row[0]
+                address = row[1]
+                name = row[2]
+                print(link, address, name)
+                bot.send_message(chat_id, link)
+                bot.send_message(chat_id, "لینک بالا برای ios , اندروید  است")
+                with open(f'{address}{name}', 'r') as file:
+                    bot.send_document(chat_id, file, caption="این فایل برای windows  میباشد امیدوارم لذت ببرید")
+                cur.execute("UPDATE links SET status = %s WHERE link = %s;", (1, link))
+                # commit تغییرات به دیتابیس
+                conn.commit()
                 return True
             else:
                 bot.send_message(chat_id,
                                  "این تعرفه درحال حاضر موجود نیست لطفا از کانفیگ های دیگر استفاده کنید یا به پشتیبانی اطلاع دهید")
-                return False
+            return False
         elif tariff == "tarefe2":
             cur.execute("SELECT link,address,name FROM links WHERE status = %s AND amount = %s;", (0, 1.5))
             rows = cur.fetchone()
