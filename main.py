@@ -117,10 +117,9 @@ def handle_buy_callback(call):
             price = Decimal("2")
         if balance >= price != 0:
             # انجام تراکنش و بروزرسانی موجودی
-            if buy_payment(user_id, price):
-
+            if send_purchase_confirmation(call.message.chat.id, call.data):
+                buy_payment(user_id, price)
                 balance -= price  # بروزرسانی موجودی پس از خرید
-                send_purchase_confirmation(call.message.chat.id, call.data)
 
                 bot.send_message(call.message.chat.id, f"خرید شما با موفقیت انجام شد. موجودی جدید شما: {balance} دلار")
             else:
