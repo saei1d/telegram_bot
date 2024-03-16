@@ -268,18 +268,16 @@ def handle_buy_callback(call):
 def my_configs(chat_id):
     conn = connect_db()
     cur = conn.cursor()
-    cur.execute("SELECT name , sold_out FROM links WHERE owner = %s);", (chat_id,))
+    cur.execute("SELECT name, sold_out FROM links WHERE owner = %s;", (chat_id,))
     config = cur.fetchall()
     if config:
-        bot.send_message(chat_id,config)
-
-
-
-
-        cur.close()
-        conn.close()
+        bot.send_message(chat_id, config)
     else:
-        bot.send_message(chat_id,"شما تا کنون کانفیگی تهیه نکردید")
+        bot.send_message(chat_id, "شما تا کنون کانفیگی تهیه نکردید")
+
+    cur.close()
+    conn.close()
+
 
 if __name__ == "__main__":
     bot.infinity_polling(skip_pending=True)
