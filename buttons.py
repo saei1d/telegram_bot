@@ -9,7 +9,8 @@ def get_main_buttons():
         types.KeyboardButton("شارژ کیف پول⚡️"),
         types.KeyboardButton("آموزش استفاده👨🏻‍🏫"),
         types.KeyboardButton("پشتیبانی👥"),
-        types.KeyboardButton("اشتراک های من🕰")
+        types.KeyboardButton("اشتراک های من🕰"),
+        types.KeyboardButton(" قیمت لحظه ای ترون")
     ]
     markup.add(*buttons)
     return markup

@@ -25,7 +25,6 @@ def handle_start(message):
     channel_username = '@jimboo_Vpn'
     client_code = message.from_user.id
     if check_membership(chat_id, channel_username):
-        print("login ast")
         username = message.from_user.username or "NoUsername"  # برای کاربرانی که username ندارند
         save_user_and_create_wallet(client_code, username)
         reply_markup = get_main_buttons()
@@ -55,8 +54,12 @@ def handle_message(message):
 
     elif message.text == "اشتراک های من🕰":
         chat_id = message.chat.id
-        print(chat_id)
-        bot.send_message(message.chat.id, my_configs(chat_id), reply_markup=get_education_buttons())
+        bot.send_message(message.chat.id, my_configs(chat_id))
+
+    elif message.text == "قیمت لحظه ای ترون":
+        chat_id = message.chat.id
+        bot.send_message(message.chat.id, tron_price(chat_id))
+
 
 
 def send_purchase_confirmation(chat_id, tariff):
@@ -277,6 +280,23 @@ def my_configs(chat_id):
 
     cur.close()
     conn.close()
+
+
+def tron_price(chat_id):
+
+    price_url = 'https://api.coingecko.com/api/v3/simple/price?ids=tron&vs_currencies=usd'
+
+    response = requests.get(price_url)
+
+    if response.status_code == 200:
+        tron_data = response.json()
+        tron_price = tron_data['tron']['usd']
+
+        # قیمت یک دلار به ترون
+        dollar_to_tron = 1 / tron_price
+        bot.send_message(chat_id,f'هر یک دلار در حال حاضر معادل {dollar_to_tron} ترون است.')
+    else:
+        bot.send_message(chat_id,'دریافت اطلاعات ناموفق بود.')
 
 
 if __name__ == "__main__":
