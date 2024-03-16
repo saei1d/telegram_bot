@@ -59,7 +59,6 @@ def handle_message(message):
 def send_purchase_confirmation(chat_id, tariff):
     conn = connect_db()
     cur = conn.cursor()
-    now = psycopg2.extensions.TimestampFromTicks(datetime.now().timestamp())
 
     with conn.cursor() as cur:
         if tariff == "tarefe1":
@@ -73,8 +72,11 @@ def send_purchase_confirmation(chat_id, tariff):
                 bot.send_message(chat_id, "لینک بالا برای ios , اندروید  است")
                 with open(f'{address}{name}', 'r') as file:
                     bot.send_document(chat_id, file, caption="این فایل برای windows  میباشد امیدوارم لذت ببرید")
-                cur.execute("UPDATE links SET status = %s,sold_out= %s,owner = %s WHERE link = %s;",
-                            (1, now, chat_id, link))
+                cur.execute("UPDATE links SET status = %s,owner = %s WHERE link = %s;",
+                            (1, chat_id, link))
+
+                cur.execute("UPDATE links SET sold_out = to_char(jalali_to_gregorian(current_timestamp), 'YYYY-MM-DD HH24:MI:SS') WHERE link = %s;",(link,))
+
                 # commit تغییرات به دیتابیس
                 conn.commit()
                 return True
@@ -93,8 +95,8 @@ def send_purchase_confirmation(chat_id, tariff):
                 bot.send_message(chat_id, "لینک بالا برای ios , اندروید  است")
                 with open(f'{address}{name}', 'r') as file:
                     bot.send_document(chat_id, file, caption="این فایل برای windows  میباشد امیدوارم لذت ببرید")
-                cur.execute("UPDATE links SET status = %s,sold_out= %s,owner = %s WHERE link = %s;",
-                            (1, now, chat_id, link))  # commit تغییرات به دیتابیس
+                cur.execute("UPDATE links SET status = %s,owner = %s WHERE link = %s;",
+                            (1, chat_id, link))  # commit تغییرات به دیتابیس
                 conn.commit()
                 return True
             else:
@@ -112,8 +114,8 @@ def send_purchase_confirmation(chat_id, tariff):
                 bot.send_message(chat_id, "لینک بالا برای ios , اندروید  است")
                 with open(f'{address}{name}', 'r') as file:
                     bot.send_document(chat_id, file, caption="این فایل برای windows  میباشد امیدوارم لذت ببرید")
-                cur.execute("UPDATE links SET status = %s,sold_out= %s,owner = %s WHERE link = %s;",
-                            (1, now, chat_id, link))  # commit تغییرات به دیتابیس
+                cur.execute("UPDATE links SET status = %s,owner = %s WHERE link = %s;",
+                            (1, chat_id, link))  # commit تغییرات به دیتابیس
                 conn.commit()
                 return True
             else:
@@ -192,8 +194,7 @@ def handle_sharzh_callback(call):
 def insert_payment_and_update_wallet(conn, amount, transaction_hash, client_code):
     with conn.cursor() as cur:
         # پیدا کردن wallet_id با استفاده از client_code
-        cur.execute("SELECT w.wallet_id FROM wallets w JOIN users u ON w.user_id = u.user_id WHERE u.client_code = %s;",
-                    (client_code,))
+        cur.execute("SELECT w.wallet_id FROM wallets w JOIN users u ON w.user_id = u.user_id WHERE u.client_code = %s;",(client_code,))
         wallet_info = cur.fetchone()
         if wallet_info:
             wallet_id = wallet_info[0]
