@@ -183,7 +183,7 @@ def fetch_trx_details(hash1, api_key, target_wallet_address):
 
 @bot.callback_query_handler(func=lambda call: call.data == "sharzh")
 def handle_sharzh_callback(call):
-    address = "TApqj7VRYQtt8wXcy22rhont6oECgNqCXQ"
+    address = "TRZw3VgCdJoz93akEAt7yrMC1Wr6FgUFqY"
     bot.send_message(call.message.chat.id,
                      f"برای شارژ کیف پول خود، ترون را به آدرس زیر ارسال کنید:\n<code>{address}</code>",
                      parse_mode="HTML")
