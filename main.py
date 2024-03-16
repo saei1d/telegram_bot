@@ -21,7 +21,7 @@ def check_membership(chat_id, channel_username):
 @bot.message_handler(commands=['start'])
 def handle_start(message):
     chat_id = message.chat.id
-    channel_username = 't.me/jimboo_Vpn'
+    channel_username = '@jimboo_Vpn'
     client_code = message.from_user.id
     if check_membership(chat_id, channel_username):
         print("login ast")
@@ -30,6 +30,9 @@ def handle_start(message):
         reply_markup = get_main_buttons()
         bot.send_message(message.chat.id, "♥️سلام دوست عزیز\n\nبه ربات جیمبو خوش آمدید🚀\n\nلطفا یک گزینه را انتخاب کنید👇",
                          reply_markup=reply_markup)
+
+    else:
+        bot.send_message(chat_id,"اه گاییدی منو")
 
 
 @bot.message_handler(func=lambda message: True)
