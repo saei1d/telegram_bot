@@ -275,13 +275,14 @@ def my_configs(chat_id):
     config = cur.fetchone()
     if config:
         name = config[0]
-        sold_out = config [1]
-        bot.send_message(chat_id,f'کانفیگ شما با نام {name}و در تاریخ {sold_out}خریداری و تحویل داده شده است')
+        sold_out = config[1]
+        bot.send_message(chat_id, f'کانفیگ شما با نام {name} و در تاریخ {sold_out} خریداری و تحویل داده شده است')
     else:
         bot.send_message(chat_id, "شما تا کنون کانفیگی تهیه نکردید")
 
     cur.close()
     conn.close()
+
 
 
 def tron_price(chat_id):
