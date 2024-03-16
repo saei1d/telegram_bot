@@ -272,9 +272,11 @@ def my_configs(chat_id):
     conn = connect_db()
     cur = conn.cursor()
     cur.execute("SELECT name, sold_out FROM links WHERE owner = %s;", (chat_id,))
-    config = cur.fetchall()
+    config = cur.fetchone()
     if config:
-        bot.send_message(chat_id, config)
+        name = config[0]
+        sold_out = config [1]
+        bot.send_message(chat_id,f'کانفیگ شما با نام {name}و در تاریخ {sold_out}خریداری و تحویل داده شده است')
     else:
         bot.send_message(chat_id, "شما تا کنون کانفیگی تهیه نکردید")
 
