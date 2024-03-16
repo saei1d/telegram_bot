@@ -9,14 +9,27 @@ from decimal import Decimal
 bot = telebot.TeleBot(BOT_TOKEN)
 
 
+def check_membership(chat_id, channel_username):
+    member = bot.get_chat_member(channel_username, chat_id)
+    if member.status == 'member' or member.status == 'creator' or member.status == 'administrator':
+        return True
+    else:
+        bot.send_message(chat_id, f'برای استفاده از ربات، لطفا عضو کانال {channel_username} شوید.')
+        return False
+
+
 @bot.message_handler(commands=['start'])
 def handle_start(message):
-    client_code = message.from_user.id  # استفاده از ID تلگرام به عنوان client_code
-    username = message.from_user.username or "NoUsername"  # برای کاربرانی که username ندارند
-    save_user_and_create_wallet(client_code, username)
-    reply_markup = get_main_buttons()
-    bot.send_message(message.chat.id, "♥️سلام دوست عزیز\n\nبه ربات جیمبو خوش آمدید🚀\n\nلطفا یک گزینه را انتخاب کنید👇",
-                     reply_markup=reply_markup)
+    chat_id = message.chat.id
+    channel_username = 't.me/jimboo_Vpn'
+    client_code = message.from_user.id
+    if check_membership(chat_id, channel_username):
+        print("login ast")
+        username = message.from_user.username or "NoUsername"  # برای کاربرانی که username ندارند
+        save_user_and_create_wallet(client_code, username)
+        reply_markup = get_main_buttons()
+        bot.send_message(message.chat.id, "♥️سلام دوست عزیز\n\nبه ربات جیمبو خوش آمدید🚀\n\nلطفا یک گزینه را انتخاب کنید👇",
+                         reply_markup=reply_markup)
 
 
 @bot.message_handler(func=lambda message: True)
@@ -163,7 +176,7 @@ def handle_sharzh_callback(call):
     bot.send_message(call.message.chat.id,
                      f"برای شارژ کیف پول خود، ترون را به آدرس زیر ارسال کنید:\n<code>{address}</code>",
                      parse_mode="HTML")
-    bot.send_message(call.message.chat.id, "پس از ارسال، کد هش تراکنش را اینجا وارد کنید:")
+    bot.reply_to(call.message.chat.id, "پس از ارسال، کد هش تراکنش را اینجا وارد کنید:")
     bot.register_next_step_handler_by_chat_id(call.message.chat.id, process_transaction_hash)
 
 
