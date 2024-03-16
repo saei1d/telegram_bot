@@ -187,7 +187,7 @@ def handle_sharzh_callback(call):
     bot.send_message(call.message.chat.id,
                      f"برای شارژ کیف پول خود، ترون را به آدرس زیر ارسال کنید:\n<code>{address}</code>",
                      parse_mode="HTML")
-    bot.reply_to(call.message.chat.id, "پس از ارسال، کد هش تراکنش را اینجا وارد کنید:")
+    bot.send_message(call.message.chat.id, "پس از ارسال، کد هش تراکنش را اینجا وارد کنید:")
     bot.register_next_step_handler_by_chat_id(call.message.chat.id, process_transaction_hash)
 
 
