@@ -5,6 +5,7 @@ from database import *
 import requests
 import math
 from decimal import Decimal
+from jdatetime import datetime
 
 bot = telebot.TeleBot(BOT_TOKEN)
 
@@ -28,11 +29,12 @@ def handle_start(message):
         username = message.from_user.username or "NoUsername"  # برای کاربرانی که username ندارند
         save_user_and_create_wallet(client_code, username)
         reply_markup = get_main_buttons()
-        bot.send_message(message.chat.id, "♥️سلام دوست عزیز\n\nبه ربات جیمبو خوش آمدید🚀\n\nلطفا یک گزینه را انتخاب کنید👇",
+        bot.send_message(message.chat.id,
+                         "♥️سلام دوست عزیز\n\nبه ربات جیمبو خوش آمدید🚀\n\nلطفا یک گزینه را انتخاب کنید👇",
                          reply_markup=reply_markup)
 
     else:
-        bot.send_message(chat_id,'اگر جوین شدید مجدد /start کنید')
+        bot.send_message(chat_id, 'اگر جوین شدید مجدد /start کنید')
 
 
 @bot.message_handler(func=lambda message: True)
@@ -68,7 +70,8 @@ def send_purchase_confirmation(chat_id, tariff):
                 bot.send_message(chat_id, "لینک بالا برای ios , اندروید  است")
                 with open(f'{address}{name}', 'r') as file:
                     bot.send_document(chat_id, file, caption="این فایل برای windows  میباشد امیدوارم لذت ببرید")
-                cur.execute("UPDATE links SET status = %s WHERE link = %s;", (1, link))
+                cur.execute("UPDATE links SET status = %s,sold_out= %s,owner = %s WHERE link = %s;",
+                            (1, datetime.now(), chat_id, link))
                 # commit تغییرات به دیتابیس
                 conn.commit()
                 return True
@@ -87,8 +90,8 @@ def send_purchase_confirmation(chat_id, tariff):
                 bot.send_message(chat_id, "لینک بالا برای ios , اندروید  است")
                 with open(f'{address}{name}', 'r') as file:
                     bot.send_document(chat_id, file, caption="این فایل برای windows  میباشد امیدوارم لذت ببرید")
-                cur.execute("UPDATE links SET status = %s WHERE link = %s;", (1, link))
-                # commit تغییرات به دیتابیس
+                cur.execute("UPDATE links SET status = %s,sold_out= %s,owner = %s WHERE link = %s;",
+                            (1, datetime.now(), chat_id, link))                # commit تغییرات به دیتابیس
                 conn.commit()
                 return True
             else:
@@ -106,8 +109,8 @@ def send_purchase_confirmation(chat_id, tariff):
                 bot.send_message(chat_id, "لینک بالا برای ios , اندروید  است")
                 with open(f'{address}{name}', 'r') as file:
                     bot.send_document(chat_id, file, caption="این فایل برای windows  میباشد امیدوارم لذت ببرید")
-                cur.execute("UPDATE links SET status = %s WHERE link = %s;", (1, link))
-                # commit تغییرات به دیتابیس
+                cur.execute("UPDATE links SET status = %s,sold_out= %s,owner = %s WHERE link = %s;",
+                            (1, datetime.now(), chat_id, link))                # commit تغییرات به دیتابیس
                 conn.commit()
                 return True
             else:
