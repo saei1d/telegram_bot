@@ -32,7 +32,7 @@ def handle_start(message):
                          reply_markup=reply_markup)
 
     else:
-        bot.send_message(chat_id,"اه گاییدی منو")
+        bot.send_message(chat_id,'اگر جوین شدید مجدد /start کنید')
 
 
 @bot.message_handler(func=lambda message: True)
