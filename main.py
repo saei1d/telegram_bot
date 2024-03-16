@@ -8,7 +8,8 @@ from decimal import Decimal
 from jdatetime import datetime
 
 bot = telebot.TeleBot(BOT_TOKEN)
-now = datetime.now()
+
+
 def check_membership(chat_id, channel_username):
     member = bot.get_chat_member(channel_username, chat_id)
     if member.status == 'member' or member.status == 'creator' or member.status == 'administrator':
@@ -52,6 +53,11 @@ def handle_message(message):
     elif message.text == "آموزش استفاده👨🏻‍🏫":
         bot.send_message(message.chat.id, "آموزش مد نظرتو انتخاب کن", reply_markup=get_education_buttons())
 
+    elif message.text == "اشتراک های من🕰":
+        chat_id = message.chat.id
+        print(chat_id)
+        bot.send_message(message.chat.id, my_configs(chat_id), reply_markup=get_education_buttons())
+
 
 def send_purchase_confirmation(chat_id, tariff):
     conn = connect_db()
@@ -89,8 +95,8 @@ def send_purchase_confirmation(chat_id, tariff):
                 bot.send_message(chat_id, "لینک بالا برای ios , اندروید  است")
                 with open(f'{address}{name}', 'r') as file:
                     bot.send_document(chat_id, file, caption="این فایل برای windows  میباشد امیدوارم لذت ببرید")
-                cur.execute("UPDATE links SET status = %s,sold_out= %s,owner = %s WHERE link = %s;",
-                            (1, now, chat_id, link))                # commit تغییرات به دیتابیس
+                cur.execute("UPDATE links SET status = %s,sold_out= CURRENT_TIMESTAMP,owner = %s WHERE link = %s;",
+                            (1, chat_id, link))  # commit تغییرات به دیتابیس
                 conn.commit()
                 return True
             else:
@@ -108,8 +114,8 @@ def send_purchase_confirmation(chat_id, tariff):
                 bot.send_message(chat_id, "لینک بالا برای ios , اندروید  است")
                 with open(f'{address}{name}', 'r') as file:
                     bot.send_document(chat_id, file, caption="این فایل برای windows  میباشد امیدوارم لذت ببرید")
-                cur.execute("UPDATE links SET status = %s,sold_out= %s,owner = %s WHERE link = %s;",
-                            (1, now, chat_id, link))                # commit تغییرات به دیتابیس
+                cur.execute("UPDATE links SET status = %s,sold_out= CURRENT_TIMESTAMP,owner = %s WHERE link = %s;",
+                            (1, chat_id, link))  # commit تغییرات به دیتابیس
                 conn.commit()
                 return True
             else:
@@ -258,6 +264,22 @@ def handle_buy_callback(call):
         if call.date == "AMOZESH_mac":
             bot.send_video(call.message.chat.id, open("/root/telegram_bot/videos/mac.mp4", 'rb'))
 
+
+def my_configs(chat_id):
+    conn = connect_db()
+    cur = conn.cursor()
+    cur.execute("SELECT name , sold_out FROM links WHERE owner = %s);", (chat_id,))
+    config = cur.fetchall()
+    if config:
+        bot.send_message(chat_id,config)
+
+
+
+
+        cur.close()
+        conn.close()
+    else:
+        bot.send_message(chat_id,"شما تا کنون کانفیگی تهیه نکردید")
 
 if __name__ == "__main__":
     bot.infinity_polling(skip_pending=True)

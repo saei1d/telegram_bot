@@ -2,9 +2,7 @@ from telebot import types
 
 
 def get_main_buttons():
-    """
-    ایجاد و بازگرداندن کیبورد اصلی بات.
-    """
+
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=2)
     buttons = [
         types.KeyboardButton("خرید اشتراک💴"),
