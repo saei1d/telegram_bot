@@ -8,7 +8,7 @@ from decimal import Decimal
 from jdatetime import datetime
 
 bot = telebot.TeleBot(BOT_TOKEN)
-
+now = datetime.now()
 
 def check_membership(chat_id, channel_username):
     member = bot.get_chat_member(channel_username, chat_id)
@@ -71,7 +71,7 @@ def send_purchase_confirmation(chat_id, tariff):
                 with open(f'{address}{name}', 'r') as file:
                     bot.send_document(chat_id, file, caption="این فایل برای windows  میباشد امیدوارم لذت ببرید")
                 cur.execute("UPDATE links SET status = %s,sold_out= %s,owner = %s WHERE link = %s;",
-                            (1, datetime.now(), chat_id, link))
+                            (1, now, chat_id, link))
                 # commit تغییرات به دیتابیس
                 conn.commit()
                 return True
@@ -91,7 +91,7 @@ def send_purchase_confirmation(chat_id, tariff):
                 with open(f'{address}{name}', 'r') as file:
                     bot.send_document(chat_id, file, caption="این فایل برای windows  میباشد امیدوارم لذت ببرید")
                 cur.execute("UPDATE links SET status = %s,sold_out= %s,owner = %s WHERE link = %s;",
-                            (1, datetime.now(), chat_id, link))                # commit تغییرات به دیتابیس
+                            (1, now, chat_id, link))                # commit تغییرات به دیتابیس
                 conn.commit()
                 return True
             else:
@@ -110,7 +110,7 @@ def send_purchase_confirmation(chat_id, tariff):
                 with open(f'{address}{name}', 'r') as file:
                     bot.send_document(chat_id, file, caption="این فایل برای windows  میباشد امیدوارم لذت ببرید")
                 cur.execute("UPDATE links SET status = %s,sold_out= %s,owner = %s WHERE link = %s;",
-                            (1, datetime.now(), chat_id, link))                # commit تغییرات به دیتابیس
+                            (1, now, chat_id, link))                # commit تغییرات به دیتابیس
                 conn.commit()
                 return True
             else:
