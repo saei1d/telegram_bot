@@ -5,7 +5,9 @@ from database import *
 import requests
 import math
 from decimal import Decimal
-from jdatetime import datetime
+import jdatetime
+from datetime import datetime
+from bs4 import BeautifulSoup
 
 bot = telebot.TeleBot(BOT_TOKEN)
 
@@ -38,28 +40,31 @@ def handle_start(message):
 
 @bot.message_handler(func=lambda message: True)
 def handle_message(message):
-    if message.text == "خرید اشتراک💴":
+    if message.text == "خرید اشتراک":
         bot.send_message(message.chat.id, "تعرفه مورد نظر خودتون رو انتخاب کنید", reply_markup=get_tariff_buttons())
-    elif message.text == 'پشتیبانی👥':
+    elif message.text == 'پشتیبانی':
         bot.send_message(message.chat.id, "با مطالعه سوالات متداول ممکنه به جوابت برسی",
                          reply_markup=get_support_buttons())
-    elif message.text == "شارژ کیف پول⚡️":
+    elif message.text == "کیف پول":
         # فرض می‌شود تابع `find_user_id_from_client_code` ID کاربر را بر اساس chat_id بازگرداند
         user_id = find_user_id_from_client_code(message.chat.id)
         balance = show_user_wallet_balance(user_id)
         bot.send_message(message.chat.id, f"مقدار موجودی شما: {balance} دلار",
                          reply_markup=get_wallet_recharge_buttons())
-    elif message.text == "آموزش استفاده👨🏻‍🏫":
+    elif message.text == "آموزش استفاده":
         bot.send_message(message.chat.id, "آموزش مد نظرتو انتخاب کن", reply_markup=get_education_buttons())
 
-    elif message.text == "اشتراک های من🕰":
+    elif message.text == "اشتراک های من":
         chat_id = message.chat.id
-        bot.send_message(message.chat.id, my_configs(chat_id))
+        bot.send_message(message.chat.id, all_configs(chat_id))
 
     elif message.text == "قیمت لحظه ای ترون":
         chat_id = message.chat.id
         bot.send_message(message.chat.id, tron_price(chat_id))
 
+    elif message.text == "عودت وجه":
+        chat_id = message.chat.id
+        bot.send_message(message.chat.id, "متن تستی عودت وجه")
 
 
 def send_purchase_confirmation(chat_id, tariff):
@@ -268,15 +273,24 @@ def handle_buy_callback(call):
             bot.send_video(call.message.chat.id, open("/root/telegram_bot/videos/mac.mp4", 'rb'))
 
 
-def my_configs(chat_id):
+def convert_gregorian_to_shamsi(gregorian_date):
+    dt = datetime.strptime(gregorian_date, "%Y-%m-%d %H:%M:%S.%f")
+    shamsi_date = jdatetime.datetime.fromgregorian(datetime=dt)
+    return shamsi_date.strftime("%Y/%m/%d")
+
+
+def all_configs(chat_id):
     conn = connect_db()
     cur = conn.cursor()
     cur.execute("SELECT name, sold_out FROM links WHERE owner = %s;", (chat_id,))
-    config = cur.fetchone()
-    if config:
-        name = config[0]
-        sold_out = config[1]
-        bot.send_message(chat_id, f'کانفیگ شما با نام {name} و در تاریخ {sold_out} خریداری و تحویل داده شده است')
+    configs = cur.fetchall()
+
+    if configs:
+        for config in configs:
+            name = config[0]
+            gregorian_sold_out = config[1]
+            shamsi_sold_out = convert_gregorian_to_shamsi(gregorian_sold_out)
+            bot.send_message(chat_id, f'کانفیگ با نام {name} و در تاریخ {shamsi_sold_out} خریداری و تحویل داده شده است')
     else:
         bot.send_message(chat_id, "شما تا کنون کانفیگی تهیه نکردید")
 
@@ -284,22 +298,26 @@ def my_configs(chat_id):
     conn.close()
 
 
-
 def tron_price(chat_id):
-
-    price_url = 'https://api.coingecko.com/api/v3/simple/price?ids=tron&vs_currencies=usd'
-
-    response = requests.get(price_url)
-
-    if response.status_code == 200:
-        tron_data = response.json()
-        tron_price = tron_data['tron']['usd']
-
-        # قیمت یک دلار به ترون
-        dollar_to_tron = 1 / tron_price
-        bot.send_message(chat_id,f'هر یک دلار در حال حاضر معادل {dollar_to_tron} ترون است.')
-    else:
-        bot.send_message(chat_id,'دریافت اطلاعات ناموفق بود.')
+    url = 'https://bitmit.co/price/TRX'
+    response = requests.get(url)
+    soup = BeautifulSoup(response.text, 'html.parser')
+    root = soup.find_all("div", {"class": "container"})
+    for m in root:
+        asghar = m.find_all("div", {"class": "row justify-content-evenly gap-2 gap-md-1 gap-lg-2"})
+        if asghar:
+            for item in asghar:
+                s = item.find_all("div",
+                                  {
+                                      "class": "col-12 col-md-6 col-lg-4 col-xl-3 text-center shadow-box rounded-6 bg-white"})
+                if s:
+                    for ahmad in s:
+                        h5_tag = ahmad.find('h5')
+                        my_string = h5_tag.text
+                        bot.send_message(chat_id, f'ترون در حال حاضر {my_string}میباشد .مبلغ ')
+                        break
+                break
+            break
 
 
 if __name__ == "__main__":

@@ -5,12 +5,15 @@ def get_main_buttons():
 
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=2)
     buttons = [
-        types.KeyboardButton("خرید اشتراک💴"),
-        types.KeyboardButton("شارژ کیف پول⚡️"),
-        types.KeyboardButton("آموزش استفاده👨🏻‍🏫"),
-        types.KeyboardButton("پشتیبانی👥"),
-        types.KeyboardButton("اشتراک های من🕰"),
-        types.KeyboardButton(" قیمت لحظه ای ترون")
+        types.KeyboardButton("خرید اشتراک"),
+        types.KeyboardButton("کیف پول"),
+        types.KeyboardButton("آموزش استفاده"),
+        types.KeyboardButton("پشتیبانی"),
+        types.KeyboardButton("اشتراک های من"),
+        types.KeyboardButton(" قیمت لحظه ای ترون"),
+        types.KeyboardButton("عودت وجه"),
+        types.KeyboardButton("درامدزایی"),
+        types.KeyboardButton("تست یکروزه"),
     ]
     markup.add(*buttons)
     return markup
