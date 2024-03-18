@@ -8,6 +8,7 @@ from decimal import Decimal
 import jdatetime
 from datetime import datetime
 from bs4 import BeautifulSoup
+import time
 
 bot = telebot.TeleBot(BOT_TOKEN)
 
@@ -299,6 +300,7 @@ def all_configs(chat_id):
 
 
 def tron_price(chat_id):
+    bot.send_chat_action(chat_id,action='typing',timeout=15)
     url = 'https://bitmit.co/price/TRX'
     response = requests.get(url)
     soup = BeautifulSoup(response.text, 'html.parser')
@@ -311,13 +313,17 @@ def tron_price(chat_id):
                                   {
                                       "class": "col-12 col-md-6 col-lg-4 col-xl-3 text-center shadow-box rounded-6 bg-white"})
                 if s:
+                    time.sleep(10)
                     for ahmad in s:
                         h5_tag = ahmad.find('h5')
                         my_string = h5_tag.text
-                        bot.send_message(chat_id, f'ترون در حال حاضر {my_string}میباشد .مبلغ ')
+                        bot.send_message(chat_id, f'ترون در حال حاضر {my_string} می باشد  . ')
+
                         break
                 break
             break
+        else:
+            bot.send_message(chat_id,"فعلا قیمتی از سایت های مرجع در دسترس نیست از پشتیبانی جویا شوید")
 
 
 if __name__ == "__main__":
