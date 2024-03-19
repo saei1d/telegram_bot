@@ -24,6 +24,7 @@ def check_membership(chat_id, channel_username):
 
 @bot.message_handler(commands=['start'])
 def handle_start(message):
+    print("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
     chat_id = message.chat.id
     channel_username = '@jimboo_Vpn'
     client_code = message.from_user.id
