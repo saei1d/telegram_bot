@@ -28,6 +28,8 @@ def handle_start(message):
     chat_id = message.chat.id
     channel_username = '@jimboo_Vpn'
     client_code = message.from_user.id
+    print("bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb")
+
     if check_membership(chat_id, channel_username):
         username = message.from_user.username or "NoUsername"  # برای کاربرانی که username ندارند
         save_user_and_create_wallet(client_code, username)
