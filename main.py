@@ -26,7 +26,7 @@ def check_membership(chat_id, channel_username):
 def handle_start(message):
     print("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
     chat_id = message.chat.id
-    channel_username = '@jimboo_Vpn'
+    channel_username = '@jimboo_vpn'
     client_code = message.from_user.id
     print("bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb")
 
@@ -328,18 +328,18 @@ def tron_price(chat_id):
 #                                ADMIN PANEL                      پنل ادمین
 
 
-# admin_user_ids = [366470485, 5328813637]
-#
-#
-# @bot.message_handler(commands=['admin'])
-# def handle_admin_settings(message):
-#     print('aaaa')
-#     if message.from_user.id in admin_user_ids:
-#         bot.send_message(message.chat.id, 'Admin settings menu.')
-#
-#     else:
-#         bot.send_message(message.chat.id, 'از دکمه های اماده زیر استفاده کنید لطفا')
-#
+admin_user_ids = [366470485, 6696631466]
+
+
+@bot.message_handler(commands=['admin'])
+def handle_admin_settings(message):
+    print('aaaa')
+    if message.from_user.id in admin_user_ids:
+        bot.send_message(message.chat.id, 'Admin settings menu.')
+
+    else:
+        bot.send_message(message.chat.id, 'از دکمه های اماده زیر استفاده کنید لطفا')
+
 
 if __name__ == "__main__":
     bot.infinity_polling(skip_pending=True)
