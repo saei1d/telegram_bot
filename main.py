@@ -135,7 +135,9 @@ def send_purchase_confirmation(chat_id, tariff):
 
 @bot.callback_query_handler(func=lambda call: call.data == "kharid_azma")
 def kharid_azma(call):
-    bot.send_message(call.message.chat.id, "متن تستی خرید ازما بعلاوه یوزر نیم ترون فروش و دکمه زیر آموزش متنی تصویری لینک کانال", reply_markup=amozesh_kharid_tron_az_ma())
+    bot.send_message(call.message.chat.id,
+                     "متن تستی خرید ازما بعلاوه یوزر نیم ترون فروش و دکمه زیر آموزش متنی تصویری لینک کانال",
+                     reply_markup=amozesh_kharid_tron_az_ma())
 
 
 @bot.callback_query_handler(func=lambda call: call.data.startswith("tarefe"))
@@ -199,7 +201,7 @@ def fetch_trx_details(hash1, api_key, target_wallet_address):
 def handle_sharzh_callback(call):
     address = "TRZw3VgCdJoz93akEAt7yrMC1Wr6FgUFqY"
     bot.send_message(call.message.chat.id,
-                     f"برای شارژ کیف پول خود، ترون را به آدرس زیر ارسال کنید:\n<code>{address}</code>",
+                     f"برای شارژ کیف پول خود، ترون را به آدرس زیر ارسال کنید:\n\n\n<code>{address}</code>",
                      parse_mode="HTML")
     bot.send_message(call.message.chat.id, "پس از ارسال، کد هش تراکنش را اینجا وارد کنید:")
     bot.reply_to(call.message.chat.id, "تستی")
@@ -333,11 +335,12 @@ def tron_price(chat_id):
 #                                ADMIN PANEL                      پنل ادمین
 
 
-admin_user_ids = [366470485, 5328813637]  # Replace with your admin user IDs
+admin_user_ids = [366470485, 5328813637]
 
 
-@bot.message_handler(commands=['settings'])
+@bot.message_handler(commands=['admin'])
 def handle_admin_settings(message):
+    print('aaaa')
     if message.from_user.id in admin_user_ids:
         bot.send_message(message.chat.id, 'Admin settings menu.')
 
