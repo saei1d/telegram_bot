@@ -2,7 +2,6 @@ from telebot import types
 
 
 def get_main_buttons():
-
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=2)
     buttons = [
         types.KeyboardButton("خرید اشتراک"),
@@ -27,7 +26,8 @@ def get_tariff_buttons():
     buttons = [
         types.InlineKeyboardButton("یک ماهه دو کاربره ۱۰۰ گیگ (1 دلار)", callback_data="tarefe1"),
         types.InlineKeyboardButton("یک ماهه دو کاربره ۱۵۰ گیگ (1.5 دلار)", callback_data="tarefe2"),
-        types.InlineKeyboardButton("سه ماهه دو کاربره ۱۵۰ گیگ (2 دلار)", callback_data="tarefe3")
+        types.InlineKeyboardButton("سه ماهه دو کاربره ۱۵۰ گیگ (2 دلار)", callback_data="tarefe3"),
+        types.InlineKeyboardButton("تعرفه اختصاصی (ساخت دلخواه) ", callback_data="tarefe4")
     ]
     markup.add(*buttons)
     return markup
@@ -48,14 +48,26 @@ def get_support_buttons():
 
 def get_money():
     markup = types.InlineKeyboardMarkup()
-    recharge_button = types.InlineKeyboardButton("شارژ کیف پول⚡️", callback_data="sharzh")
+    recharge_button = types.InlineKeyboardButton("شارژ کیف پول", callback_data="sharzh")
     markup.add(recharge_button)
 
 
 def get_wallet_recharge_buttons():
-    markup = types.InlineKeyboardMarkup()
-    tron_button = types.InlineKeyboardButton("شارژ با ترون (TRC20)", callback_data="sharzh")
-    markup.add(tron_button)
+    markup = types.InlineKeyboardMarkup(row_width=1)
+    buttons = [
+        types.InlineKeyboardButton("شارژ از ولت شخصی ترون (TRC20)", callback_data="sharzh"),
+        types.InlineKeyboardButton("خریدترون از ما (پیشنهادی)", callback_data="kharid_azma"),
+    ]
+    markup.add(*buttons)
+    return markup
+
+
+def amozesh_kharid_tron_az_ma():
+    markup = types.InlineKeyboardMarkup(row_width=1)
+    buttons = [
+        types.InlineKeyboardButton("آموزش خریدترون از ما", callback_data="amozesh_kharid_azma"),
+    ]
+    markup.add(*buttons)
     return markup
 
 
@@ -74,13 +86,12 @@ def get_education_buttons():
 
 
 def get_education_platform_buttons():
-
     markup = types.InlineKeyboardMarkup()
     buttons = [
         types.InlineKeyboardButton("اندروید", callback_data="AMOZESH_android"),
         types.InlineKeyboardButton("iOS", callback_data="AMOZESH_ios"),
         types.InlineKeyboardButton("Windows", callback_data="AMOZESH_windows"),
-        types.InlineKeyboardButton("Mac",callback_data="AMOZESH_mac")
+        types.InlineKeyboardButton("Mac", callback_data="AMOZESH_mac")
     ]
     markup.add(*buttons)
     return markup

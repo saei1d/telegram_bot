@@ -133,6 +133,11 @@ def send_purchase_confirmation(chat_id, tariff):
                 return False
 
 
+@bot.callback_query_handler(func=lambda call: call.data == "kharid_azma")
+def kharid_azma(call):
+    bot.send_message(call.message.chat.id, "متن تستی خرید ازما بعلاوه یوزر نیم ترون فروش و دکمه زیر آموزش متنی تصویری لینک کانال", reply_markup=amozesh_kharid_tron_az_ma())
+
+
 @bot.callback_query_handler(func=lambda call: call.data.startswith("tarefe"))
 def handle_buy_callback(call):
     user_id = find_user_id_from_client_code(call.message.chat.id)
@@ -156,7 +161,7 @@ def handle_buy_callback(call):
                 bot.send_message(call.message.chat.id, "خطایی در انجام تراکنش رخ داد.")
         else:
             bot.send_message(call.message.chat.id, f"متاسفانه موجودی شما کافی نیست. موجودی فعلی شما: {balance} دلار",
-                             reply_markup=get_money())
+                             reply_markup=get_wallet_recharge_buttons())
     else:
         bot.send_message(call.message.chat.id, "کاربر یافت نشد.مجددا start کنید بات رو")
 
@@ -197,6 +202,7 @@ def handle_sharzh_callback(call):
                      f"برای شارژ کیف پول خود، ترون را به آدرس زیر ارسال کنید:\n<code>{address}</code>",
                      parse_mode="HTML")
     bot.send_message(call.message.chat.id, "پس از ارسال، کد هش تراکنش را اینجا وارد کنید:")
+    bot.reply_to(call.message.chat.id, "تستی")
     bot.register_next_step_handler_by_chat_id(call.message.chat.id, process_transaction_hash)
 
 
@@ -300,7 +306,7 @@ def all_configs(chat_id):
 
 
 def tron_price(chat_id):
-    bot.send_chat_action(chat_id,action='typing',timeout=15)
+    bot.send_chat_action(chat_id, action='typing')
     url = 'https://bitmit.co/price/TRX'
     response = requests.get(url)
     soup = BeautifulSoup(response.text, 'html.parser')
@@ -313,17 +319,30 @@ def tron_price(chat_id):
                                   {
                                       "class": "col-12 col-md-6 col-lg-4 col-xl-3 text-center shadow-box rounded-6 bg-white"})
                 if s:
-                    time.sleep(10)
                     for ahmad in s:
                         h5_tag = ahmad.find('h5')
                         my_string = h5_tag.text
+                        time.sleep(10)
                         bot.send_message(chat_id, f'ترون در حال حاضر {my_string} می باشد  . ')
 
                         break
                 break
             break
-        else:
-            bot.send_message(chat_id,"فعلا قیمتی از سایت های مرجع در دسترس نیست از پشتیبانی جویا شوید")
+
+
+#                                ADMIN PANEL                      پنل ادمین
+
+
+admin_user_ids = [366470485, 5328813637]  # Replace with your admin user IDs
+
+
+@bot.message_handler(commands=['settings'])
+def handle_admin_settings(message):
+    if message.from_user.id in admin_user_ids:
+        bot.send_message(message.chat.id, 'Admin settings menu.')
+
+    else:
+        bot.send_message(message.chat.id, 'از دکمه های اماده زیر استفاده کنید لطفا')
 
 
 if __name__ == "__main__":
