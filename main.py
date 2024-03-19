@@ -50,7 +50,7 @@ def handle_message(message):
         # فرض می‌شود تابع `find_user_id_from_client_code` ID کاربر را بر اساس chat_id بازگرداند
         user_id = find_user_id_from_client_code(message.chat.id)
         balance = show_user_wallet_balance(user_id)
-        bot.send_message(message.chat.id, f"مقدار موجودی شما: {balance} دلار",
+        bot.send_message(message.chat.id, f"مقدار موجودی شما: {balance} ترون",
                          reply_markup=get_wallet_recharge_buttons())
     elif message.text == "آموزش استفاده":
         bot.send_message(message.chat.id, "آموزش مد نظرتو انتخاب کن", reply_markup=get_education_buttons())
@@ -158,11 +158,11 @@ def handle_buy_callback(call):
                 buy_payment(user_id, price)
                 balance -= price  # بروزرسانی موجودی پس از خرید
 
-                bot.send_message(call.message.chat.id, f"خرید شما با موفقیت انجام شد. موجودی جدید شما: {balance} دلار")
+                bot.send_message(call.message.chat.id, f"خرید شما با موفقیت انجام شد. موجودی جدید شما: {balance} ترون")
             else:
                 bot.send_message(call.message.chat.id, "خطایی در انجام تراکنش رخ داد.")
         else:
-            bot.send_message(call.message.chat.id, f"متاسفانه موجودی شما کافی نیست. موجودی فعلی شما: {balance} دلار",
+            bot.send_message(call.message.chat.id, f"متاسفانه موجودی شما کافی نیست. موجودی فعلی شما: {balance} ترون",
                              reply_markup=get_wallet_recharge_buttons())
     else:
         bot.send_message(call.message.chat.id, "کاربر یافت نشد.مجددا start کنید بات رو")
@@ -177,23 +177,13 @@ def fetch_trx_details(hash1, api_key, target_wallet_address):
         if trx_data.get('toAddress') == target_wallet_address and trx_data.get('contractRet') == 'SUCCESS':
             trx_amount = trx_data['contractData']['amount'] / 1_000_000  # تبدیل واحد از سانت به ترون
 
-            price_url = 'https://api.coingecko.com/api/v3/simple/price?ids=tron&vs_currencies=usd'
-            price_response = requests.get(price_url)
+            rounded_amount = math.ceil(trx_amount * 10) / 10
 
-            if price_response.status_code == 200:
-                price_data = price_response.json()
-                tron_price = price_data['tron']['usd']
-                usdt_amount = tron_price * trx_amount
-                rounded_amount = math.ceil(usdt_amount * 100) / 100
-                return rounded_amount, hash1
-            else:
-                print("Error fetching Tron price.")
-                return None, None
+            return rounded_amount, hash1
+
         else:
-            print("Transaction not successful or toAddress mismatch.")
             return None, None
     else:
-        print("Error fetching transaction details.")
         return None, None
 
 
@@ -201,7 +191,7 @@ def fetch_trx_details(hash1, api_key, target_wallet_address):
 def handle_sharzh_callback(call):
     address = "TRZw3VgCdJoz93akEAt7yrMC1Wr6FgUFqY"
     bot.send_message(call.message.chat.id,
-                     f"برای شارژ کیف پول خود، ترون را به آدرس زیر ارسال کنید:\n\n\n<code>{address}</code>",
+                     f"برای شارژ کیف پول خود، ترون را به آدرس زیر ارسال کنید:\n\n<code>{address}</code>",
                      parse_mode="HTML")
     bot.send_message(call.message.chat.id, "پس از ارسال، کد هش تراکنش را اینجا وارد کنید:")
     bot.reply_to(call.message.chat.id, "تستی")
@@ -254,7 +244,7 @@ def process_transaction_hash(message):
     if rounded is not None and hash_verified:
         # در اینجا کد برای insert_payment_and_update_wallet اضافه می‌شود (فرضی)
         if insert_payment_and_update_wallet(conn, rounded, hash1, message.chat.id):
-            bot.send_message(message.chat.id, f"کیف پول شما با موفقیت شارژ شد. به مقدار: {rounded} دلار")
+            bot.send_message(message.chat.id, f"کیف پول شما با موفقیت شارژ شد. به مقدار: {rounded} ترون")
         else:
             bot.send_message(message.chat.id, "مشکلی در بروزرسانی کیف پول به وجود آمد.")
     else:
@@ -335,18 +325,18 @@ def tron_price(chat_id):
 #                                ADMIN PANEL                      پنل ادمین
 
 
-admin_user_ids = [366470485, 5328813637]
-
-
-@bot.message_handler(commands=['admin'])
-def handle_admin_settings(message):
-    print('aaaa')
-    if message.from_user.id in admin_user_ids:
-        bot.send_message(message.chat.id, 'Admin settings menu.')
-
-    else:
-        bot.send_message(message.chat.id, 'از دکمه های اماده زیر استفاده کنید لطفا')
-
+# admin_user_ids = [366470485, 5328813637]
+#
+#
+# @bot.message_handler(commands=['admin'])
+# def handle_admin_settings(message):
+#     print('aaaa')
+#     if message.from_user.id in admin_user_ids:
+#         bot.send_message(message.chat.id, 'Admin settings menu.')
+#
+#     else:
+#         bot.send_message(message.chat.id, 'از دکمه های اماده زیر استفاده کنید لطفا')
+#
 
 if __name__ == "__main__":
     bot.infinity_polling(skip_pending=True)

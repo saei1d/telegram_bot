@@ -24,10 +24,11 @@ def get_tariff_buttons():
     """
     markup = types.InlineKeyboardMarkup(row_width=1)
     buttons = [
-        types.InlineKeyboardButton("یک ماهه دو کاربره ۱۰۰ گیگ (1 دلار)", callback_data="tarefe1"),
-        types.InlineKeyboardButton("یک ماهه دو کاربره ۱۵۰ گیگ (1.5 دلار)", callback_data="tarefe2"),
-        types.InlineKeyboardButton("سه ماهه دو کاربره ۱۵۰ گیگ (2 دلار)", callback_data="tarefe3"),
-        types.InlineKeyboardButton("تعرفه اختصاصی (ساخت دلخواه) ", callback_data="tarefe4")
+        types.InlineKeyboardButton("یک ماهه دو کاربره ۱۰۰ گیگ (1 دلار)", callback_data="tarefe30gig"),
+        types.InlineKeyboardButton("یک ماهه دو کاربره ۱۵۰ گیگ (1.5 دلار)", callback_data="tarefe50gig"),
+        types.InlineKeyboardButton("سه ماهه دو کاربره ۱۵۰ گیگ (2 دلار)", callback_data="tarefe70gig"),
+        types.InlineKeyboardButton("سه ماهه دو کاربره ۱۵۰ گیگ (2 دلار)", callback_data="tarefe90gig"),
+        types.InlineKeyboardButton("تعرفه اختصاصی (ساخت دلخواه) ", callback_data="tarefeEkhtesasi")
     ]
     markup.add(*buttons)
     return markup
