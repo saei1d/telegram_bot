@@ -168,6 +168,47 @@ def handle_buy_callback(call):
         bot.send_message(call.message.chat.id, "کاربر یافت نشد.مجددا start کنید بات رو")
 
 
+@bot.callback_query_handler(func=lambda call: call.data == "Ekhtesasi")
+def Ekhtesasi(call):
+    bot.send_message(call.message.chat.id,
+                     " شمامیتوانید با وارد کردن تعداد روز مقدار حجم کانفیگ و تعداد کابر کانفیگ خودتون رو اختصاصی کنید \n\n  با وارد کردن عدد 0 اینگلیسی مقدار ثابت برای کانفیگ شما درنظر گرفته خواهد شد مثلا مقدار ثابت و حداقلی هر کانفیگ 40 روز و تعداد کاربر ۲ میباشد ",
+                     reply_markup=ekhtesasiii())
+    if call.data == "make_config":
+        msg = bot.send_message(call.message.chat.id, "حجم مد نظر خودتون رو وارد کنید با عدد انگلیسی \n مثال:(150)")
+        bot.register_next_step_handler(msg, vol)
+
+
+def vol(message):
+    global volume
+    volume = int(message.text)
+    days = bot.send_message(message.chat.id,
+                            'تعداد روز های مدنظر خودتون رو با عدد انگلیسی وارد کنید که باید بیشتر از 40 باشد (کمتر از 40 روز 40 درنظر گرفته خواهد شد) \n برای مثال:(31)')
+    bot.register_next_step_handler(days, client)
+
+
+def client(message):
+    global day
+    day = int(message.text)
+    if day < 40:
+        day = 40
+        bot.send_message(message.chat.id,"عددی که وارد کردید کوچکتر از 40 بود و برای شما همان 40 روز لحاظ شد")
+    client = bot.send_message(message.chat.id, "تعداد کاربران رو مشخص کنید و حداقل دوکاربر درنظر گرفته خواهد شد \n مثال:(3) ")
+    bot.register_next_step_handler(client,defa)
+def defa(message):
+    global clieee
+    clieee =int(message.text)
+    if clieee < 2:
+        clieee = 2
+        bot.send_message(message.chat.id,"عددی که وارد کردید کوچکتر از 2 بود و برای شما همان 2 کاربر لحاظ شد")
+    mmd = day - 40
+    mmd2 = clieee - 2
+    su = (2400 * volume)+(1400 * mmd)+(mmd2*13000)
+
+    bot.send_message(message.chat.id, f'کانفیگ شما با حجم {volume} و تعداد {day} روز و با تعداد کاربر {clieee} محاسبه شد \n \n    این کانفیگ با مبلغ {su}  تقدیم شما قرار خواهد گرفت')
+
+
+
+
 def fetch_trx_details(hash1, api_key, target_wallet_address):
     trx_info_url = f"https://apilist.tronscan.org/api/transaction-info?hash={hash1}&apikey={api_key}"
     trx_response = requests.get(trx_info_url)

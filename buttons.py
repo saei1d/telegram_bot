@@ -29,7 +29,7 @@ def get_tariff_buttons():
         types.InlineKeyboardButton("دوکاربره ۷۰ گیگ ۲۲ ترون  (۱۴۸ هزار تومان)", callback_data="tarefe70gig"),
         types.InlineKeyboardButton("دوکاربره ۹۰ گیگ ۲۷ ترون  (۱۸۹ هزارتومان)", callback_data="tarefe90gig"),
         types.InlineKeyboardButton("دوکاربره ۱۲۰ گیگ ۳۱ ترون  (۲۱۷ هزار تومان)", callback_data="tarefe90gig"),
-        types.InlineKeyboardButton("تعرفه اختصاصی (ساخت دلخواه) ", callback_data="tarefeEkhtesasi")
+        types.InlineKeyboardButton("تعرفه اختصاصی (ساخت دلخواه) ", callback_data="Ekhtesasi")
     ]
     markup.add(*buttons)
     return markup
@@ -94,6 +94,18 @@ def get_education_platform_buttons():
         types.InlineKeyboardButton("iOS", callback_data="AMOZESH_ios"),
         types.InlineKeyboardButton("Windows", callback_data="AMOZESH_windows"),
         types.InlineKeyboardButton("Mac", callback_data="AMOZESH_mac")
+    ]
+    markup.add(*buttons)
+    return markup
+
+
+
+def ekhtesasiii():
+    markup = types.InlineKeyboardMarkup()
+    buttons = [
+        types.InlineKeyboardButton("شروع ساخت", callback_data="make_config"),
+        types.InlineKeyboardButton("بازگشت", callback_data="terefe"),
+
     ]
     markup.add(*buttons)
     return markup
