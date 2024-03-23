@@ -24,12 +24,9 @@ def check_membership(chat_id, channel_username):
 
 @bot.message_handler(commands=['start'])
 def handle_start(message):
-    print("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
     chat_id = message.chat.id
     channel_username = '@jimboo_vpn'
     client_code = message.from_user.id
-    print("bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb")
-
     if check_membership(chat_id, channel_username):
         username = message.from_user.username or "NoUsername"  # برای کاربرانی که username ندارند
         save_user_and_create_wallet(client_code, username)
@@ -197,7 +194,6 @@ def handle_sharzh_callback(call):
                      f"برای شارژ کیف پول خود، ترون را به آدرس زیر ارسال کنید:\n\n<code>{address}</code>",
                      parse_mode="HTML")
     bot.send_message(call.message.chat.id, "پس از ارسال، کد هش تراکنش را اینجا وارد کنید:")
-    bot.reply_to(call.message.chat.id, "تستی")
     bot.register_next_step_handler_by_chat_id(call.message.chat.id, process_transaction_hash)
 
 
