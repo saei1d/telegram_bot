@@ -4,12 +4,11 @@ import requests
 
 #    make client
 
-url = "https://dub.barfarazabr.fun/awHquJhtnP/api/v2/admin/user/"
 
-secret_code = "a964952d-17d8-4e77-b1b5-0a42bdb0553c"
 
 
 def hiddify_api_put(client_code, dayss, limit):
+
     pk = uuid.uuid4()
     json_str = json.dumps({"pk": pk}, default=str)
     data = json.loads(json_str)
@@ -24,6 +23,8 @@ def hiddify_api_put(client_code, dayss, limit):
         "uuid": pk_value
 
     }
+    url = "https://dub.barfarazabr.fun/awHquJhtnP/api/v2/admin/user/"
+    secret_code = "a964952d-17d8-4e77-b1b5-0a42bdb0553c"
 
     response = requests.put(url, json=user_data, auth=(secret_code, ''))
 
