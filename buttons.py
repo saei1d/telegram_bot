@@ -93,7 +93,7 @@ def get_education_platform_buttons():
         types.InlineKeyboardButton("اندروید", callback_data="AMOZESH_android"),
         types.InlineKeyboardButton("iOS", callback_data="AMOZESH_ios"),
         types.InlineKeyboardButton("Windows", callback_data="AMOZESH_windows"),
-        types.InlineKeyboardButton("Mac", callback_data="AMOZESH_mac")
+        # types.InlineKeyboardButton("Mac", callback_data="AMOZESH_mac")
     ]
     markup.add(*buttons)
     return markup
@@ -108,3 +108,16 @@ def ekhtesasiii():
     ]
     markup.add(*buttons)
     return markup
+
+def discount():
+    markup = types.InlineKeyboardMarkup()
+    buttons = [
+        types.InlineKeyboardButton("وارد کردن کد تخفیف", callback_data="discount"),
+
+    ]
+    markup.add(*buttons)
+    return markup
+
+
+
+
