@@ -85,15 +85,35 @@ def handle_message(message):
 
 def send_purchase_confirmation(chat_id, tariff):
     if tariff == "tarefe30gig":
-        print(hiddify_api_put(chat_id, 40, 30)
-              )
-        bot.send_message(chat_id, "sade")
-        return True
-
-    else:
+        bot.send_message(chat_id, hiddify_api_put(chat_id, 40, 30, ))
         bot.send_message(chat_id,
-                         "این تعرفه درحال حاضر موجود نیست لطفا از کانفیگ های دیگر استفاده کنید یا به پشتیبانی اطلاع دهید")
-        return False
+                         "لینک بالا برای اندروید و ios مورد استفاده است درصورت نیاز به فایل windowsکانفیگ همراه با uuid به پشتیبانی مراجعه کنید",
+                         reply_markup=get_education_platform_buttons())
+        return True
+    elif tariff == "tarefe50gig":
+        bot.send_message(chat_id, hiddify_api_put(chat_id, 40, 50, ))
+        bot.send_message(chat_id,
+                         "لینک بالا برای اندروید و ios مورد استفاده است درصورت نیاز به فایل windowsکانفیگ همراه با uuid به پشتیبانی مراجعه کنید",
+                         reply_markup=get_education_platform_buttons())
+        return True
+    elif tariff == "tarefe70gig":
+        bot.send_message(chat_id, hiddify_api_put(chat_id, 40, 70, ))
+        bot.send_message(chat_id,
+                         "لینک بالا برای اندروید و ios مورد استفاده است درصورت نیاز به فایل windowsکانفیگ همراه با uuid به پشتیبانی مراجعه کنید",
+                         reply_markup=get_education_platform_buttons())
+        return True
+    elif tariff == "tarefe90gig":
+        bot.send_message(chat_id, hiddify_api_put(chat_id, 40, 90, ))
+        bot.send_message(chat_id,
+                         "لینک بالا برای اندروید و ios مورد استفاده است درصورت نیاز به فایل windowsکانفیگ همراه با uuid به پشتیبانی مراجعه کنید",
+                         reply_markup=get_education_platform_buttons())
+        return True
+    elif tariff == "tarefe120gig":
+        bot.send_message(chat_id, hiddify_api_put(chat_id, 40, 120, ))
+        bot.send_message(chat_id,
+                         "لینک بالا برای اندروید و ios مورد استفاده است درصورت نیاز به فایل windowsکانفیگ همراه با uuid به پشتیبانی مراجعه کنید",
+                         reply_markup=get_education_platform_buttons())
+        return True
 
 
 @bot.callback_query_handler(func=lambda call: call.data == "kharid_azma")
