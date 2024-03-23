@@ -85,7 +85,9 @@ def handle_message(message):
 
 def send_purchase_confirmation(chat_id, tariff):
     if tariff == "tarefe30gig":
-        bot.send_message(chat_id, hiddify_api_put(chat_id, 40, 30))
+        print(hiddify_api_put(chat_id, 40, 30)
+              )
+        bot.send_message(chat_id, "sade")
         return True
 
     else:
