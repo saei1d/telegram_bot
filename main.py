@@ -70,10 +70,6 @@ def handle_message(message):
     elif message.text == "آموزش استفاده":
         bot.send_message(message.chat.id, "آموزش مد نظرتو انتخاب کن", reply_markup=get_education_buttons())
 
-    elif message.text == "اشتراک های من":
-        chat_id = message.chat.id
-        bot.send_message(message.chat.id, all_configs(chat_id))
-
     elif message.text == "قیمت لحظه ای ترون":
         chat_id = message.chat.id
         bot.send_message(message.chat.id, tron_price(chat_id))
@@ -222,15 +218,37 @@ def fetch_trx_details(hash1, api_key, target_wallet_address):
 
 @bot.callback_query_handler(func=lambda call: call.data == "sharzh")
 def handle_sharzh_callback(call):
+    global dis_discount
+    dis_discount = 0
     bot.send_message(call.message.chat.id, "کد تخفیف دارید؟", reply_markup=discount())
-    if call.data == "discount":
-        bot.send_message(call.message.chat.id, "mmd")
+
     address = "TRZw3VgCdJoz93akEAt7yrMC1Wr6FgUFqY"
     bot.send_message(call.message.chat.id,
                      f"برای شارژ کیف پول خود، ترون را به آدرس زیر ارسال کنید:\n\n<code>{address}</code>",
                      parse_mode="HTML")
     bot.send_message(call.message.chat.id, "پس از ارسال، کد هش تراکنش را اینجا وارد کنید:")
     bot.register_next_step_handler_by_chat_id(call.message.chat.id, process_transaction_hash)
+
+
+@bot.callback_query_handler(func=lambda call: call.data == "discount")
+def dis(call):
+    msg = bot.send_message(call.message.chat.id, "کد تخفیف خودتون رو وارد کنید")
+    bot.register_next_step_handler(msg,disco)
+
+def disco(message):
+    global discount_client
+    discount_client = message.text
+    conn = connect_db()
+    cur = conn.cursor()
+    cur.execute("SELECT percentage FROM discount_codes WHERE name = %s", (discount_client,))
+    is_done = cur.fetchone()
+    if is_done:
+        print(is_done)
+
+
+
+
+
 
 
 def insert_payment_and_update_wallet(conn, amount, transaction_hash, client_code):
@@ -306,30 +324,6 @@ def handle_buy_callback(call):
         if call.date == "AMOZESH_mac":
             bot.send_video(call.message.chat.id, open("/root/telegram_bot/videos/mac.mp4", 'rb'))
 
-
-def convert_gregorian_to_shamsi(gregorian_date):
-    dt = datetime.strptime(gregorian_date, "%Y-%m-%d %H:%M:%S.%f")
-    shamsi_date = jdatetime.datetime.fromgregorian(datetime=dt)
-    return shamsi_date.strftime("%Y/%m/%d")
-
-
-def all_configs(chat_id):
-    conn = connect_db()
-    cur = conn.cursor()
-    cur.execute("SELECT name, sold_out FROM links WHERE owner = %s;", (chat_id,))
-    configs = cur.fetchall()
-
-    if configs:
-        for config in configs:
-            name = config[0]
-            gregorian_sold_out = config[1]
-            shamsi_sold_out = convert_gregorian_to_shamsi(gregorian_sold_out)
-            bot.send_message(chat_id, f'کانفیگ با نام {name} و در تاریخ {shamsi_sold_out} خریداری و تحویل داده شده است')
-    else:
-        bot.send_message(chat_id, "شما تا کنون کانفیگی تهیه نکردید")
-
-    cur.close()
-    conn.close()
 
 
 def tron_price(chat_id):
