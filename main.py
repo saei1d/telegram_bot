@@ -10,6 +10,8 @@ from datetime import datetime
 from bs4 import BeautifulSoup
 import time
 
+from hiddify_api import *
+
 bot = telebot.TeleBot(BOT_TOKEN)
 
 
@@ -20,6 +22,19 @@ def check_membership(chat_id, channel_username):
     else:
         bot.send_message(chat_id, f'برای استفاده از ربات، لطفا عضو کانال {channel_username} شوید.')
         return False
+
+
+admin_user_ids = [366470485, 6696631466]
+
+
+@bot.message_handler(commands=['admin'])
+def handle_admin_settings(message):
+    print('aaaa')
+    if message.from_user.id in admin_user_ids:
+        bot.send_message(message.chat.id, 'Admin settings menu.')
+
+    else:
+        bot.send_message(message.chat.id, 'از دکمه های اماده زیر استفاده کنید لطفا')
 
 
 @bot.message_handler(commands=['start'])
@@ -69,68 +84,14 @@ def handle_message(message):
 
 
 def send_purchase_confirmation(chat_id, tariff):
-    conn = connect_db()
-    cur = conn.cursor()
+    if tariff == "tarefe30gig":
+        bot.send_message(chat_id, hiddify_api_put(chat_id, 40, 30))
+        return True
 
-    with conn.cursor() as cur:
-        if tariff == "tarefe1":
-            cur.execute("SELECT link,address,name FROM links WHERE status = %s AND amount = %s;", (0, 1))
-            row = cur.fetchone()
-            if row:
-                link = row[0]
-                address = row[1]
-                name = row[2]
-                bot.send_message(chat_id, link)
-                bot.send_message(chat_id, "لینک بالا برای ios , اندروید  است")
-                with open(f'{address}{name}', 'r') as file:
-                    bot.send_document(chat_id, file, caption="این فایل برای windows  میباشد امیدوارم لذت ببرید")
-                cur.execute("UPDATE links SET status = %s,sold_out= CURRENT_TIMESTAMP,owner = %s WHERE link = %s;",
-                            (1, chat_id, link))
-                # commit تغییرات به دیتابیس
-                conn.commit()
-                return True
-            else:
-                bot.send_message(chat_id,
-                                 "این تعرفه درحال حاضر موجود نیست لطفا از کانفیگ های دیگر استفاده کنید یا به پشتیبانی اطلاع دهید")
-                return False
-        elif tariff == "tarefe2":
-            cur.execute("SELECT link,address,name FROM links WHERE status = %s AND amount = %s;", (0, 1.5))
-            row = cur.fetchone()
-            if row:
-                link = row[0]
-                address = row[1]
-                name = row[2]
-                bot.send_message(chat_id, link)
-                bot.send_message(chat_id, "لینک بالا برای ios , اندروید  است")
-                with open(f'{address}{name}', 'r') as file:
-                    bot.send_document(chat_id, file, caption="این فایل برای windows  میباشد امیدوارم لذت ببرید")
-                cur.execute("UPDATE links SET status = %s,sold_out= CURRENT_TIMESTAMP,owner = %s WHERE link = %s;",
-                            (1, chat_id, link))  # commit تغییرات به دیتابیس
-                conn.commit()
-                return True
-            else:
-                bot.send_message(chat_id,
-                                 "این تعرفه درحال حاضر موجود نیست لطفا از کانفیگ های دیگر استفاده کنید یا به پشتیبانی اطلاع دهید")
-                return False
-        elif tariff == "tarefe3":
-            cur.execute("SELECT link,address,name FROM links WHERE status = %s AND amount = %s;", (0, 2))
-            row = cur.fetchone()
-            if row:
-                link = row[0]
-                address = row[1]
-                name = row[2]
-                bot.send_message(chat_id, link)
-                bot.send_message(chat_id, "لینک بالا برای ios , اندروید  است")
-                with open(f'{address}{name}', 'r') as file:
-                    bot.send_document(chat_id, file, caption="این فایل برای windows  میباشد امیدوارم لذت ببرید")
-                cur.execute("UPDATE links SET status = %s,sold_out= CURRENT_TIMESTAMP,owner = %s WHERE link = %s;",
-                            (1, chat_id, link))  # commit تغییرات به دیتابیس
-                conn.commit()
-                return True
-            else:
-                bot.send_message(chat_id,
-                                 "این تعرفه درحال حاضر موجود نیست لطفا از کانفیگ های دیگر استفاده کنید یا به پشتیبانی اطلاع دهید")
-                return False
+    else:
+        bot.send_message(chat_id,
+                         "این تعرفه درحال حاضر موجود نیست لطفا از کانفیگ های دیگر استفاده کنید یا به پشتیبانی اطلاع دهید")
+        return False
 
 
 @bot.callback_query_handler(func=lambda call: call.data == "kharid_azma")
@@ -146,12 +107,16 @@ def handle_buy_callback(call):
     if user_id is not None:
         balance = show_user_wallet_balance(user_id)
         price = 0
-        if call.data == "tarefe1":
-            price = Decimal("1")
-        elif call.data == "tarefe2":
-            price = Decimal("1.5")
-        elif call.data == "tarefe3":
-            price = Decimal("2")
+        if call.data == "tarefe30gig":
+            price = Decimal("11")
+        elif call.data == "tarefe50gig":
+            price = Decimal("17")
+        elif call.data == "tarefe70gig":
+            price = Decimal("22")
+        elif call.data == "tarefe90gig":
+            price = Decimal("27")
+        elif call.data == "tarefe120gig":
+            price = Decimal("31")
         if balance >= price != 0:
             # انجام تراکنش و بروزرسانی موجودی
             if send_purchase_confirmation(call.message.chat.id, call.data):
@@ -185,7 +150,7 @@ def vol(message):
     global volume
     volume = int(message.text)
     days = bot.send_message(message.chat.id,
-                            'تعداد روز های مدنظر خودتون رو با عدد انگلیسی وارد کنید که باید بیشتر از 40 باشد (کمتر از 40 روز 40 درنظر گرفته خواهد شد) \n برای مثال:(31)')
+                            'تعداد روز های مدنظر خودتون رو با عدد انگلیسی وارد کنید که باید بیشتر از 40 باشد (کمتر از 40 روز 40 درنظر گرفته خواهد شد) \n برای مثال:(90)')
     bot.register_next_step_handler(days, client)
 
 
@@ -211,7 +176,7 @@ def defa(message):
     su = (2400 * volume) + (1400 * mmd) + (mmd2 * 13000)
 
     bot.send_message(message.chat.id,
-                     f'کانفیگ شما با حجم {volume} و تعداد {day} روز و با تعداد کاربر {clieee} محاسبه شد \n \n    این کانفیگ با مبلغ {su}  تقدیم شما قرار خواهد گرفت')
+                     f'کانفیگ شما با حجم {volume} و تعداد {day} روز و با تعداد کاربر {clieee} محاسبه شد \n \n    این کانفیگ با مبلغ {su} هزار تقدیم شما قرار خواهد گرفت')
 
 
 def fetch_trx_details(hash1, api_key, target_wallet_address):
@@ -368,19 +333,6 @@ def tron_price(chat_id):
 
 
 #                                ADMIN PANEL                      پنل ادمین
-
-
-admin_user_ids = [366470485, 6696631466]
-
-
-@bot.message_handler(commands=['admin'])
-def handle_admin_settings(message):
-    print('aaaa')
-    if message.from_user.id in admin_user_ids:
-        bot.send_message(message.chat.id, 'Admin settings menu.')
-
-    else:
-        bot.send_message(message.chat.id, 'از دکمه های اماده زیر استفاده کنید لطفا')
 
 
 if __name__ == "__main__":
