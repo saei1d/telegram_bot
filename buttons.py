@@ -129,3 +129,13 @@ def discount():
     ]
     markup.add(*buttons)
     return markup
+
+
+def edame():
+    markup = types.InlineKeyboardMarkup()
+    buttons = [
+        types.InlineKeyboardButton("ادامه فرایند خرید", callback_data="edame_kharid"),
+
+    ]
+    markup.add(*buttons)
+    return markup
