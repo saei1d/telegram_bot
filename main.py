@@ -272,6 +272,7 @@ def process_transaction_hash(message):
     hash1 = message.text
     if message.text == "برگشت":
         bot.send_message(message.chat.id, "شما به منوی اصلی برگشتید", reply_markup=get_main_buttons())
+        return
 
 
 
