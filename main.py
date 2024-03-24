@@ -128,7 +128,8 @@ def make_refral_wallet_by_email(client_code, email_validate):
                 (email_validate, discount_code, client_code))
 
     bot.send_message(client_code,
-                     f'کد تخفیف شما ساخته شد {discount_code}و از همین حالا میتونید شروع به درامد زایی کنید')
+                     f'کد تخفیف شما ساخته شد و از همین حالا میتونید شروع به درامد زایی کنید:\n```\n{discount_code}\n```',
+                     parse_mode='HTML')
 
     # ذخیره تغییرات
     conn.commit()
