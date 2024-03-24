@@ -3,6 +3,8 @@ from config import BOT_TOKEN
 from buttons import *
 from database import *
 import requests
+import random
+import string
 import math
 from decimal import Decimal
 import jdatetime
@@ -86,8 +88,11 @@ def handle_message(message):
 
 @bot.message_handler(content_types=['contact'])
 def handle_contact(message):
-    print("اطلاعات تماس دریافت شد:")
-    print(message.contact)
+    data = json.loads(message.contact)
+    # دسترسی به اطلاعات مورد نظر
+    phone_number = data['phone_number']
+    first_name = data['first_name']
+    user_id = data['user_id']
 
 
 def email(message):
@@ -95,11 +100,40 @@ def email(message):
     pattern = r"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$"
     if re.match(pattern, email_validate):
         bot.send_message(message.chat.id, "ایمیل شما با موفقیت ذخیره شد")
-        return True
+        make_refral_wallet_by_email(message.chat.id, email_validate)
+
     else:
         bot.send_message(message.chat.id, "ایمیل شما اشتباه وارد شده است")
 
         return False
+
+
+def make_refral_wallet_by_email(client_code, email_validate):
+    conn = connect_db()
+    cur = conn.cursor()
+    # اجرای دستور UPDATE برای به‌روزرسانی مقادیر فیلد email در جدول users
+    cur.execute("UPDATE users SET email = %s WHERE client_code =%s", (email_validate, client_code))
+    cur.execute("SELECT username FROM users WHERE client_code =%s", (client_code))
+    username = cur.fetchone()
+    print(username)
+
+    # تولید یک عدد تصادفی دو رقمی
+    random_number = '{:02}'.format(random.randint(10, 99))
+    # تعیین یوزرنیم‌ها
+    username1 = 'jim'
+    username2 = 'boo'
+
+    # ایجاد کد تخفیف
+    discount_code = f'{username1}%{username}%{username2}%{random_number}'
+
+    print(discount_code)
+
+    # ذخیره تغییرات
+    conn.commit()
+
+    # بستن cursor و اتصال
+    cur.close()
+    conn.close()
 
 
 def send_purchase_confirmation(chat_id, tariff):
