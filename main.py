@@ -77,11 +77,22 @@ def handle_message(message):
 
     elif message.text == "عودت وجه":
         bot.send_message(message.chat.id, "متن تستی عودت وجه")
-    elif message.text == "درامدزایی":
-        bot.send_message(message.chat.id, "متن تستی درامد زایی ", reply_markup=button_validate())
-    elif message.text == "ارسال ایمیل":
-        msg = bot.send_message(message.chat.id, "لطفا ایمیل خودتون رو وارد کنید \n  مثال: example@gmail.com")
-        bot.register_next_step_handler(msg, email)
+    # elif message.text == "درامدزایی":
+    #     bot.send_message(message.chat.id, "متن تستی درامد زایی ", reply_markup=button_validate())
+    # elif message.text == "ارسال ایمیل":
+    #     msg = bot.send_message(message.chat.id, "لطفا ایمیل خودتون رو وارد کنید \n  مثال: example@gmail.com")
+    #     bot.register_next_step_handler(msg, email)
+
+
+@bot.message_handler(func=lambda message: message.text == "درامدزایی")
+def handle_income(message):
+    bot.send_message(message.chat.id, "متن تستی درامد زایی", reply_markup=button_validate())
+
+
+@bot.message_handler(func=lambda message: message.text == "ارسال ایمیل")
+def emmail(message):
+    msg = bot.send_message(message.chat.id, "لطفا ایمیل خودتون رو وارد کنید \n  مثال: example@gmail.com")
+    bot.register_next_step_handler(msg, email)
 
 
 def email(message):
