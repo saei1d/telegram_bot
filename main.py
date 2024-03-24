@@ -224,7 +224,8 @@ def handle_sharzh_callback(call):
 
 
 @bot.callback_query_handler(func=lambda call: call.data == "edame_kharid")
-def handle_edame_kharid_callback(call):
+def handle_edame_kharid_callback(call, discount_percentage):
+    print(discount_percentage)
     address = "TRZw3VgCdJoz93akEAt7yrMC1Wr6FgUFqY"
     bot.send_message(call.message.chat.id,
                      f"برای شارژ کیف پول خود، ترون را به آدرس زیر ارسال کنید:\n\n<code>{address}</code>",
@@ -240,7 +241,7 @@ def dis(call):
     bot.register_next_step_handler(msg, disco)
 
 
-def disco(message):
+def disco(message, call):
     discount_client = message.text
     conn = connect_db()
     cur = conn.cursor()
@@ -249,6 +250,8 @@ def disco(message):
     if is_done:
         discount_percentage = is_done[0]
         bot.send_message(message.chat.id, f'کد تخفیف شما مورد تایید قرار گرفت به مقدار {discount_percentage}%')
+        handle_edame_kharid_callback(call, discount_percentage)
+
     else:
         bot.send_message(message.chat.id, f' کد تخفیف شما مورد تایید قرار نگرفت ', reply_markup=get_back_buttons())
     if message.text == "برگشت":
