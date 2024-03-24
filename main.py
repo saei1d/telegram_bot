@@ -241,10 +241,10 @@ def handle_edame_kharid_callback(call,discount_percentage=0):
 @bot.callback_query_handler(func=lambda call: call.data == "discount")
 def dis(call):
     msg = bot.send_message(call.message.chat.id, "کد تخفیف خودتون رو وارد کنید", reply_markup=get_back_buttons())
-    bot.register_next_step_handler(msg, disco)
+    bot.register_next_step_handler(msg, disco,call)
 
 
-def disco(message):
+def disco(message,call):
     discount_client = message.text
     conn = connect_db()
     cur = conn.cursor()
@@ -253,7 +253,7 @@ def disco(message):
     if is_done:
         discount_percentage = is_done[0]
         bot.send_message(message.chat.id, f'کد تخفیف شما مورد تایید قرار گرفت به مقدار {discount_percentage}%')
-        handle_edame_kharid_callback(message.chat.id, discount_percentage)
+        handle_edame_kharid_callback(call, discount_percentage)
 
 
 
