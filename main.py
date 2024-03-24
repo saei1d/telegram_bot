@@ -93,6 +93,8 @@ def handle_contact(message):
     phone_number = data['phone_number']
     first_name = data['first_name']
     user_id = data['user_id']
+    phone = int(phone_number)
+    make_refral_wallet_by_phone(user_id, first_name, phone)
 
 
 def email(message):
@@ -108,6 +110,43 @@ def email(message):
         return False
 
 
+def make_refral_wallet_by_phone(client_code, first_name, phone):
+    conn = connect_db()
+    cur = conn.cursor()
+    # اجرای دستور UPDATE برای به‌روزرسانی مقادیر فیلد email در جدول users
+    cur.execute("SELECT username FROM users WHERE client_code =%s", (client_code,))
+    username = cur.fetchone()
+    username = username[0]
+    if username == "NoUsername":
+        random_number = '{:02}'.format(random.randint(10, 999))
+        # تعیین یوزرنیم‌ها
+        username1 = 'jim'
+        username = 'boo'
+        username2 = "VPN"
+    else:
+        # تولید یک عدد تصادفی دو رقمی
+        random_number = '{:02}'.format(random.randint(10, 99))
+        # تعیین یوزرنیم‌ها
+        username1 = 'jim'
+        username2 = 'boo'
+
+    # ایجاد کد تخفیف
+    discount_code = f'{username1}%{username}%{username2}{random_number}'
+
+    cur.execute("UPDATE users SET first_name = %s , phone_number = %s, referral_code = %s WHERE client_code = %s",
+                (first_name, phone,discount_code, client_code))
+
+    bot.send_message(client_code,
+                     f'متن تستی کد تخفیف \n   <code>{discount_code}</code>',
+                     parse_mode='HTML')
+
+    # ذخیره تغییرات
+    conn.commit()
+
+    # بستن cursor و اتصال
+    cur.close()
+    conn.close()
+
 def make_refral_wallet_by_email(client_code, email_validate):
     conn = connect_db()
     cur = conn.cursor()
@@ -115,12 +154,18 @@ def make_refral_wallet_by_email(client_code, email_validate):
     cur.execute("SELECT username FROM users WHERE client_code =%s", (client_code,))
     username = cur.fetchone()
     username = username[0]
-    # تولید یک عدد تصادفی دو رقمی
-    random_number = '{:02}'.format(random.randint(10, 99))
-    # تعیین یوزرنیم‌ها
-    username1 = 'jim'
-    username2 = 'boo'
-
+    if username == "NoUsername":
+        random_number = '{:02}'.format(random.randint(10, 999))
+        # تعیین یوزرنیم‌ها
+        username1 = 'jim'
+        username = 'boo'
+        username2 = "VPN"
+    else:
+        # تولید یک عدد تصادفی دو رقمی
+        random_number = '{:02}'.format(random.randint(10, 99))
+        # تعیین یوزرنیم‌ها
+        username1 = 'jim'
+        username2 = 'boo'
     # ایجاد کد تخفیف
     discount_code = f'{username1}%{username}%{username2}{random_number}'
 
@@ -128,7 +173,7 @@ def make_refral_wallet_by_email(client_code, email_validate):
                 (email_validate, discount_code, client_code))
 
     bot.send_message(client_code,
-                     f'کد تخفیف شما ساخته شد و از همین حالا میتونید شروع به درامد زایی کنید:\n```\n{discount_code}\n```',
+                     f'متن تستی کد تخفیف \n   <code>{discount_code}</code>',
                      parse_mode='HTML')
 
     # ذخیره تغییرات
