@@ -97,8 +97,9 @@ def email(message):
 
 
 @bot.message_handler(chat_types=['contact'])
-def contact(m):
-    print(m.contact)
+def contact(message):
+    print("injaiiiii")
+    print(message.contact)
 
 
 def send_purchase_confirmation(chat_id, tariff):
