@@ -113,7 +113,7 @@ def make_refral_wallet_by_email(client_code, email_validate):
     cur = conn.cursor()
     # اجرای دستور UPDATE برای به‌روزرسانی مقادیر فیلد email در جدول users
     cur.execute("UPDATE users SET email = %s WHERE client_code =%s", (email_validate, client_code))
-    cur.execute("SELECT username FROM users WHERE client_code =%s", (client_code))
+    cur.execute("SELECT username FROM users WHERE client_code =%s", (client_code,))
     username = cur.fetchone()
     print(username)
 
