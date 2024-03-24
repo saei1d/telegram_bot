@@ -88,7 +88,6 @@ def handle_message(message):
 
 @bot.message_handler(content_types=['contact'])
 def handle_contact(message):
-
     contact_data = {
         'first_name': message.contact.first_name,
         'phone_number': message.contact.phone_number,
@@ -102,7 +101,6 @@ def handle_contact(message):
     first_name = data['first_name']
     phone_number = data['phone_number']
     user_id = data['user_id']
-    print(first_name, phone_number, user_id)
     make_refral_wallet_by_phone(user_id, first_name, phone_number)
 
 
@@ -149,6 +147,8 @@ def make_refral_wallet_by_phone(client_code, first_name, phone):
                      f'متن تستی کد تخفیف \n   <code>{discount_code}</code>',
                      parse_mode='HTML')
 
+    cur.execute("INSERT INTO discount_codes (name, percentage, owner,status) VALUES (%s, %s, %s,%s);",
+                (discount_code, 10, client_code, 1))
     # ذخیره تغییرات
     conn.commit()
 
@@ -185,7 +185,8 @@ def make_refral_wallet_by_email(client_code, email_validate):
     bot.send_message(client_code,
                      f'متن تستی کد تخفیف \n   <code>{discount_code}</code>',
                      parse_mode='HTML')
-
+    cur.execute("INSERT INTO discount_codes (name, percentage, owner,status) VALUES (%s, %s, %s,%s);",
+                (discount_code, 10, client_code, 1))
     # ذخیره تغییرات
     conn.commit()
 
