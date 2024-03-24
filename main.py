@@ -218,14 +218,13 @@ def fetch_trx_details(hash1, api_key, target_wallet_address):
 
 @bot.callback_query_handler(func=lambda call: call.data == "sharzh")
 def handle_sharzh_callback(call):
-    global dis_discount
-    dis_discount = 0
     bot.send_message(call.message.chat.id, "اگر کد تخفیف دارید وارد کنید", reply_markup=discount())
 
 
 @bot.callback_query_handler(func=lambda call: call.data == "edame_kharid")
-def handle_edame_kharid_callback(call, discount_percentage):
-    print(discount_percentage)
+def handle_edame_kharid_callback(call):
+    if discount_percentage is None:
+        discount_percentag = 0
     address = "TRZw3VgCdJoz93akEAt7yrMC1Wr6FgUFqY"
     bot.send_message(call.message.chat.id,
                      f"برای شارژ کیف پول خود، ترون را به آدرس زیر ارسال کنید:\n\n<code>{address}</code>",
@@ -242,21 +241,26 @@ def dis(call):
 
 
 def disco(message):
+    global discount_percentage
     discount_client = message.text
     conn = connect_db()
     cur = conn.cursor()
     cur.execute("SELECT percentage FROM discount_codes WHERE name = %s", (discount_client,))
     is_done = cur.fetchone()
     if is_done:
+
         discount_percentage = is_done[0]
         bot.send_message(message.chat.id, f'کد تخفیف شما مورد تایید قرار گرفت به مقدار {discount_percentage}%',
                          reply_markup=edame())
 
 
+
     else:
         bot.send_message(message.chat.id, f' کد تخفیف شما مورد تایید قرار نگرفت ', reply_markup=get_back_buttons())
+        discount_percentage = 0
     if message.text == "برگشت":
         bot.send_message(message.chat.id, "شما به منوی اصلی برگشتید", reply_markup=get_main_buttons())
+        discount_percentage = 0
         return
 
 
