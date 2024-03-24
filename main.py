@@ -124,8 +124,11 @@ def make_refral_wallet_by_email(client_code, email_validate):
     # ایجاد کد تخفیف
     discount_code = f'{username1}%{username}%{username2}{random_number}'
 
-    cur.execute("UPDATE users SET email = %s , SET referral_code  = %s WHERE client_code =%s", (email_validate,discount_code, client_code))
-    bot.send_message(client_code, f'کد تخفیف شما ساخته شد {discount_code}و از همین حالا میتونید شروع به درامد زایی کنید')
+    cur.execute("UPDATE users SET email = %s, referral_code = %s WHERE client_code = %s",
+                (email_validate, discount_code, client_code))
+
+    bot.send_message(client_code,
+                     f'کد تخفیف شما ساخته شد {discount_code}و از همین حالا میتونید شروع به درامد زایی کنید')
 
     # ذخیره تغییرات
     conn.commit()
