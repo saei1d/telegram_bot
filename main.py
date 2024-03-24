@@ -112,11 +112,9 @@ def make_refral_wallet_by_email(client_code, email_validate):
     conn = connect_db()
     cur = conn.cursor()
     # اجرای دستور UPDATE برای به‌روزرسانی مقادیر فیلد email در جدول users
-    cur.execute("UPDATE users SET email = %s WHERE client_code =%s", (email_validate, client_code))
     cur.execute("SELECT username FROM users WHERE client_code =%s", (client_code,))
     username = cur.fetchone()
-    print(username)
-
+    username = username[0]
     # تولید یک عدد تصادفی دو رقمی
     random_number = '{:02}'.format(random.randint(10, 99))
     # تعیین یوزرنیم‌ها
@@ -124,9 +122,10 @@ def make_refral_wallet_by_email(client_code, email_validate):
     username2 = 'boo'
 
     # ایجاد کد تخفیف
-    discount_code = f'{username1}%{username}%{username2}%{random_number}'
+    discount_code = f'{username1}%{username}%{username2}{random_number}'
 
-    print(discount_code)
+    cur.execute("UPDATE users SET email = %s , SET referral_code  = %s WHERE client_code =%s", (email_validate,discount_code, client_code))
+    bot.send_message(client_code, f'کد تخفیف شما ساخته شد {discount_code}و از همین حالا میتونید شروع به درامد زایی کنید')
 
     # ذخیره تغییرات
     conn.commit()
