@@ -94,6 +94,8 @@ def handle_contact(message):
     first_name = data['first_name']
     user_id = data['user_id']
     phone = int(phone_number)
+    print(type(phone_number))
+    print(phone_number,first_name,user_id)
     make_refral_wallet_by_phone(user_id, first_name, phone)
 
 
@@ -134,7 +136,7 @@ def make_refral_wallet_by_phone(client_code, first_name, phone):
     discount_code = f'{username1}%{username}%{username2}{random_number}'
 
     cur.execute("UPDATE users SET first_name = %s , phone_number = %s, referral_code = %s WHERE client_code = %s",
-                (first_name, phone,discount_code, client_code))
+                (first_name, phone, discount_code, client_code))
 
     bot.send_message(client_code,
                      f'متن تستی کد تخفیف \n   <code>{discount_code}</code>',
@@ -146,6 +148,7 @@ def make_refral_wallet_by_phone(client_code, first_name, phone):
     # بستن cursor و اتصال
     cur.close()
     conn.close()
+
 
 def make_refral_wallet_by_email(client_code, email_validate):
     conn = connect_db()
