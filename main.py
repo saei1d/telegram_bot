@@ -60,7 +60,8 @@ def handle_message(message):
     elif message.text == 'پشتیبانی':
         bot.send_message(message.chat.id, "با مطالعه سوالات متداول ممکنه به جوابت برسی",
                          reply_markup=get_support_buttons())
-    elif message.text == "کیف پول" or message.text == "برگشت":
+    elif message.text == "کیف پول":
+
         # فرض می‌شود تابع `find_user_id_from_client_code` ID کاربر را بر اساس chat_id بازگرداند
         user_id = find_user_id_from_client_code(message.chat.id)
         balance = show_user_wallet_balance(user_id)
@@ -76,6 +77,10 @@ def handle_message(message):
     elif message.text == "عودت وجه":
         chat_id = message.chat.id
         bot.send_message(message.chat.id, "متن تستی عودت وجه")
+
+    elif message.text =="برگشت":
+        bot.send_message(message.chat.id,"شما به منوی اصلی برگشتید",reply_markup=get_main_buttons())
+
 
 
 def send_purchase_confirmation(chat_id, tariff):
