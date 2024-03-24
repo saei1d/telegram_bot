@@ -220,8 +220,11 @@ def fetch_trx_details(hash1, api_key, target_wallet_address):
 def handle_sharzh_callback(call):
     global dis_discount
     dis_discount = 0
-    bot.send_message(call.message.chat.id, "کد تخفیف دارید؟", reply_markup=discount())
+    bot.send_message(call.message.chat.id, "اگر کد تخفیف دارید وارد کنید", reply_markup=discount())
 
+
+@bot.callback_query_handler(func=lambda call: call.data == "edame_kharid")
+def handle_edame_kharid_callback(call):
     address = "TRZw3VgCdJoz93akEAt7yrMC1Wr6FgUFqY"
     bot.send_message(call.message.chat.id,
                      f"برای شارژ کیف پول خود، ترون را به آدرس زیر ارسال کنید:\n\n<code>{address}</code>",
@@ -233,19 +236,24 @@ def handle_sharzh_callback(call):
 
 @bot.callback_query_handler(func=lambda call: call.data == "discount")
 def dis(call):
-    msg = bot.send_message(call.message.chat.id, "کد تخفیف خودتون رو وارد کنید")
+    msg = bot.send_message(call.message.chat.id, "کد تخفیف خودتون رو وارد کنید", reply_markup=get_back_buttons())
     bot.register_next_step_handler(msg, disco)
 
 
 def disco(message):
-    global discount_clientor
     discount_client = message.text
     conn = connect_db()
     cur = conn.cursor()
     cur.execute("SELECT percentage FROM discount_codes WHERE name = %s", (discount_client,))
     is_done = cur.fetchone()
     if is_done:
-        print(is_done)
+        bot.send_message(message.chat.id, f' کد تخفیف شما مورد تایید قرار گرفت به مقدار {is_done} درصد ')
+
+    else:
+        bot.send_message(message.chat.id, f' کد تخفیف شما مورد تایید قرار نگرفت ', reply_markup=get_back_buttons())
+    if message.text == "برگشت":
+        bot.send_message(message.chat.id, "شما به منوی اصلی برگشتید", reply_markup=get_main_buttons())
+        return
 
 
 def insert_payment_and_update_wallet(conn, amount, transaction_hash, client_code):
@@ -270,11 +278,10 @@ def insert_payment_and_update_wallet(conn, amount, transaction_hash, client_code
 
 def process_transaction_hash(message):
     hash1 = message.text
+
     if message.text == "برگشت":
         bot.send_message(message.chat.id, "شما به منوی اصلی برگشتید", reply_markup=get_main_buttons())
         return
-
-
 
     elif len(hash1) != 64:
         bot.send_message(message.chat.id, "به نظر می‌رسد که کد هش وارد شده نامعتبر است. لطفاً مجدداً امتحان کنید.")
