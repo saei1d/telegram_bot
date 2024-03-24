@@ -88,6 +88,7 @@ def handle_message(message):
 
 @bot.message_handler(content_types=['contact'])
 def handle_contact(message):
+    print("swssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss")
     data = json.loads(message.contact)
     # دسترسی به اطلاعات مورد نظر
     phone_number = data['phone_number']
