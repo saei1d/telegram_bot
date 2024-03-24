@@ -23,6 +23,7 @@ def button_validate():
     buttons = [
         types.KeyboardButton("ارسال شماره",request_contact=True),
         types.KeyboardButton("ارسال ایمیل "),
+        types.KeyboardButton("✅. ایمیل "),
         types.KeyboardButton("برگشت"),
     ]
     markup.add(*buttons)

@@ -96,9 +96,9 @@ def email(message):
         return False
 
 
-@bot.message_handler(chat_types=['contact'])
-def contact(message):
-    print("injaiiiii")
+@bot.message_handler(content_types=['contact'])
+def handle_contact(message):
+    print("اطلاعات تماس دریافت شد:")
     print(message.contact)
 
 
