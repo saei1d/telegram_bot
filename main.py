@@ -229,6 +229,7 @@ def handle_sharzh_callback(call):
 
 @bot.callback_query_handler(func=lambda call: call.data == "edame_kharid")
 def handle_edame_kharid_callback(call,discount_percentage=0):
+    print(discount_percentage)
     address = "TRZw3VgCdJoz93akEAt7yrMC1Wr6FgUFqY"
     bot.send_message(call.message.chat.id,
                      f"برای شارژ کیف پول خود، ترون را به آدرس زیر ارسال کنید:\n\n<code>{address}</code>",
