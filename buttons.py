@@ -18,6 +18,17 @@ def get_main_buttons():
     return markup
 
 
+def button_validate():
+    markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=1)
+    buttons = [
+        types.KeyboardButton("ارسال شماره",request_contact=True),
+        types.KeyboardButton("ارسال ایمیل "),
+        types.KeyboardButton("برگشت"),
+    ]
+    markup.add(*buttons)
+    return markup
+
+
 def get_back_buttons():
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=1)
     buttons = [

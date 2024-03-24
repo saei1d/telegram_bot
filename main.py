@@ -77,6 +77,14 @@ def handle_message(message):
     elif message.text == "عودت وجه":
         chat_id = message.chat.id
         bot.send_message(message.chat.id, "متن تستی عودت وجه")
+    elif message.text == "درامدزایی":
+        chat_id = message.chat.id
+        bot.send_message(message.chat.id, "متن تستی درامد زایی ", reply_markup=button_validate())
+
+
+@bot.message_handler(chat_types=['contact'])
+def contact(message):
+    print(message.contact)
 
 
 def send_purchase_confirmation(chat_id, tariff):
@@ -250,10 +258,6 @@ def disco(message, call):
         discount_percentage = is_done[0]
         bot.send_message(message.chat.id, f'کد تخفیف شما مورد تایید قرار گرفت به مقدار {discount_percentage}%')
         handle_edame_kharid_callback(call, discount_percentage)
-
-
-
-
     else:
         bot.send_message(message.chat.id, f' کد تخفیف شما مورد تایید قرار نگرفت ', reply_markup=get_back_buttons())
     if message.text == "برگشت":
@@ -261,7 +265,7 @@ def disco(message, call):
         return
 
 
-def insert_payment_and_update_wallet(conn, amount, transaction_hash, client_code,percent_asli):
+def insert_payment_and_update_wallet(conn, amount, transaction_hash, client_code, percent_asli):
     with conn.cursor() as cur:
         # پیدا کردن wallet_id با استفاده از client_code
         cur.execute("SELECT w.wallet_id FROM wallets w JOIN users u ON w.user_id = u.user_id WHERE u.client_code = %s;",
@@ -270,8 +274,9 @@ def insert_payment_and_update_wallet(conn, amount, transaction_hash, client_code
         if wallet_info:
             wallet_id = wallet_info[0]
             # ذخیره تراکنش در جدول payments
-            cur.execute("INSERT INTO payments (wallet_id, amount, hash_code,discount_percentage) VALUES (%s, %s, %s,%s);",
-                        (wallet_id, amount, transaction_hash,percent_asli))
+            cur.execute(
+                "INSERT INTO payments (wallet_id, amount, hash_code,discount_percentage) VALUES (%s, %s, %s,%s);",
+                (wallet_id, amount, transaction_hash, percent_asli))
             # به‌روزرسانی موجودی کیف پول
             cur.execute("UPDATE wallets SET balance = balance + %s WHERE wallet_id = %s;", (amount, wallet_id))
             conn.commit()
@@ -313,7 +318,7 @@ def process_transaction_hash(message, percent_asli):
     print(rounded)
     if rounded is not None and hash_verified:
         # در اینجا کد برای insert_payment_and_update_wallet اضافه می‌شود (فرضی)
-        if insert_payment_and_update_wallet(conn, rounded, hash1, message.chat.id,percent_asli):
+        if insert_payment_and_update_wallet(conn, rounded, hash1, message.chat.id, percent_asli):
             bot.send_message(message.chat.id, f"کیف پول شما با موفقیت شارژ شد. به مقدار: {rounded} ترون")
         else:
             bot.send_message(message.chat.id, "مشکلی در بروزرسانی کیف پول به وجود آمد.")
