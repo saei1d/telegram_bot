@@ -83,8 +83,9 @@ def handle_message(message):
 
 
 @bot.message_handler(chat_types=['contact'])
-def contact(message):
-    print(message.contact)
+def contact(m):
+    print("injaii")
+    print(m.contact)
 
 
 def send_purchase_confirmation(chat_id, tariff):
