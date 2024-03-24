@@ -10,6 +10,7 @@ from datetime import datetime
 from bs4 import BeautifulSoup
 import time
 from hiddify_api import *
+import re
 
 bot = telebot.TeleBot(BOT_TOKEN)
 
@@ -55,6 +56,7 @@ def handle_start(message):
 
 @bot.message_handler(func=lambda message: True)
 def handle_message(message):
+    chat_id = message.chat.id
     if message.text == "خرید اشتراک":
         bot.send_message(message.chat.id, "تعرفه مورد نظر خودتون رو انتخاب کنید", reply_markup=get_tariff_buttons())
     elif message.text == 'پشتیبانی':
@@ -71,20 +73,31 @@ def handle_message(message):
         bot.send_message(message.chat.id, "آموزش مد نظرتو انتخاب کن", reply_markup=get_education_buttons())
 
     elif message.text == "قیمت لحظه ای ترون":
-        chat_id = message.chat.id
         bot.send_message(message.chat.id, tron_price(chat_id))
 
     elif message.text == "عودت وجه":
-        chat_id = message.chat.id
         bot.send_message(message.chat.id, "متن تستی عودت وجه")
     elif message.text == "درامدزایی":
-        chat_id = message.chat.id
         bot.send_message(message.chat.id, "متن تستی درامد زایی ", reply_markup=button_validate())
+    elif message.text == "ارسال ایمیل":
+        msg = bot.send_message(message.chat.id, "لطفا ایمیل خودتون رو وارد کنید \n  مثال: example@gmail.com")
+        bot.register_next_step_handler(msg, email)
+
+
+def email(message):
+    email_validate = message.text
+    pattern = r"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$"
+    if re.match(pattern, email_validate):
+        bot.send_message(message.chat.id, "ایمیل شما با موفقیت ذخیره شد")
+        return True
+    else:
+        bot.send_message(message.chat.id, "ایمیل شما اشتباه وارد شده است")
+
+        return False
 
 
 @bot.message_handler(chat_types=['contact'])
 def contact(m):
-    print("injaii")
     print(m.contact)
 
 
@@ -339,13 +352,13 @@ def Amozesh_etesal(call):
 @bot.callback_query_handler(func=lambda call: call.data.startswith("AMOZESH"))
 def handle_buy_callback(call):
     if call.date == "AMOZESH_android":
-        bot.send_video(call.message.chat.id, open("/root/telegram_bot/videos/android.mp4", 'rb'))
-        if call.date == "AMOZESH_ios":
-            bot.send_video(call.message.chat.id, open("/root/telegram_bot/videos/ios.mp4", 'rb'))
-        if call.date == "AMOZESH_windows":
-            bot.send_video(call.message.chat.id, open("/root/telegram_bot/videos/windows.mp4", 'rb'))
-        if call.date == "AMOZESH_mac":
-            bot.send_video(call.message.chat.id, open("/root/telegram_bot/videos/mac.mp4", 'rb'))
+        pass
+    elif call.date == "AMOZESH_ios":
+        pass
+    elif call.date == "AMOZESH_windows":
+        pass
+    elif call.date == "AMOZESH_mac":
+        pass
 
 
 def tron_price(chat_id):
