@@ -253,7 +253,7 @@ def disco(message):
     if is_done:
         discount_percentage = is_done[0]
         bot.send_message(message.chat.id, f'کد تخفیف شما مورد تایید قرار گرفت به مقدار {discount_percentage}%')
-        handle_edame_kharid_callback(message, discount_percentage)
+        handle_edame_kharid_callback(message.chat.id, discount_percentage)
 
 
 
