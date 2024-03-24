@@ -161,7 +161,7 @@ def Ekhtesasi(call):
 
 @bot.callback_query_handler(func=lambda call: call.data == "make_config")
 def ali(call):
-    mmd()
+    mmd(call)
 
 
 def fetch_trx_details(hash1, api_key, target_wallet_address):
