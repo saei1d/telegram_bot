@@ -88,20 +88,22 @@ def handle_message(message):
 
 @bot.message_handler(content_types=['contact'])
 def handle_contact(message):
-    print("swssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss")
 
     contact_data = {
         'first_name': message.contact.first_name,
-        'phone_number': message.contact.phone_number
+        'phone_number': message.contact.phone_number,
+        'user_id': message.contact.user_id
     }
 
     json_data = json.dumps(contact_data)
-    print(json_data)
-    #
-    # phone = int(phone_number)
-    # print(type(phone_number))
-    # print(phone_number,first_name,user_id)
-    # make_refral_wallet_by_phone(user_id, first_name, phone)
+    data = json.loads(json_data)
+
+    # دسترسی به مقادیر
+    first_name = data['first_name']
+    phone_number = data['phone_number']
+    user_id = data['user_id']
+    print(first_name, phone_number, user_id)
+    make_refral_wallet_by_phone(user_id, first_name, phone_number)
 
 
 def email(message):
