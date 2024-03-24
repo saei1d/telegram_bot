@@ -82,6 +82,8 @@ def handle_message(message):
     elif message.text == "ارسال ایمیل":
         msg = bot.send_message(message.chat.id, "لطفا ایمیل خودتون رو وارد کنید \n  مثال: example@gmail.com")
         bot.register_next_step_handler(msg, email)
+    elif message.text == "ارسال شماره":
+        print("dfefr")
 
 
 def email(message):
@@ -96,10 +98,6 @@ def email(message):
         return False
 
 
-@bot.message_handler(chat_types=['contact'])
-def ali(message):
-    print("injaiiiii")
-    print(message.contact)
 
 
 def send_purchase_confirmation(chat_id, tariff):
