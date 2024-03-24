@@ -78,9 +78,8 @@ def handle_message(message):
         chat_id = message.chat.id
         bot.send_message(message.chat.id, "متن تستی عودت وجه")
 
-    elif message.text =="برگشت":
-        bot.send_message(message.chat.id,"شما به منوی اصلی برگشتید",reply_markup=get_main_buttons())
-
+    elif message.text == "برگشت":
+        bot.send_message(message.chat.id, "شما به منوی اصلی برگشتید", reply_markup=get_main_buttons())
 
 
 def send_purchase_confirmation(chat_id, tariff):
@@ -242,7 +241,7 @@ def dis(call):
 
 
 def disco(message):
-    global discount_client
+    global discount_clientor
     discount_client = message.text
     conn = connect_db()
     cur = conn.cursor()
@@ -274,7 +273,11 @@ def insert_payment_and_update_wallet(conn, amount, transaction_hash, client_code
 
 def process_transaction_hash(message):
     hash1 = message.text
-    if len(hash1) != 64:
+    if message.text == "برگشت":
+        return True
+
+
+    elif len(hash1) != 64:
         bot.send_message(message.chat.id, "به نظر می‌رسد که کد هش وارد شده نامعتبر است. لطفاً مجدداً امتحان کنید.")
         return
 
