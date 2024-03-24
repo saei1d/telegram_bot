@@ -2,7 +2,6 @@ import telebot
 from config import BOT_TOKEN
 from buttons import *
 from database import *
-from ekhtesasi import *
 import requests
 import math
 from decimal import Decimal
@@ -10,7 +9,6 @@ import jdatetime
 from datetime import datetime
 from bs4 import BeautifulSoup
 import time
-
 from hiddify_api import *
 
 bot = telebot.TeleBot(BOT_TOKEN)
@@ -62,7 +60,7 @@ def handle_message(message):
     elif message.text == 'پشتیبانی':
         bot.send_message(message.chat.id, "با مطالعه سوالات متداول ممکنه به جوابت برسی",
                          reply_markup=get_support_buttons())
-    elif message.text == "کیف پول":
+    elif message.text == "کیف پول" or message.text == "برگشت":
         # فرض می‌شود تابع `find_user_id_from_client_code` ID کاربر را بر اساس chat_id بازگرداند
         user_id = find_user_id_from_client_code(message.chat.id)
         balance = show_user_wallet_balance(user_id)
@@ -160,8 +158,42 @@ def Ekhtesasi(call):
 
 
 @bot.callback_query_handler(func=lambda call: call.data == "make_config")
-def ali(call):
-    mmd(call)
+def mmd(call):
+    msg = bot.send_message(call.message.chat.id, "حجم مد نظر خودتون رو وارد کنید با عدد انگلیسی \n مثال:(150)")
+    bot.register_next_step_handler(msg, vol)
+
+
+def vol(message):
+    global volume
+    volume = int(message.text)
+    days = bot.send_message(message.chat.id,
+                            'تعداد روز های مدنظر خودتون رو با عدد انگلیسی وارد کنید که باید بیشتر از 40 باشد (کمتر از 40 روز 40 درنظر گرفته خواهد شد) \n برای مثال:(90)')
+    bot.register_next_step_handler(days, client)
+
+
+def client(message):
+    global day
+    day = int(message.text)
+    if day < 40:
+        day = 40
+        bot.send_message(message.chat.id, "عددی که وارد کردید کوچکتر از 40 بود و برای شما همان 40 روز لحاظ شد")
+    client = bot.send_message(message.chat.id,
+                              "تعداد کاربران رو مشخص کنید و حداقل دوکاربر درنظر گرفته خواهد شد \n مثال:(3) ")
+    bot.register_next_step_handler(client, defa)
+
+
+def defa(message):
+    global clieee
+    clieee = int(message.text)
+    if clieee < 2:
+        clieee = 2
+        bot.send_message(message.chat.id, "عددی که وارد کردید کوچکتر از 2 بود و برای شما همان 2 کاربر لحاظ شد")
+    mmd = day - 40
+    mmd2 = clieee - 2
+    su = (2400 * volume) + (1400 * mmd) + (mmd2 * 13000)
+
+    bot.send_message(message.chat.id,
+                     f'کانفیگ شما با حجم {volume} و تعداد {day} روز و با تعداد کاربر {clieee} محاسبه شد \n \n    این کانفیگ با مبلغ {su} هزار تقدیم شما قرار خواهد گرفت')
 
 
 def fetch_trx_details(hash1, api_key, target_wallet_address):
@@ -193,14 +225,16 @@ def handle_sharzh_callback(call):
     bot.send_message(call.message.chat.id,
                      f"برای شارژ کیف پول خود، ترون را به آدرس زیر ارسال کنید:\n\n<code>{address}</code>",
                      parse_mode="HTML")
-    bot.send_message(call.message.chat.id, "پس از ارسال، کد هش تراکنش را اینجا وارد کنید:")
+    bot.send_message(call.message.chat.id, "پس از ارسال، کد هش تراکنش را اینجا وارد کنید:",
+                     reply_markup=get_back_buttons())
     bot.register_next_step_handler_by_chat_id(call.message.chat.id, process_transaction_hash)
 
 
 @bot.callback_query_handler(func=lambda call: call.data == "discount")
 def dis(call):
     msg = bot.send_message(call.message.chat.id, "کد تخفیف خودتون رو وارد کنید")
-    bot.register_next_step_handler(msg,disco)
+    bot.register_next_step_handler(msg, disco)
+
 
 def disco(message):
     global discount_client
@@ -211,11 +245,6 @@ def disco(message):
     is_done = cur.fetchone()
     if is_done:
         print(is_done)
-
-
-
-
-
 
 
 def insert_payment_and_update_wallet(conn, amount, transaction_hash, client_code):
@@ -290,7 +319,6 @@ def handle_buy_callback(call):
             bot.send_video(call.message.chat.id, open("/root/telegram_bot/videos/windows.mp4", 'rb'))
         if call.date == "AMOZESH_mac":
             bot.send_video(call.message.chat.id, open("/root/telegram_bot/videos/mac.mp4", 'rb'))
-
 
 
 def tron_price(chat_id):

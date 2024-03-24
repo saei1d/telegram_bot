@@ -18,6 +18,16 @@ def get_main_buttons():
     return markup
 
 
+def get_back_buttons():
+    markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=1)
+    buttons = [
+        types.KeyboardButton("برگشت"),
+
+    ]
+    markup.add(*buttons)
+    return markup
+
+
 def get_tariff_buttons():
     """
     ایجاد و بازگرداندن کیبورد اینلاین برای تعرفه‌ها.
@@ -109,6 +119,7 @@ def ekhtesasiii():
     markup.add(*buttons)
     return markup
 
+
 def discount():
     markup = types.InlineKeyboardMarkup()
     buttons = [
@@ -117,7 +128,3 @@ def discount():
     ]
     markup.add(*buttons)
     return markup
-
-
-
-
