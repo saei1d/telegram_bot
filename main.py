@@ -244,11 +244,11 @@ def disco(message):
     discount_client = message.text
     conn = connect_db()
     cur = conn.cursor()
-    cur.execute("SELECT percentage FROM discount_codes WHERE name = %s", (discount_client))
+    cur.execute("SELECT percentage FROM discount_codes WHERE name = %s", (discount_client,))
     is_done = cur.fetchone()
     if is_done:
-        bot.send_message(message.chat.id, f' کد تخفیف شما مورد تایید قرار گرفت به مقدار {is_done} درصد ')
-
+        discount_percentage = is_done[0]
+        bot.send_message(message.chat.id, f'کد تخفیف شما مورد تایید قرار گرفت به مقدار {discount_percentage}%')
     else:
         bot.send_message(message.chat.id, f' کد تخفیف شما مورد تایید قرار نگرفت ', reply_markup=get_back_buttons())
     if message.text == "برگشت":
