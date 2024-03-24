@@ -218,6 +218,11 @@ def fetch_trx_details(hash1, api_key, target_wallet_address):
 
 
 
+
+global discount_percentage
+
+
+
 @bot.callback_query_handler(func=lambda call: call.data == "sharzh")
 def handle_sharzh_callback(call):
     bot.send_message(call.message.chat.id, "اگر کد تخفیف دارید وارد کنید", reply_markup=discount())
@@ -244,7 +249,6 @@ def dis(call):
 
 
 def disco(message):
-    global discount_percentage
     discount_client = message.text
     conn = connect_db()
     cur = conn.cursor()
