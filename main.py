@@ -89,15 +89,19 @@ def handle_message(message):
 @bot.message_handler(content_types=['contact'])
 def handle_contact(message):
     print("swssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss")
-    data = json.loads(message.contact)
-    # دسترسی به اطلاعات مورد نظر
-    phone_number = data['phone_number']
-    first_name = data['first_name']
-    user_id = data['user_id']
-    phone = int(phone_number)
-    print(type(phone_number))
-    print(phone_number,first_name,user_id)
-    make_refral_wallet_by_phone(user_id, first_name, phone)
+
+    contact_data = {
+        'first_name': message.contact.first_name,
+        'phone_number': message.contact.phone_number
+    }
+
+    json_data = json.dumps(contact_data)
+    print(json_data)
+    #
+    # phone = int(phone_number)
+    # print(type(phone_number))
+    # print(phone_number,first_name,user_id)
+    # make_refral_wallet_by_phone(user_id, first_name, phone)
 
 
 def email(message):
