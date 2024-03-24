@@ -78,9 +78,6 @@ def handle_message(message):
         chat_id = message.chat.id
         bot.send_message(message.chat.id, "متن تستی عودت وجه")
 
-    elif message.text == "برگشت":
-        bot.send_message(message.chat.id, "شما به منوی اصلی برگشتید", reply_markup=get_main_buttons())
-
 
 def send_purchase_confirmation(chat_id, tariff):
     if tariff == "tarefe30gig":
@@ -274,7 +271,8 @@ def insert_payment_and_update_wallet(conn, amount, transaction_hash, client_code
 def process_transaction_hash(message):
     hash1 = message.text
     if message.text == "برگشت":
-        return True
+        bot.send_message(message.chat.id, "شما به منوی اصلی برگشتید", reply_markup=get_main_buttons())
+
 
 
     elif len(hash1) != 64:
