@@ -241,7 +241,7 @@ def dis(call):
     bot.register_next_step_handler(msg, disco)
 
 
-def disco(message, call):
+def disco(message):
     discount_client = message.text
     conn = connect_db()
     cur = conn.cursor()
@@ -250,7 +250,7 @@ def disco(message, call):
     if is_done:
         discount_percentage = is_done[0]
         bot.send_message(message.chat.id, f'کد تخفیف شما مورد تایید قرار گرفت به مقدار {discount_percentage}%')
-        handle_edame_kharid_callback(call, discount_percentage)
+        handle_edame_kharid_callback(message, discount_percentage)
 
     else:
         bot.send_message(message.chat.id, f' کد تخفیف شما مورد تایید قرار نگرفت ', reply_markup=get_back_buttons())
