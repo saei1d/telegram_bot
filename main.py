@@ -270,7 +270,7 @@ def insert_payment_and_update_wallet(conn, amount, transaction_hash, client_code
         if wallet_info:
             wallet_id = wallet_info[0]
             # ذخیره تراکنش در جدول payments
-            cur.execute("INSERT INTO payments (wallet_id, amount, hash_code,percent_asli) VALUES (%s, %s, %s,%s);",
+            cur.execute("INSERT INTO payments (wallet_id, amount, hash_code,discount_percentage) VALUES (%s, %s, %s,%s);",
                         (wallet_id, amount, transaction_hash,percent_asli))
             # به‌روزرسانی موجودی کیف پول
             cur.execute("UPDATE wallets SET balance = balance + %s WHERE wallet_id = %s;", (amount, wallet_id))
