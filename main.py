@@ -216,19 +216,13 @@ def fetch_trx_details(hash1, api_key, target_wallet_address):
         return None, None
 
 
-
-
-
-
-
-
 @bot.callback_query_handler(func=lambda call: call.data == "sharzh")
 def handle_sharzh_callback(call):
     bot.send_message(call.message.chat.id, "اگر کد تخفیف دارید وارد کنید", reply_markup=discount())
 
 
 @bot.callback_query_handler(func=lambda call: call.data == "edame_kharid")
-def handle_edame_kharid_callback(call,discount_percentage=0):
+def handle_edame_kharid_callback(call, discount_percentage=0):
     print(discount_percentage)
     address = "TRZw3VgCdJoz93akEAt7yrMC1Wr6FgUFqY"
     bot.send_message(call.message.chat.id,
@@ -236,16 +230,17 @@ def handle_edame_kharid_callback(call,discount_percentage=0):
                      parse_mode="HTML")
     bot.send_message(call.message.chat.id, "پس از ارسال، کد هش تراکنش را اینجا وارد کنید:",
                      reply_markup=get_back_buttons())
-    bot.register_next_step_handler_by_chat_id(call.message.chat.id, process_transaction_hash)
+    bot.register_next_step_handler_by_chat_id(call.message.chat.id, process_transaction_hash,
+                                              percent_asli=discount_percentage)
 
 
 @bot.callback_query_handler(func=lambda call: call.data == "discount")
 def dis(call):
     msg = bot.send_message(call.message.chat.id, "کد تخفیف خودتون رو وارد کنید", reply_markup=get_back_buttons())
-    bot.register_next_step_handler(msg, disco,call)
+    bot.register_next_step_handler(msg, disco, call)
 
 
-def disco(message,call):
+def disco(message, call):
     discount_client = message.text
     conn = connect_db()
     cur = conn.cursor()
@@ -286,7 +281,7 @@ def insert_payment_and_update_wallet(conn, amount, transaction_hash, client_code
             return False
 
 
-def process_transaction_hash(message):
+def process_transaction_hash(message, percent_asli):
     hash1 = message.text
 
     if message.text == "برگشت":
@@ -314,6 +309,8 @@ def process_transaction_hash(message):
     # اینجا کد برای fetch_trx_details اضافه می‌شود (فرضی)
     rounded, hash_verified = fetch_trx_details(hash1, "30a1c098-6be5-4561-ad20-06b34d999dce",
                                                "TRZw3VgCdJoz93akEAt7yrMC1Wr6FgUFqY")
+    rounded = rounded + ((rounded * percent_asli) / 100)
+    print(rounded)
     if rounded is not None and hash_verified:
         # در اینجا کد برای insert_payment_and_update_wallet اضافه می‌شود (فرضی)
         if insert_payment_and_update_wallet(conn, rounded, hash1, message.chat.id):
