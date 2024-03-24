@@ -216,7 +216,6 @@ def fetch_trx_details(hash1, api_key, target_wallet_address):
         return None, None
 
 
-discount_percentag = 0
 
 
 @bot.callback_query_handler(func=lambda call: call.data == "sharzh")
@@ -226,6 +225,8 @@ def handle_sharzh_callback(call):
 
 @bot.callback_query_handler(func=lambda call: call.data == "edame_kharid")
 def handle_edame_kharid_callback(call):
+    if discount_percentage is None:
+        discount_percentag = 0
     print(discount_percentag)
     address = "TRZw3VgCdJoz93akEAt7yrMC1Wr6FgUFqY"
     bot.send_message(call.message.chat.id,
@@ -243,6 +244,7 @@ def dis(call):
 
 
 def disco(message):
+    global discount_percentage
     discount_client = message.text
     conn = connect_db()
     cur = conn.cursor()
