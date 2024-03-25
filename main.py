@@ -428,6 +428,7 @@ def insert_payment_and_update_wallet(conn, amount, transaction_hash, client_code
 
 def process_transaction_hash(message, percent_asli):
     hash1 = message.text
+    client_code = message.chat.id
 
     if message.text == "برگشت":
         bot.send_message(message.chat.id, "شما به منوی اصلی برگشتید", reply_markup=get_main_buttons())
@@ -454,12 +455,25 @@ def process_transaction_hash(message, percent_asli):
     # اینجا کد برای fetch_trx_details اضافه می‌شود (فرضی)
     rounded, hash_verified = fetch_trx_details(hash1, "30a1c098-6be5-4561-ad20-06b34d999dce",
                                                "TRZw3VgCdJoz93akEAt7yrMC1Wr6FgUFqY")
-    rounded = rounded + ((rounded * percent_asli) / 100)
-    print(rounded)
-    if rounded is not None and hash_verified:
+
+    rounded_plus_bounos = rounded + ((rounded * percent_asli) / 100)
+
+    if rounded_plus_bounos is not None and hash_verified:
         # در اینجا کد برای insert_payment_and_update_wallet اضافه می‌شود (فرضی)
-        if insert_payment_and_update_wallet(conn, rounded, hash1, message.chat.id, percent_asli):
-            bot.send_message(message.chat.id, f"کیف پول شما با موفقیت شارژ شد. به مقدار: {rounded} ترون")
+        if insert_payment_and_update_wallet(conn, rounded_plus_bounos, hash1, message.chat.id, percent_asli):
+            bot.send_message(message.chat.id, f"کیف پول شما با موفقیت شارژ شد. به مقدار: {rounded_plus_bounos} ترون")
+
+            cur.execute("SELECT join_by_code FROM users WHERE client_code = %s);"), (client_code,)
+            safir_client_code = cur.fetchone()[0]
+            if safir_client_code:
+                result = rounded * (10 / 100)
+                rounded_safir_percent = math.ceil(result * 100) / 100
+                cur.execute("UPDATE referrals SET income = %s WHERE client_code = %s;",
+                            (rounded_safir_percent, safir_client_code,))
+                conn.commit()
+
+            else:
+                return
         else:
             bot.send_message(message.chat.id, "مشکلی در بروزرسانی کیف پول به وجود آمد.")
     else:
