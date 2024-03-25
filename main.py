@@ -463,13 +463,13 @@ def process_transaction_hash(message, percent_asli):
         if insert_payment_and_update_wallet(conn, rounded_plus_bounos, hash1, message.chat.id, percent_asli):
             bot.send_message(message.chat.id, f"کیف پول شما با موفقیت شارژ شد. به مقدار: {rounded_plus_bounos} ترون")
 
-            cur.execute("SELECT join_by_code FROM users WHERE client_code = %s);", (client_code,))
+            cur.execute("SELECT join_by_code FROM users WHERE client_code = %s;", (client_code,))
             safir_client_code = cur.fetchone()[0]
             if safir_client_code:
                 result = rounded * (10 / 100)
                 rounded_safir_percent = math.ceil(result * 100) / 100
-                cur.execute("UPDATE referrals SET income = %s WHERE client_code = %s);",
-                            (rounded_safir_percent, safir_client_code,))
+                cur.execute("UPDATE referrals SET income = %s WHERE client_code = %s;",
+                            (rounded_safir_percent, safir_client_code))
                 conn.commit()
 
             else:
