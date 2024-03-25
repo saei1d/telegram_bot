@@ -142,7 +142,7 @@ def make_refral_wallet_by_phone(client_code, first_name, phone):
         username2 = 'boo'
 
     # ایجاد کد تخفیف
-    discount_code = f'{username1}%{username}%{username2}{random_number}'
+    discount_code = f'{username1}_{username}_{username2}{random_number}'
 
     cur.execute("UPDATE users SET first_name = %s , phone_number = %s, referral_code = %s WHERE client_code = %s",
                 (first_name, phone, discount_code, client_code))
@@ -184,7 +184,7 @@ def make_refral_wallet_by_email(client_code, email_validate):
         username1 = 'jim'
         username2 = 'boo'
     # ایجاد کد تخفیف
-    discount_code = f'{username1}%{username}%{username2}{random_number}'
+    discount_code = f'{username1}_{username}_{username2}{random_number}'
 
     cur.execute("UPDATE users SET email = %s, referral_code = %s WHERE client_code = %s",
                 (email_validate, discount_code, client_code))
@@ -367,12 +367,23 @@ def dis(call):
 
 def disco(message, call):
     discount_client = message.text
+    client_code = message.chat.id
     conn = connect_db()
     cur = conn.cursor()
-    cur.execute("SELECT percentage FROM discount_codes WHERE name = %s", (discount_client,))
+    cur.execute("SELECT percentage,status,owner FROM discount_codes WHERE name = %s", (discount_client,))
     is_done = cur.fetchone()
     if is_done:
         discount_percentage = is_done[0]
+        status = is_done[1]
+        owner = is_done[2]
+        if status == 1:
+            cur.execute("SELECT join_by_code FROM users WHERE client_code = %s", (client_code))
+            if cur.fetchone():
+                bot.send_message(call.message.chat.id,
+                                 "کد تخفیفی که وارد کردید رفرال بوده و قبلا شما توسط فرد دیگری دعوت شدید \n لطفا از کدتخفیف های عمومی استفاده کنید")
+            else:
+                cur.execute("UPDATE users SET join_by_code = %s WHERE client_code = %s", (owner, owner))
+
         bot.send_message(message.chat.id, f'کد تخفیف شما مورد تایید قرار گرفت به مقدار {discount_percentage}%')
         handle_edame_kharid_callback(call, discount_percentage)
     else:
@@ -513,14 +524,13 @@ def income_safir(client_code):
         referral_code = cur.fetchone()
         if referral_code:
             referral_code = referral_code[0]
-            bot.send_message(client_code, f' شما در حال حاضر {people} نفر\n درامد شما {income}\n متن تستی کد تخفیف \n <code>{referral_code}</code>', parse_mode='HTML')
+            bot.send_message(client_code,
+                             f' شما در حال حاضر {people} نفر\n درامد شما {income}\n متن تستی کد تخفیف \n <code>{referral_code}</code>',
+                             parse_mode='HTML')
             return True
 
-
-
-    
-
     return
+
 
 if __name__ == "__main__":
     bot.infinity_polling(skip_pending=True)
