@@ -154,7 +154,7 @@ def make_refral_wallet_by_phone(client_code, first_name, phone):
     cur.execute("INSERT INTO discount_codes (name, percentage, owner,status) VALUES (%s, %s, %s,%s);",
                 (discount_code, 10, client_code, 1))
 
-    cur.execute("INSERT INTO referral_wallets (user_id,people,income) VALUES (%s,%s,%s);", (client_code, 0, 0))
+    cur.execute("INSERT INTO referrals (client_code,people,income) VALUES (%s,%s,%s);", (client_code, 0, 0))
     # ذخیره تغییرات
     # ذخیره تغییرات
     conn.commit()
@@ -195,7 +195,7 @@ def make_refral_wallet_by_email(client_code, email_validate):
     cur.execute("INSERT INTO discount_codes (name, percentage, owner,status) VALUES (%s, %s, %s,%s);",
                 (discount_code, 10, client_code, 1))
 
-    cur.execute("INSERT INTO referral_wallets (user_id,people,income) VALUES (%s,%s,%s);", (client_code, 0, 0))
+    cur.execute("INSERT INTO referrals (client_code,people,income) VALUES (%s,%s,%s);", (client_code, 0, 0))
     # ذخیره تغییرات
     conn.commit()
 
@@ -494,7 +494,7 @@ def check_safir(client_code):
     cur = conn.cursor()
 
     # بررسی تکراری بودن کد هش
-    cur.execute("SELECT EXISTS(SELECT 1 FROM referral_wallets WHERE user_id = %s);", (client_code,))
+    cur.execute("SELECT EXISTS(SELECT 1 FROM referrals WHERE client_code = %s);", (client_code,))
     if cur.fetchone()[0]:
         return True
     else:
