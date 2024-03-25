@@ -377,8 +377,7 @@ def disco(message, call):
         owner = is_done[2]
         if status == 1:
             cur.execute("SELECT join_by_code FROM users WHERE client_code = %s", (client_code,))
-            print(cur.fetchone()[0])
-            if cur.fetchone()[0]:
+            if cur.fetchone()[0] is None:
                 bot.send_message(call.message.chat.id,
                                  "کد تخفیفی که وارد کردید رفرال بوده و قبلا شما توسط فرد دیگری دعوت شدید \n لطفا از کدتخفیف های عمومی استفاده کنید")
                 return
