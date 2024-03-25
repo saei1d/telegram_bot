@@ -379,6 +379,7 @@ def disco(message, call):
             cur.execute("SELECT join_by_code FROM users WHERE client_code = %s", (client_code,))
             cliiii = cur.fetchone()[0]
             print(owner)
+            print(cliiii)
             if cliiii is None or cliiii == owner:
                 cur.execute("UPDATE users SET join_by_code = %s WHERE client_code = %s", (owner, client_code))
                 conn.commit()
