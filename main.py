@@ -154,7 +154,7 @@ def make_refral_wallet_by_phone(client_code, first_name, phone):
     cur.execute("INSERT INTO discount_codes (name, percentage, owner,status) VALUES (%s, %s, %s,%s);",
                 (discount_code, 10, client_code, 1))
 
-    cur.execute("INSERT INTO referral_wallets (user_id,people,income) VALUES (%s,%s,%s);)", (client_code, 0, 0))
+    cur.execute("INSERT INTO referral_wallets (user_id,people,income) VALUES (%s,%s,%s);", (client_code, 0, 0))
     # ذخیره تغییرات
     # ذخیره تغییرات
     conn.commit()
@@ -195,7 +195,7 @@ def make_refral_wallet_by_email(client_code, email_validate):
     cur.execute("INSERT INTO discount_codes (name, percentage, owner,status) VALUES (%s, %s, %s,%s);",
                 (discount_code, 10, client_code, 1))
 
-    cur.execute("INSERT INTO referral_wallets (user_id,people,income) VALUES (%s,%s,%s);)", (client_code, 0, 0))
+    cur.execute("INSERT INTO referral_wallets (user_id,people,income) VALUES (%s,%s,%s);", (client_code, 0, 0))
     # ذخیره تغییرات
     conn.commit()
 
