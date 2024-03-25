@@ -82,7 +82,7 @@ def handle_message(message):
     elif message.text == "درامدزایی":
 
         if check_safir(chat_id):
-            income_safir()
+            income_safir(chat_id)
         else:
             bot.send_message(message.chat.id, "متن تستی درامد زایی ", reply_markup=button_validate())
     elif message.text == "ارسال ایمیل":
@@ -501,10 +501,23 @@ def check_safir(client_code):
         return False
 
 
-def income_safir():
-    print("shoma safir hastid")
-    return
+def income_safir(client_code):
+    conn = connect_db()
+    cur = conn.cursor()
+    cur.execute("SELECT people , income FROM referrals WHERE client_code = %s);", (client_code,))
+    safir = cur.fetchone()
+    if safir:
+        people = safir[0]
+        income = safir[1]
+        cur.execute("SELECT referral_code FROM users WHERE client_code = %s);", (client_code,))
+        if cur.fetchone()[0]:
+            referral_code = cur.fetchone()[0]
+            bot.send_message(client_code,f' شما در حال حاضر {people} نفر\n درامد شما  {income}\n     متن تستی کد تخفیف \n   <code>{referral_code}</code>',parse_mode='HTML')
+        return True
 
+    
+
+    return
 
 if __name__ == "__main__":
     bot.infinity_polling(skip_pending=True)
