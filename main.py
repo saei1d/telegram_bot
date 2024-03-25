@@ -517,6 +517,7 @@ def income_safir(client_code):
             return True
 
 
+
     
 
     return
