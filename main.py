@@ -380,7 +380,7 @@ def disco(message, call):
             cliiii = cur.fetchone()[0]
             if cliiii is None or cliiii == str(owner):
                 if cliiii is None:
-                    cur.execute("UPDATE referrals SET people = peopel + 1 WHERE client_code = %s", (owner,))
+                    cur.execute("UPDATE referrals SET people + %s WHERE client_code = %s", (1, owner))
 
                 cur.execute("UPDATE users SET join_by_code = %s WHERE client_code = %s", (owner, client_code))
                 conn.commit()
