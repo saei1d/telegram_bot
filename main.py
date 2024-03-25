@@ -378,18 +378,14 @@ def disco(message, call):
         if status == 1:
             cur.execute("SELECT join_by_code FROM users WHERE client_code = %s", (client_code,))
             cliiii = cur.fetchone()[0]
-            print(owner)
-            print(cliiii)
             if cliiii is None or cliiii == str(owner):
-                cur.execute("UPDATE users SET join_by_code = %s WHERE client_code = %s", (owner, client_code))
-                conn.commit()
-                bot.send_message(message.chat.id, f'کد تخفیف شما مورد تایید قرار گرفت به مقدار {discount_percentage}%')
-                handle_edame_kharid_callback(call, discount_percentage)
-                cur.execute("UPDATE users SET join_by_code = %s WHERE client_code = %s", (owner, client_code))
-                conn.commit()
-                bot.send_message(message.chat.id, f'کد تخفیف شما مورد تایید قرار گرفت به مقدار {discount_percentage}%')
-                handle_edame_kharid_callback(call, discount_percentage)
+                if cliiii is None:
+                    cur.execute("UPDATE referrals SET people = peopel + 1 WHERE client_code = %s", (owner,))
 
+                cur.execute("UPDATE users SET join_by_code = %s WHERE client_code = %s", (owner, client_code))
+                conn.commit()
+                bot.send_message(message.chat.id, f'کد تخفیف شما مورد تایید قرار گرفت به مقدار {discount_percentage}%')
+                handle_edame_kharid_callback(call, discount_percentage)
             else:
                 bot.send_message(call.message.chat.id,
                                  "کد تخفیفی که وارد کردید رفرال بوده و قبلا شما توسط فرد دیگری دعوت شدید \n لطفا از کدتخفیف های عمومی استفاده کنید")
