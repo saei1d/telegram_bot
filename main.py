@@ -377,18 +377,25 @@ def disco(message, call):
         owner = is_done[2]
         if status == 1:
             cur.execute("SELECT join_by_code FROM users WHERE client_code = %s", (client_code,))
-            if cur.fetchone()[0] is not None:
-                print("a")
-                bot.send_message(call.message.chat.id,
-                                 "کد تخفیفی که وارد کردید رفرال بوده و قبلا شما توسط فرد دیگری دعوت شدید \n لطفا از کدتخفیف های عمومی استفاده کنید")
-                return
-            else:
-                print("b")
+            if cur.fetchone()[0] is None or cur.fetchone()[0] == owner:
                 cur.execute("UPDATE users SET join_by_code = %s WHERE client_code = %s", (owner, client_code))
                 conn.commit()
                 bot.send_message(message.chat.id, f'کد تخفیف شما مورد تایید قرار گرفت به مقدار {discount_percentage}%')
                 handle_edame_kharid_callback(call, discount_percentage)
-                conn.comit()
+                cur.execute("UPDATE users SET join_by_code = %s WHERE client_code = %s", (owner, client_code))
+                conn.commit()
+                bot.send_message(message.chat.id, f'کد تخفیف شما مورد تایید قرار گرفت به مقدار {discount_percentage}%')
+                handle_edame_kharid_callback(call, discount_percentage)
+
+            else:
+                bot.send_message(call.message.chat.id,
+                                 "کد تخفیفی که وارد کردید رفرال بوده و قبلا شما توسط فرد دیگری دعوت شدید \n لطفا از کدتخفیف های عمومی استفاده کنید")
+                return
+
+
+
+
+
         else:
             bot.send_message(message.chat.id, f'کد تخفیف شما مورد تایید قرار گرفت به مقدار {discount_percentage}%')
             handle_edame_kharid_callback(call, discount_percentage)
