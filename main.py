@@ -378,8 +378,8 @@ def disco(message, call):
         if status == 1:
             cur.execute("SELECT join_by_code FROM users WHERE client_code = %s", (client_code,))
             cliiii = cur.fetchone()[0]
-            print(cliiii)
-            if cliiii is None:
+            print(owner)
+            if cliiii is None or cliiii == owner:
                 cur.execute("UPDATE users SET join_by_code = %s WHERE client_code = %s", (owner, client_code))
                 conn.commit()
                 bot.send_message(message.chat.id, f'کد تخفیف شما مورد تایید قرار گرفت به مقدار {discount_percentage}%')
