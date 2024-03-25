@@ -348,7 +348,6 @@ def handle_sharzh_callback(call):
 
 @bot.callback_query_handler(func=lambda call: call.data == "edame_kharid")
 def handle_edame_kharid_callback(call, discount_percentage=0):
-    print(discount_percentage)
     address = "TRZw3VgCdJoz93akEAt7yrMC1Wr6FgUFqY"
     bot.send_message(call.message.chat.id,
                      f"برای شارژ کیف پول خود، ترون را به آدرس زیر ارسال کنید:\n\n<code>{address}</code>",
@@ -381,11 +380,14 @@ def disco(message, call):
             if cur.fetchone():
                 bot.send_message(call.message.chat.id,
                                  "کد تخفیفی که وارد کردید رفرال بوده و قبلا شما توسط فرد دیگری دعوت شدید \n لطفا از کدتخفیف های عمومی استفاده کنید")
+                return
             else:
                 cur.execute("UPDATE users SET join_by_code = %s WHERE client_code = %s", (owner, owner))
-
-        bot.send_message(message.chat.id, f'کد تخفیف شما مورد تایید قرار گرفت به مقدار {discount_percentage}%')
-        handle_edame_kharid_callback(call, discount_percentage)
+                bot.send_message(message.chat.id, f'کد تخفیف شما مورد تایید قرار گرفت به مقدار {discount_percentage}%')
+                handle_edame_kharid_callback(call, discount_percentage)
+        else:
+            bot.send_message(message.chat.id, f'کد تخفیف شما مورد تایید قرار گرفت به مقدار {discount_percentage}%')
+            handle_edame_kharid_callback(call, discount_percentage)
     else:
         bot.send_message(message.chat.id, f' کد تخفیف شما مورد تایید قرار نگرفت ', reply_markup=get_back_buttons())
     if message.text == "برگشت":
