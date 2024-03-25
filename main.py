@@ -385,9 +385,10 @@ def disco(message, call):
             else:
                 print("b")
                 cur.execute("UPDATE users SET join_by_code = %s WHERE client_code = %s", (owner, client_code))
-                print(owner, client_code)
+                conn.commit()
                 bot.send_message(message.chat.id, f'کد تخفیف شما مورد تایید قرار گرفت به مقدار {discount_percentage}%')
                 handle_edame_kharid_callback(call, discount_percentage)
+                conn.comit()
         else:
             bot.send_message(message.chat.id, f'کد تخفیف شما مورد تایید قرار گرفت به مقدار {discount_percentage}%')
             handle_edame_kharid_callback(call, discount_percentage)
