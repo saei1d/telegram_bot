@@ -26,18 +26,18 @@ def check_membership(chat_id, channel_username):
         return False
 
 
-admin_user_ids = [366470485, 6696631466]
-
-
-@bot.message_handler(commands=['admin'])
-def handle_admin_settings(message):
-    print('aaaa')
-    if message.from_user.id in admin_user_ids:
-        bot.send_message(message.chat.id, 'Admin settings menu.')
-
-    else:
-        bot.send_message(message.chat.id, 'از دکمه های اماده زیر استفاده کنید لطفا')
-
+# admin_user_ids = [366470485, 6696631466]
+#
+#
+# @bot.message_handler(commands=['admin'])
+# def handle_admin_settings(message):
+#     print('aaaa')
+#     if message.from_user.id in admin_user_ids:
+#         bot.send_message(message.chat.id, 'Admin settings menu.')
+#
+#     else:
+#         bot.send_message(message.chat.id, 'از دکمه های اماده زیر استفاده کنید لطفا')
+#
 
 @bot.message_handler(commands=['start'])
 def handle_start(message):
@@ -80,7 +80,11 @@ def handle_message(message):
     elif message.text == "عودت وجه":
         bot.send_message(message.chat.id, "متن تستی عودت وجه")
     elif message.text == "درامدزایی":
-        bot.send_message(message.chat.id, "متن تستی درامد زایی ", reply_markup=button_validate())
+
+        if check_safir(chat_id):
+            income_safir()
+        else:
+            bot.send_message(message.chat.id, "متن تستی درامد زایی ", reply_markup=button_validate())
     elif message.text == "ارسال ایمیل":
         msg = bot.send_message(message.chat.id, "لطفا ایمیل خودتون رو وارد کنید \n  مثال: example@gmail.com")
         bot.register_next_step_handler(msg, email)
@@ -149,6 +153,9 @@ def make_refral_wallet_by_phone(client_code, first_name, phone):
 
     cur.execute("INSERT INTO discount_codes (name, percentage, owner,status) VALUES (%s, %s, %s,%s);",
                 (discount_code, 10, client_code, 1))
+
+    cur.execute("INSERT INTO referral_wallets (user_id,people,income) VALUES (%s,%s,%s);)", (client_code, 0, 0))
+    # ذخیره تغییرات
     # ذخیره تغییرات
     conn.commit()
 
@@ -187,10 +194,12 @@ def make_refral_wallet_by_email(client_code, email_validate):
                      parse_mode='HTML')
     cur.execute("INSERT INTO discount_codes (name, percentage, owner,status) VALUES (%s, %s, %s,%s);",
                 (discount_code, 10, client_code, 1))
+
+    cur.execute("INSERT INTO referral_wallets (user_id,people,income) VALUES (%s,%s,%s);)", (client_code, 0, 0))
     # ذخیره تغییرات
     conn.commit()
 
-    # بستن cursor و اتصال
+    # بستن cursor و اتصال🙃
     cur.close()
     conn.close()
 
@@ -480,7 +489,21 @@ def tron_price(chat_id):
             break
 
 
-#                                ADMIN PANEL                      پنل ادمین
+def check_safir(client_code):
+    conn = connect_db()
+    cur = conn.cursor()
+
+    # بررسی تکراری بودن کد هش
+    cur.execute("SELECT EXISTS(SELECT 1 FROM referral_wallets WHERE user_id = %s);", (client_code,))
+    if cur.fetchone()[0]:
+        return True
+    else:
+        return False
+
+
+def income_safir():
+    print("shoma safir hastid")
+    return
 
 
 if __name__ == "__main__":
