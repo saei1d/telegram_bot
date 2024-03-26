@@ -94,7 +94,9 @@ def handle_message(message):
 
 
     elif message.text == "اشتراک های من":
-        print(show_configs(chat_id))
+        user_configs = show_configs(chat_id)
+        for message in user_configs:
+            bot.send_message(chat_id, message)
 
 
 @bot.message_handler(content_types=['contact'])
