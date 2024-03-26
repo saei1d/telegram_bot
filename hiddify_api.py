@@ -55,7 +55,7 @@ def hiddify_api_get_conf(uuid):
 def show_configs(chat_id):
     url = "https://dub.barfarazabr.fun/awHquJhtnP/api/v2/admin/user/"
     secret_code = "a964952d-17d8-4e77-b1b5-0a42bdb0553c"
-    st = str(chat_id)
+    st = int(chat_id)
     response = requests.get(url, auth=(secret_code, ''))
 
     if response.status_code == 200:
