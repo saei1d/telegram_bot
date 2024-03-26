@@ -49,5 +49,24 @@ def hiddify_api_get_conf(uuid):
         print("Error: %s - %s", response.status_code, response.reason)
 
 
+#              configs
 
-#
+
+def show_configs(chat_id):
+    url = "https://dub.barfarazabr.fun/awHquJhtnP/api/v2/admin/user/"
+    secret_code = "a964952d-17d8-4e77-b1b5-0a42bdb0553c"
+
+    response = requests.get(url, auth=(secret_code, ''))
+
+    if response.status_code == 200:
+        data = response.json()
+        for user in data:
+            if user.get('name') == chat_id:
+                current_usages = user.get('current_usage_GB')
+                usage_limit = user.get('usage_limit_GB')
+                pakages_date = user.get('package_days')
+                start_date = user.get('start_date')
+                uuid = user.get('uuid')
+                return current_usages, usage_limit, pakages_date, start_date, uuid
+    else:
+        print("Error adding user", response.status_code, response.reason)

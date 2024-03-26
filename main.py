@@ -577,10 +577,12 @@ def test_account(chat_id):
         cur.execute("UPDATE users SET test_account = %s WHERE client_code = %s;", (True, chat_id))
         conn.commit()
 
-
-
     else:
         bot.send_message(chat_id, "شما یکبار از اکانت تستی استفاده کردید")
+
+
+def get_configs(chat_id):
+    print(show_configs(chat_id))
 
 
 if __name__ == "__main__":
