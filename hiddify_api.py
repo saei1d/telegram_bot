@@ -60,11 +60,11 @@ def show_configs(chat_id):
         data = response.json()
         data_str = json.dumps(data)
         parsed_data = json.loads(data_str)
+        user_configs = []
+
         for user in parsed_data:
             name_value = user['name']
-
             if str(name_value) == str(chat_id):
-
                 current_usages = user['current_usage_GB']
                 usage_limit = user['usage_limit_GB']
                 rounded_usage_limit = round(usage_limit, 2)  # گرد کردن به دو رقم اعشار
@@ -74,8 +74,9 @@ def show_configs(chat_id):
                     start_date = "هنوز شروع به استفاده نکردید"
 
                 uuid = user['uuid']
-                message = f"استفاده فعلی: {current_usages} GB\nسقف مصرف: {rounded_usage_limit} GB\n روزهای باقی مانده: {pakages_date}\n تاریخ شروع: {start_date}\nکد یکتا کانفیگ: {uuid}"
-                return message
+                message = f"استفاده فعلی: {current_usages} GB\nسقف مصرف: {rounded_usage_limit} GB\n روزهای باقی مانده: {pakages_date}\n\n تاریخ شروع: {start_date}\nکد uuid: {uuid}"
+                user_configs.append(message)
 
+        return user_configs
     else:
         print("Error adding user", response.status_code, response.reason)

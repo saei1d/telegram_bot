@@ -96,6 +96,7 @@ def handle_message(message):
     elif message.text == "اشتراک های من":
         bot.send_message(chat_id, show_configs(chat_id))
 
+
 @bot.message_handler(content_types=['contact'])
 def handle_contact(message):
     contact_data = {
@@ -241,6 +242,8 @@ def send_purchase_confirmation(chat_id, tariff):
                          "لینک بالا برای اندروید و ios مورد استفاده است درصورت نیاز به فایل windowsکانفیگ همراه با uuid به پشتیبانی مراجعه کنید",
                          reply_markup=get_education_platform_buttons())
         return True
+    elif tariff == "tarefeEkhk":
+        pass
 
 
 @bot.callback_query_handler(func=lambda call: call.data == "kharid_azma")
@@ -248,6 +251,23 @@ def kharid_azma(call):
     bot.send_message(call.message.chat.id,
                      "متن تستی خرید ازما بعلاوه یوزر نیم ترون فروش و دکمه زیر آموزش متنی تصویری لینک کانال",
                      reply_markup=amozesh_kharid_tron_az_ma())
+
+
+def buy_ekhtesasi(chat_id, tron, days, volume):
+    user_id = find_user_id_from_client_code(chat_id)
+    if user_id is not None:
+        balance = show_user_wallet_balance(user_id)
+        if balance >= tron != 0:
+            bot.send_message(chat_id, hiddify_api_put(chat_id, days, volume, ))
+            bot.send_message(chat_id,
+                             "لینک بالا برای اندروید و ios مورد استفاده است درصورت نیاز به فایل windowsکانفیگ همراه با uuid به پشتیبانی مراجعه کنید",
+                             reply_markup=get_education_platform_buttons())
+            buy_payment(user_id, tron)
+            balance -= tron  # بروزرسانی موجودی پس از خرید
+        else:
+            bot.send_message(chat_id, "شما پول کافی ندارید")
+
+
 
 
 @bot.callback_query_handler(func=lambda call: call.data.startswith("tarefe"))
@@ -266,6 +286,7 @@ def handle_buy_callback(call):
             price = Decimal("27")
         elif call.data == "tarefe120gig":
             price = Decimal("31")
+
         if balance >= price != 0:
             # انجام تراکنش و بروزرسانی موجودی
             if send_purchase_confirmation(call.message.chat.id, call.data):
@@ -323,9 +344,17 @@ def defa(message):
     mmd = day - 40
     mmd2 = clieee - 2
     su = (2400 * volume) + (1400 * mmd) + (mmd2 * 13000)
-
+    global trtr
+    trtr = su / 7000
     bot.send_message(message.chat.id,
-                     f'کانفیگ شما با حجم {volume} و تعداد {day} روز و با تعداد کاربر {clieee} محاسبه شد \n \n    این کانفیگ با مبلغ {su} هزار تقدیم شما قرار خواهد گرفت')
+                     f'کانفیگ شما با حجم {volume} و تعداد {day} روز و با تعداد کاربر {clieee} محاسبه شد \n \n    این کانفیگ با مبلغ {su} هزار تومان معادل {trtr} ترون تقدیم شما قرار خواهد گرفت',
+                     reply_markup=tarefe_ekhtesai_buy())
+
+
+@bot.callback_query_handler(func=lambda call: call.data == "EEEE")
+def buy_callback(call):
+    buy_ekhtesasi(call.message.chat.id, trtr, day, volume)
+    print("injaii")
 
 
 def fetch_trx_details(hash1, api_key, target_wallet_address):
@@ -582,9 +611,6 @@ def test_account(chat_id):
 
     else:
         bot.send_message(chat_id, "شما یکبار از اکانت تستی استفاده کردید")
-
-
-
 
 
 if __name__ == "__main__":

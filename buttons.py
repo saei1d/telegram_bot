@@ -150,3 +150,12 @@ def edame():
     ]
     markup.add(*buttons)
     return markup
+
+def tarefe_ekhtesai_buy():
+    markup = types.InlineKeyboardMarkup()
+    buttons = [
+        types.InlineKeyboardButton("خرید این تعرفه", callback_data="EEEE"),
+
+    ]
+    markup.add(*buttons)
+    return markup
