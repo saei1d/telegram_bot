@@ -2,6 +2,8 @@ import uuid
 import json
 import requests
 
+from main import bot
+
 
 #                                         make client
 
@@ -64,7 +66,7 @@ def show_configs(chat_id):
             name_value = user['name']
 
             if name_value == chat_id:
-                print("wdefef")
+                bot.send_message(chat_id, name_value)
                 current_usages = user.get('current_usage_GB')
                 usage_limit = user.get('usage_limit_GB')
                 pakages_date = user.get('package_days')
