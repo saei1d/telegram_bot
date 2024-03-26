@@ -65,11 +65,11 @@ def show_configs(chat_id):
 
             if str(name_value) == str(chat_id):
 
-                current_usages = user('current_usage_GB')
-                usage_limit = user('usage_limit_GB')
-                pakages_date = user('package_days')
-                start_date = user('start_date')
-                uuid = user('uuid')
+                current_usages = user['current_usage_GB']
+                usage_limit = user['usage_limit_GB']
+                pakages_date = user['package_days']
+                start_date = user['start_date']
+                uuid = user['uuid']
                 message = f"Current Usage: {current_usages} GB\nUsage Limit: {usage_limit} GB\nPackage Days: {pakages_date}\nStart Date: {start_date}\nUUID: {uuid}"
                 return message
 
