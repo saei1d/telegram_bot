@@ -456,9 +456,7 @@ def process_transaction_hash(message, percent_asli):
     rounded, hash_verified = fetch_trx_details(hash1, "30a1c098-6be5-4561-ad20-06b34d999dce",
                                                "TRZw3VgCdJoz93akEAt7yrMC1Wr6FgUFqY")
 
-    print(percent_asli)
     rounded_plus_bounos = rounded + ((rounded * percent_asli) / 100)
-    print(rounded_plus_bounos)
 
     if rounded_plus_bounos is not None and hash_verified:
         # در اینجا کد برای insert_payment_and_update_wallet اضافه می‌شود (فرضی)
@@ -467,14 +465,12 @@ def process_transaction_hash(message, percent_asli):
 
             cur.execute("SELECT join_by_code FROM users WHERE client_code = %s;", (client_code,))
             safir_client_code = cur.fetchone()[0]
-            print(safir_client_code)
             if safir_client_code:
-
+                i_safir_client_code = safir_client_code
                 result = rounded * (10 / 100)
                 rounded_safir_percent = math.ceil(result * 100) / 100
-                print(rounded_safir_percent)
                 cur.execute("UPDATE referrals SET income = %s WHERE client_code = %s;",
-                            (rounded_safir_percent, safir_client_code))
+                            (rounded_safir_percent, i_safir_client_code))
                 conn.commit()
 
 
