@@ -59,10 +59,14 @@ def show_configs(chat_id):
     response = requests.get(url, auth=(secret_code, ''))
 
     if response.status_code == 200:
-        print("e,mdd")
+        print("mmd")
         data = response.json()
-        for user in data:
+        data_str = json.dumps(data)
+        parsed_data = json.loads(data_str)
+        for user in parsed_data:
+            print(user)
             if user.get('name') == chat_id:
+                print("wdefef")
                 current_usages = user.get('current_usage_GB')
                 usage_limit = user.get('usage_limit_GB')
                 pakages_date = user.get('package_days')
