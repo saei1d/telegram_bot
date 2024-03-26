@@ -59,6 +59,7 @@ def show_configs(chat_id):
     response = requests.get(url, auth=(secret_code, ''))
 
     if response.status_code == 200:
+        print("e,mdd")
         data = response.json()
         for user in data:
             if user.get('name') == chat_id:
