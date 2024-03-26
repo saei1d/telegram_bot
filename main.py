@@ -255,6 +255,7 @@ def kharid_azma(call):
 
 def buy_ekhtesasi(chat_id, tron, days, volume):
     user_id = find_user_id_from_client_code(chat_id)
+    tron = Decimal(tron)
     if user_id is not None:
         balance = show_user_wallet_balance(user_id)
         if balance >= tron != 0:
@@ -344,17 +345,18 @@ def defa(message):
     mmd = day - 40
     mmd2 = clieee - 2
     su = (2400 * volume) + (1400 * mmd) + (mmd2 * 13000)
-    global trtr
+    global rounded_trtr
     trtr = su / 7000
+    rounded_trtr = round(trtr, 2)  # گرد کردن به دو رقم اعشار
+
     bot.send_message(message.chat.id,
-                     f'کانفیگ شما با حجم {volume} و تعداد {day} روز و با تعداد کاربر {clieee} محاسبه شد \n \n    این کانفیگ با مبلغ {su} هزار تومان معادل {trtr} ترون تقدیم شما قرار خواهد گرفت',
+                     f'کانفیگ شما با حجم {volume} و تعداد {day} روز و با تعداد کاربر {clieee} محاسبه شد \n \n    این کانفیگ با مبلغ {su} هزار تومان معادل {rounded_trtr} ترون تقدیم شما قرار خواهد گرفت',
                      reply_markup=tarefe_ekhtesai_buy())
 
 
 @bot.callback_query_handler(func=lambda call: call.data == "EEEE")
 def buy_callback(call):
-    buy_ekhtesasi(call.message.chat.id, trtr, day, volume)
-    print("injaii")
+    buy_ekhtesasi(call.message.chat.id,rounded_trtr, day, volume)
 
 
 def fetch_trx_details(hash1, api_key, target_wallet_address):
