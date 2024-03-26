@@ -67,10 +67,14 @@ def show_configs(chat_id):
 
                 current_usages = user['current_usage_GB']
                 usage_limit = user['usage_limit_GB']
+                rounded_usage_limit = round(usage_limit, 2)  # گرد کردن به دو رقم اعشار
                 pakages_date = user['package_days']
                 start_date = user['start_date']
+                if start_date is None:
+                    start_date = "هنوز شروع به استفاده نکردید"
+
                 uuid = user['uuid']
-                message = f"Current Usage: {current_usages} GB\nUsage Limit: {usage_limit} GB\nPackage Days: {pakages_date}\nStart Date: {start_date}\nUUID: {uuid}"
+                message = f"استفاده فعلی: {current_usages} GB\nسقف مصرف: {rounded_usage_limit} GB\n روزهای باقی مانده: {pakages_date}\n تاریخ شروع: {start_date}\nUUID: {uuid}"
                 return message
 
     else:
