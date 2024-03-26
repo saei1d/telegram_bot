@@ -92,8 +92,7 @@ def handle_message(message):
     elif message.text == "تست یکروزه":
         test_account(chat_id)
     elif message.text == "اشتراک های من":
-        get_configs(chat_id)
-
+        bot.send_message(chat_id, show_configs(chat_id))
 
 @bot.message_handler(content_types=['contact'])
 def handle_contact(message):
@@ -583,8 +582,7 @@ def test_account(chat_id):
         bot.send_message(chat_id, "شما یکبار از اکانت تستی استفاده کردید")
 
 
-def get_configs(chat_id):
-    bot.send_message(chat_id,show_configs(chat_id))
+
 
 
 if __name__ == "__main__":
