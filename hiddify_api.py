@@ -74,7 +74,7 @@ def show_configs(chat_id):
                     start_date = "هنوز شروع به استفاده نکردید"
 
                 uuid = user['uuid']
-                message = f"استفاده فعلی: {current_usages} GB\nسقف مصرف: {rounded_usage_limit} GB\n روزهای باقی مانده: {pakages_date}\n تاریخ شروع: {start_date}\nUUID: {uuid}"
+                message = f"استفاده فعلی: {current_usages} GB\nسقف مصرف: {rounded_usage_limit} GB\n روزهای باقی مانده: {pakages_date}\n تاریخ شروع: {start_date}\nکد یکتا کانفیگ: {uuid}"
                 return message
 
     else:
