@@ -76,7 +76,7 @@ def show_configs(chat_id):
                 uuid = user['uuid']
                 message = f"استفاده فعلی: {current_usages} GB\nسقف مصرف: {rounded_usage_limit} GB\n روزهای باقی مانده: {pakages_date}\n\n تاریخ شروع: {start_date}\nکد uuid: {uuid}"
                 user_configs.append(message)
-
+        print(user_configs)
         return user_configs
     else:
         print("Error adding user", response.status_code, response.reason)
