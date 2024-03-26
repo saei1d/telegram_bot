@@ -68,6 +68,8 @@ def show_configs(chat_id):
                 start_date = user.get('start_date')
                 uuid = user.get('uuid')
                 message = f"Current Usage: {current_usages} GB\nUsage Limit: {usage_limit} GB\nPackage Days: {pakages_date}\nStart Date: {start_date}\nUUID: {uuid}"
+
+                print(message)
                 return message
     else:
         print("Error adding user", response.status_code, response.reason)
