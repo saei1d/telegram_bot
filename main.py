@@ -584,7 +584,7 @@ def test_account(chat_id):
 
 
 def get_configs(chat_id):
-    print(show_configs(chat_id))
+    bot.send_message(chat_id,show_configs(chat_id))
 
 
 if __name__ == "__main__":
