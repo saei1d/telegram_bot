@@ -33,6 +33,7 @@ def hiddify_api_put(client_code, dayss, limit):
         print("Error adding user", response.status_code, response.reason)
 
 
+#        get config
 def hiddify_api_get_conf(uuid):
     url = f"https://dub.barfarazabr.fun/gbrBNWz1ma/{uuid}/api/v2/user/all-configs/"
 
@@ -46,3 +47,7 @@ def hiddify_api_get_conf(uuid):
         return first_link
     else:
         print("Error: %s - %s", response.status_code, response.reason)
+
+
+
+#

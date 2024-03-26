@@ -89,6 +89,9 @@ def handle_message(message):
         msg = bot.send_message(message.chat.id, "لطفا ایمیل خودتون رو وارد کنید \n  مثال: example@gmail.com")
         bot.register_next_step_handler(msg, email)
 
+    elif message.text == "تست یکروزه":
+        test_account(chat_id)
+
 
 @bot.message_handler(content_types=['contact'])
 def handle_contact(message):
@@ -558,6 +561,18 @@ def income_safir(client_code):
             return True
 
     return
+
+
+def test_account(chat_id):
+    conn = connect_db()
+    cur = conn.cursor()
+    cur.execute("SELECT test_account FROM users WHERE client_code = %s;", (chat_id,))
+    test_account = cur.fetchone()
+    print(test_account)
+    test_account_value = test_account[0]  # برداشتن مقدار از تاپل
+    print(test_account_value)
+    if test_account_value == False:
+        print("sasasas")
 
 
 if __name__ == "__main__":
