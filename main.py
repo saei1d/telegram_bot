@@ -466,7 +466,7 @@ def process_transaction_hash(message, percent_asli):
             cur.execute("SELECT join_by_code FROM users WHERE client_code = %s;", (client_code,))
             safir_client_code = cur.fetchone()[0]
             if safir_client_code:
-                i_safir_client_code = safir_client_code
+                i_safir_client_code = int(safir_client_code)
                 result = rounded * (10 / 100)
                 rounded_safir_percent = math.ceil(result * 100) / 100
                 cur.execute("UPDATE referrals SET income = %s WHERE client_code = %s;",
