@@ -568,11 +568,18 @@ def test_account(chat_id):
     cur = conn.cursor()
     cur.execute("SELECT test_account FROM users WHERE client_code = %s;", (chat_id,))
     test_account = cur.fetchone()
-    print(test_account)
     test_account_value = test_account[0]  # برداشتن مقدار از تاپل
-    print(test_account_value)
     if test_account_value == False:
-        print("sasasas")
+        bot.send_message(chat_id, hiddify_api_put(chat_id, 0, 0.1, ))
+        bot.send_message(chat_id,
+                         "این کانفیگ تا ۱۲ شب فعال است از هر زمان که شروع کنید به استفاده تا ۱۲ شب همون روز زمان دارید")
+        cur.execute("UPDATE users SET test_account = %s WHERE client_code = %s;", (1, chat_id))
+        conn.commit()
+
+
+
+    else:
+        bot.send_message(chat_id, "شما یکبار از اکانت تستی استفاده کردید")
 
 
 if __name__ == "__main__":
