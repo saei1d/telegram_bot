@@ -91,6 +91,8 @@ def handle_message(message):
 
     elif message.text == "تست یکروزه":
         test_account(chat_id)
+    elif message.text == "اشتراک های من":
+        get_configs(chat_id)
 
 
 @bot.message_handler(content_types=['contact'])
