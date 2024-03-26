@@ -64,13 +64,14 @@ def show_configs(chat_id):
             name_value = user['name']
 
             if str(name_value) == str(chat_id):
-                print("wdefef")
-                # current_usages = user.get('current_usage_GB')
-                # usage_limit = user.get('usage_limit_GB')
-                # pakages_date = user.get('package_days')
-                # start_date = user.get('start_date')
-                # uuid = user.get('uuid')
-                # message = f"Current Usage: {current_usages} GB\nUsage Limit: {usage_limit} GB\nPackage Days: {pakages_date}\nStart Date: {start_date}\nUUID: {uuid}"
+
+                current_usages = user('current_usage_GB')
+                usage_limit = user('usage_limit_GB')
+                pakages_date = user('package_days')
+                start_date = user('start_date')
+                uuid = user('uuid')
+                message = f"Current Usage: {current_usages} GB\nUsage Limit: {usage_limit} GB\nPackage Days: {pakages_date}\nStart Date: {start_date}\nUUID: {uuid}"
+                return message
 
     else:
         print("Error adding user", response.status_code, response.reason)
