@@ -63,7 +63,7 @@ def show_configs(chat_id):
         for user in parsed_data:
             name_value = user['name']
 
-            if str(name_value) == chat_id:
+            if name_value == chat_id:
                 print("wdefef")
                 current_usages = user.get('current_usage_GB')
                 usage_limit = user.get('usage_limit_GB')
