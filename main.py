@@ -574,8 +574,7 @@ def test_account(chat_id):
         bot.send_message(chat_id,
                          "این کانفیگ تا ۱۲ شب فعال است از هر زمان که شروع کنید به استفاده تا ۱۲ شب همون روز زمان دارید")
 
-        st = str(chat_id)
-        cur.execute("UPDATE users SET test_account = %s WHERE client_code = %s;", (1, chat_id))
+        cur.execute("UPDATE users SET test_account = %s WHERE client_code = %s;", (True, chat_id))
         conn.commit()
 
 
