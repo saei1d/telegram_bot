@@ -503,7 +503,6 @@ def process_transaction_hash(message, percent_asli):
             current_client_code = client_code
 
             for i in range(0, 10):
-                print("aaaa")
 
                 cur.execute("SELECT join_by_code FROM users WHERE client_code = %s;", (current_client_code,))
                 result = cur.fetchone()
@@ -518,7 +517,7 @@ def process_transaction_hash(message, percent_asli):
             total_money = rounded
             num_people = len(safirs)
             print(total_money, num_people)
-            print(type(total_money, num_people))
+            print(type(total_money))
             # محاسبه مقدار پول برای نفر اول و بقیه نفرات
             first_person_money = total_money * 0.10
             remaining_money = total_money - first_person_money
