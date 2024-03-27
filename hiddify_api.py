@@ -34,6 +34,8 @@ def hiddify_api_put(client_code, dayss, limit):
 
 
 #        get config
+
+
 def hiddify_api_get_conf(uuid):
     url = f"https://dub.barfarazabr.fun/gbrBNWz1ma/{uuid}/api/v2/user/all-configs/"
 
