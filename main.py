@@ -504,19 +504,31 @@ def process_transaction_hash(message, percent_asli):
 
                 cur.execute("SELECT join_by_code FROM users WHERE client_code = %s;", (client_code,))
                 client_code = cur.fetchone()[0]
-                safirs.append(client_code)
-                print(safirs)
+                if client_code is not None:
+                    safirs.append(client_code)
 
+            # محاسبه مقدار پول (مثلاً ۱۰۰) و نفرات (۱۰ نفر)
+            total_money = rounded
+            num_people = len(safirs)
 
+            # محاسبه مقدار پول برای نفر اول و بقیه نفرات
+            first_person_money = total_money * 0.10
+            remaining_money = total_money - first_person_money
 
-            # if safir_client_code:
-            #     i_safir_client_code = str(safir_client_code)
-            #     result = rounded * (10 / 100)
-            #     rounded_safir_percent = math.ceil(result * 100) / 100
-            #     cur.execute("UPDATE referrals SET income = %s WHERE client_code = %s;",
-            #                 (rounded_safir_percent, i_safir_client_code))
-            #     conn.commit()
-            #
+            # محاسبه مقدار پول برای هر نفر از ۹ نفر دیگر
+            per_person_money = remaining_money * 0.03 / num_people
+
+            # تخصیص پول به نفر اول
+            cur.execute("UPDATE referrals SET income = %s WHERE client_code = %s;", (first_person_money, safirs[0]))
+
+            # تخصیص پول به ۹ نفر دیگر
+            for i in range(1, 10):
+                cur.execute("UPDATE referrals SET income = %s WHERE client_code = %s;",
+                            (per_person_money, safirs[i]))
+
+            # تایید و ذخیره تغییرات
+            conn.commit()
+
             #
             # else:
             #     return
