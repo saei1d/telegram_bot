@@ -512,30 +512,24 @@ def process_transaction_hash(message, percent_asli):
                 else:
                     break
 
-            print(safirs[0])
-            # محاسبه مقدار پول (مثلاً ۱۰۰) و نفرات (۱۰ نفر)
+            aval = safirs[0]
             total_money = rounded
             num_people = len(safirs)
-            print(total_money, num_people)
-            print(type(total_money))
-            # محاسبه مقدار پول برای نفر اول و بقیه نفرات
+
             first_person_money = total_money * 0.10
             remaining_money = total_money - first_person_money
 
-            # محاسبه مقدار پول برای هر نفر از ۹ نفر دیگر
             per_person_money = remaining_money * 0.03 / num_people
-            print(per_person_money)
-            # تخصیص پول به نفر اول
             cur.execute("UPDATE referrals SET income = %s WHERE client_code = %s;", (first_person_money, safirs[0]))
             conn.commit()
-            # تخصیص پول به ۹ نفر دیگر
+            bot.send_message(aval, f'شما به مبلغ {first_person_money} از طریق زیر مجموعه مستقیم شارژ شدید')
             for i in range(1, num_people):
-                print("wddwwd")
                 cur.execute("UPDATE referrals SET income = %s WHERE client_code = %s;",
                             (per_person_money, safirs[i]))
+                conn.commit()
 
-            # تایید و ذخیره تغییرات
-            conn.commit()
+                bot.send_message(safirs[i], f'شما به مبلغ {per_person_money} از طریق زیر مجموعه غیر مستقیم شارژ شدید')
+
 
 
         else:
