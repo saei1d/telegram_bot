@@ -49,7 +49,7 @@ def search_client_code(message):
     user = cur.fetchone()
     user_id = user[0]
 
-    cur.execute("SELECT balance,all_buy  FROM users WHERE user_id =%s",
+    cur.execute("SELECT balance,all_buy  FROM wallets WHERE user_id =%s",
                 (user_id,))
     wallet = cur.fetchone()
 
