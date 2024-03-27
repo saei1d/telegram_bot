@@ -503,9 +503,14 @@ def process_transaction_hash(message, percent_asli):
             for i in range(0, 10):
 
                 cur.execute("SELECT join_by_code FROM users WHERE client_code = %s;", (client_code,))
-                client_code = cur.fetchone()[0]
-                if client_code is not None:
+                result = cur.fetchone()
+                if result is not None:
+                    client_code = result[0]
                     safirs.append(client_code)
+                else:
+                    return
+
+            print(safirs)
 
             # محاسبه مقدار پول (مثلاً ۱۰۰) و نفرات (۱۰ نفر)
             total_money = rounded
@@ -522,7 +527,7 @@ def process_transaction_hash(message, percent_asli):
             cur.execute("UPDATE referrals SET income = %s WHERE client_code = %s;", (first_person_money, safirs[0]))
 
             # تخصیص پول به ۹ نفر دیگر
-            for i in range(1, 10):
+            for i in range(1, num_people):
                 cur.execute("UPDATE referrals SET income = %s WHERE client_code = %s;",
                             (per_person_money, safirs[i]))
 
