@@ -41,33 +41,34 @@ def handle_admin_settings(message):
 
 
 def search_client_code_for_balance(message):
-    balance_client = message.text
-    wallet_id = find_user_id_from_client_code(balance_client)
+    balance_client_code = message.text
+    wallet_id = find_user_id_from_client_code(balance_client_code)
     conn = connect_db()
     cur = conn.cursor()
-    cur.execute("SELECT balance , all_buy FROM  wallets WHERE user_id = %s", (balance_client,))
+    cur.execute("SELECT balance , all_buy FROM  wallets WHERE user_id = %s", (wallet_id,))
     wallet = cur.fetchone()
     if wallet:
         balance = wallet[0]
         all_buy = wallet[1]
         msg = bot.send_message(message.chat.id,
-                         f'این کاربر درحال حاضر با موجودی {balance} و در کل به مقدار {all_buy} کیف پول خودشو شارژ کرده \n اگر میخاهید بالانس شخصی رو افزایش دهید فقط عددی ک میخاهید با بالانس جمع بشود رو وارد کنید⚠')
-        bot.register_next_step_handler(msg,balance_admin)
-def balance_admin(message):
+                               f'این کاربر درحال حاضر با موجودی {balance} و در کل به مقدار {all_buy} کیف پول خودشو شارژ کرده \n اگر میخاهید بالانس شخصی رو افزایش دهید فقط عددی ک میخاهید با بالانس جمع بشود رو وارد کنید⚠')
+        bot.register_next_step_handler(msg, balance_admin, wallet_id)
+
+
+def balance_admin(message, wallet_id):
     balance_client2 = message.text
-    wallet_id = find_user_id_from_client_code(balance_client2)
     conn = connect_db()
     cur = conn.cursor()
-    cur.execute("UPDATE wallets SET balance = balance + %s , all_buy = all_buy + %s WHERE user_id = %s" , (balance_client2,balance_client2,wallet_id))
+    cur.execute("UPDATE wallets SET balance = balance + %s , all_buy = all_buy + %s WHERE user_id = %s",
+                (balance_client2, balance_client2, wallet_id))
     conn.commit()
-    cur.execute("SELECT balance , all_buy FROM  wallets WHERE user_id = %s", (balance_client2,))
+    cur.execute("SELECT balance , all_buy FROM  wallets WHERE user_id = %s", (wallet_id,))
     wallet = cur.fetchone()
     if wallet:
         bbbbb = wallet[0]
         aaaaa = wallet[1]
-        bot.send_message(message.chat.id,f"با موفقیت انجام شد \n این کاربر درحال حاضر با موجودی {bbbbb} و در کل به مقدار {aaaaa}")
-
-
+        bot.send_message(message.chat.id,
+                         f"با موفقیت انجام شد \n این کاربر درحال حاضر با موجودی {bbbbb} و در کل به مقدار {aaaaa}")
 
 
 @bot.message_handler(commands=['admin/delete'])
