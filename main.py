@@ -26,18 +26,37 @@ def check_membership(chat_id, channel_username):
         return False
 
 
-# admin_user_ids = [366470485, 6696631466]
-#
-#
-# @bot.message_handler(commands=['admin'])
-# def handle_admin_settings(message):
-#     print('aaaa')
-#     if message.from_user.id in admin_user_ids:
-#         bot.send_message(message.chat.id, 'Admin settings menu.')
-#
-#     else:
-#         bot.send_message(message.chat.id, 'از دکمه های اماده زیر استفاده کنید لطفا')
-#
+admin_user_ids = [366470485, 6696631466]
+
+
+@bot.message_handler(commands=['admin'])
+def handle_admin_settings(message):
+    if message.from_user.id in admin_user_ids:
+        bot.send_message(message.chat.id, 'Admin settings menu.')
+        msg = bot.send_message(message.chat.id, "client_code ra vared konid")
+        bot.register_next_step_handler(msg, search_client_code)
+
+    else:
+        bot.send_message(message.chat.id, 'از دکمه های اماده زیر استفاده کنید لطفا')
+
+
+def search_client_code(message):
+    client_searched = str(message.text)
+    conn = connect_db()
+    cur = conn.cursor()
+    cur.execute("SELECT user_id,join_by_code,referral_code,phone_number,email  FROM users WHERE client_code =%s", (client_searched,))
+    user = cur.fetchone()
+    if user:
+        user_id = user[0]
+        join_by_code =user[1]
+        referral_code = user[2]
+        phone_number = user[3]
+        email = user[4]
+        bot.send_message(message.chat.id,f' یوزر آیدی{user_id},دعوت شده توسط {join_by_code} کد رفرال {referral_code} شماره موبایل{phone_number}و ایمیل {email}')
+
+    else:
+        bot.send_message(message.chat.id,"karbar shenasaei nashod")
+
 
 @bot.message_handler(commands=['start'])
 def handle_start(message):
