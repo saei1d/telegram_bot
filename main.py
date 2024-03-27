@@ -524,15 +524,15 @@ def process_transaction_hash(message, percent_asli):
             per_person_money = remaining_money * 0.03 / num_people
             per_person_money = round(per_person_money, 2)
 
-            cur.execute("UPDATE referrals SET income = %s WHERE client_code = %s;", (first_person_money, safirs[0]))
+            cur.execute("UPDATE referrals SET income = %s WHERE client_code = %s;", (first_person_money, str(aval)))
             conn.commit()
             bot.send_message(aval, f'شما به مبلغ {first_person_money} از طریق زیر مجموعه مستقیم شارژ شدید')
             for i in range(1, num_people):
+                clieclie = safirs[i]
                 cur.execute("UPDATE referrals SET income = %s WHERE client_code = %s;",
-                            (per_person_money, safirs[i]))
+                            (per_person_money, str(clieclie)))
                 conn.commit()
-
-                bot.send_message(safirs[i], f'شما به مبلغ {per_person_money} از طریق زیر مجموعه غیر مستقیم شارژ شدید')
+                bot.send_message(clieclie, f'شما به مبلغ {per_person_money} از طریق زیر مجموعه غیر مستقیم شارژ شدید')
 
 
 
