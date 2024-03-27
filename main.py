@@ -525,16 +525,16 @@ def process_transaction_hash(message, percent_asli):
             per_person_money = round(per_person_money, 2)
 
             cur.execute("UPDATE referrals SET income = %s WHERE client_code = %s;", (first_person_money, str(aval)))
-            conn.commit()
             bot.send_message(aval, f'شما به مبلغ {first_person_money} از طریق زیر مجموعه مستقیم شارژ شدید')
             for i in range(1, num_people):
                 clieclie = safirs[i]
-                cur.execute("UPDATE referrals SET income = %s WHERE client_code = %s;",
-                            (per_person_money, str(clieclie)))
-                conn.commit()
-                bot.send_message(clieclie, f'شما به مبلغ {per_person_money} از طریق زیر مجموعه غیر مستقیم شارژ شدید')
+                if clieclie is not None:
+                    cur.execute("UPDATE referrals SET income = %s WHERE client_code = %s;",
+                                (per_person_money, str(clieclie)))
+                    bot.send_message(clieclie,
+                                     f'شما به مبلغ {per_person_money} از طریق زیر مجموعه غیر مستقیم شارژ شدید')
 
-
+            conn.commit()
 
         else:
             bot.send_message(message.chat.id, "مشکلی در بروزرسانی کیف پول به وجود آمد.")
