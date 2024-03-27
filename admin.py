@@ -13,6 +13,7 @@ def handle_admin_settings(message):
 
 def search_client_code_for_delete(message):
     deleted_client = message.text
+    print("mnbgvfdfghj")
     conn = connect_db()
     cur = conn.cursor()
     cur.execute("UPDATE users SET deleted = TRUE WHERE client_code = %s", (deleted_client,))
