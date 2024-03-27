@@ -44,18 +44,26 @@ def search_client_code(message):
     client_searched = str(message.text)
     conn = connect_db()
     cur = conn.cursor()
-    cur.execute("SELECT user_id,join_by_code,referral_code,phone_number,email  FROM users WHERE client_code =%s", (client_searched,))
+    cur.execute("SELECT user_id,join_by_code,referral_code,phone_number,email  FROM users WHERE client_code =%s",
+                (client_searched,))
     user = cur.fetchone()
+    user_id = user[0]
+
+    cur.execute("SELECT balance,all_buy  FROM users WHERE user_id =%s",
+                (user_id,))
+    wallet = cur.fetchone()
+
     if user:
-        user_id = user[0]
-        join_by_code =user[1]
+        balance = wallet[0]
+        all_buy = wallet[1]
+        join_by_code = user[1]
         referral_code = user[2]
         phone_number = user[3]
         email = user[4]
-        bot.send_message(message.chat.id,f' یوزر آیدی{user_id},دعوت شده توسط {join_by_code} کد رفرال {referral_code} شماره موبایل{phone_number}و ایمیل {email}')
-
+        bot.send_message(message.chat.id,
+                         f' یوزر آیدی{user_id},دعوت شده توسط {join_by_code} کد رفرال {referral_code} شماره موبایل{phone_number}و ایمیل {email} و کیف پول این شخص در حال حاضر مقدار {balance} و در کل به مقدار {all_buy} ترون شارژ شده است')
     else:
-        bot.send_message(message.chat.id,"karbar shenasaei nashod")
+        bot.send_message(message.chat.id, "karbar shenasaei nashod")
 
 
 @bot.message_handler(commands=['start'])
@@ -308,7 +316,6 @@ def handle_buy_callback(call):
             price = Decimal("31")
 
         if balance >= price != 0:
-            # انجام تراکنش و بروزرسانی موجودی
             if send_purchase_confirmation(call.message.chat.id, call.data):
                 buy_payment(user_id, price)
                 balance -= price  # بروزرسانی موجودی پس از خرید
@@ -461,7 +468,7 @@ def disco(message, call):
         return
 
 
-def insert_payment_and_update_wallet(conn, amount, transaction_hash, client_code, percent_asli):
+def insert_payment_and_update_wallet(conn, amount, transaction_hash, client_code, percent_asli, rounded):
     with conn.cursor() as cur:
         # پیدا کردن wallet_id با استفاده از client_code
         cur.execute("SELECT w.wallet_id FROM wallets w JOIN users u ON w.user_id = u.user_id WHERE u.client_code = %s;",
@@ -474,7 +481,8 @@ def insert_payment_and_update_wallet(conn, amount, transaction_hash, client_code
                 "INSERT INTO payments (wallet_id, amount, hash_code,discount_percentage) VALUES (%s, %s, %s,%s);",
                 (wallet_id, amount, transaction_hash, percent_asli))
             # به‌روزرسانی موجودی کیف پول
-            cur.execute("UPDATE wallets SET balance = balance + %s WHERE wallet_id = %s;", (amount, wallet_id))
+            cur.execute("UPDATE wallets SET balance = balance + %s , all_buy = all_buy + %s  WHERE wallet_id = %s;",
+                        (amount, rounded, wallet_id))
             conn.commit()
             return True
         else:
@@ -516,7 +524,7 @@ def process_transaction_hash(message, percent_asli):
 
     if rounded_plus_bounos is not None and hash_verified:
         # در اینجا کد برای insert_payment_and_update_wallet اضافه می‌شود (فرضی)
-        if insert_payment_and_update_wallet(conn, rounded_plus_bounos, hash1, message.chat.id, percent_asli):
+        if insert_payment_and_update_wallet(conn, rounded_plus_bounos, hash1, message.chat.id, percent_asli, rounded):
             bot.send_message(message.chat.id, f"کیف پول شما با موفقیت شارژ شد. به مقدار: {rounded_plus_bounos} ترون")
             safirs = []
             current_client_code = client_code
@@ -585,6 +593,7 @@ def handle_buy_callback(call):
 
 def tron_price(chat_id):
     bot.send_chat_action(chat_id, action='typing')
+    bot.send_message(chat_id, "چند لحظه صبر کنید")
     url = 'https://bitmit.co/price/TRX'
     response = requests.get(url)
     soup = BeautifulSoup(response.text, 'html.parser')
