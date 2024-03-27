@@ -538,9 +538,7 @@ def process_transaction_hash(message, percent_asli):
             # تایید و ذخیره تغییرات
             conn.commit()
 
-            #
-            # else:
-            #     return
+
         else:
             bot.send_message(message.chat.id, "مشکلی در بروزرسانی کیف پول به وجود آمد.")
     else:
