@@ -500,16 +500,18 @@ def process_transaction_hash(message, percent_asli):
         if insert_payment_and_update_wallet(conn, rounded_plus_bounos, hash1, message.chat.id, percent_asli):
             bot.send_message(message.chat.id, f"کیف پول شما با موفقیت شارژ شد. به مقدار: {rounded_plus_bounos} ترون")
             safirs = []
+            current_client_code = client_code
+
             for i in range(0, 10):
                 print("aaaa")
 
-                cur.execute("SELECT join_by_code FROM users WHERE client_code = %s;", (client_code,))
+                cur.execute("SELECT join_by_code FROM users WHERE client_code = %s;", (current_client_code,))
                 result = cur.fetchone()
                 if result is not None:
-                    client_code = result[0]
-                    safirs.append(client_code)
+                    current_client_code = result[0]
+                    safirs.append(current_client_code)
                 else:
-                    return
+                    break
 
             print(safirs)
 
