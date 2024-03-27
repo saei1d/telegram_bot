@@ -75,7 +75,7 @@ def show_configs(chat_id):
 
                 uuid = user['uuid']
                 link = hiddify_api_get_conf(uuid)
-                message = f'لینک دسترسی:{link} \n استفاده فعلی: {current_usages}  \n سقف مصرف:{rounded_usage_limit} GB روزهای باقی مانده: {pakages_date}\n\n تاریخ شروع: {start_date}\n\n کد uuid: {uuid}'
+                message = f'لینک دسترسی:{link} \n استفاده فعلی: {current_usages}  \n سقف مصرف:{rounded_usage_limit} GB روزهای باقی مانده: {pakages_date}\n\n تاریخ شروع: {start_date}\n\n کد شناسایی: {uuid}'
                 user_configs.append(message)
         return user_configs
     else:

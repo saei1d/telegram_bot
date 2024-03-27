@@ -271,8 +271,6 @@ def buy_ekhtesasi(chat_id, tron, days, volume):
             bot.send_message(chat_id, "شما پول کافی ندارید")
 
 
-
-
 @bot.callback_query_handler(func=lambda call: call.data.startswith("tarefe"))
 def handle_buy_callback(call):
     user_id = find_user_id_from_client_code(call.message.chat.id)
@@ -358,7 +356,7 @@ def defa(message):
 
 @bot.callback_query_handler(func=lambda call: call.data == "EEEE")
 def buy_callback(call):
-    buy_ekhtesasi(call.message.chat.id,rounded_trtr, day, volume)
+    buy_ekhtesasi(call.message.chat.id, rounded_trtr, day, volume)
 
 
 def fetch_trx_details(hash1, api_key, target_wallet_address):
@@ -501,20 +499,27 @@ def process_transaction_hash(message, percent_asli):
         # در اینجا کد برای insert_payment_and_update_wallet اضافه می‌شود (فرضی)
         if insert_payment_and_update_wallet(conn, rounded_plus_bounos, hash1, message.chat.id, percent_asli):
             bot.send_message(message.chat.id, f"کیف پول شما با موفقیت شارژ شد. به مقدار: {rounded_plus_bounos} ترون")
+            safirs = []
+            for i in range(0, 10):
 
-            cur.execute("SELECT join_by_code FROM users WHERE client_code = %s;", (client_code,))
-            safir_client_code = cur.fetchone()[0]
-            if safir_client_code:
-                i_safir_client_code = str(safir_client_code)
-                result = rounded * (10 / 100)
-                rounded_safir_percent = math.ceil(result * 100) / 100
-                cur.execute("UPDATE referrals SET income = %s WHERE client_code = %s;",
-                            (rounded_safir_percent, i_safir_client_code))
-                conn.commit()
+                cur.execute("SELECT join_by_code FROM users WHERE client_code = %s;", (client_code,))
+                client_code = cur.fetchone()[0]
+                safirs.append(client_code)
+                print(safirs)
 
 
-            else:
-                return
+
+            # if safir_client_code:
+            #     i_safir_client_code = str(safir_client_code)
+            #     result = rounded * (10 / 100)
+            #     rounded_safir_percent = math.ceil(result * 100) / 100
+            #     cur.execute("UPDATE referrals SET income = %s WHERE client_code = %s;",
+            #                 (rounded_safir_percent, i_safir_client_code))
+            #     conn.commit()
+            #
+            #
+            # else:
+            #     return
         else:
             bot.send_message(message.chat.id, "مشکلی در بروزرسانی کیف پول به وجود آمد.")
     else:
