@@ -501,6 +501,7 @@ def process_transaction_hash(message, percent_asli):
             bot.send_message(message.chat.id, f"کیف پول شما با موفقیت شارژ شد. به مقدار: {rounded_plus_bounos} ترون")
             safirs = []
             for i in range(0, 10):
+                print("aaaa")
 
                 cur.execute("SELECT join_by_code FROM users WHERE client_code = %s;", (client_code,))
                 result = cur.fetchone()
