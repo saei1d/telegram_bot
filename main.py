@@ -31,13 +31,14 @@ def chek_admin(client_code):
     conn = connect_db()
     cur = conn.cursor()
     cur.execute("SELECT type FROM admins WHERE client_code = %s", (client_code,))
-    print(cur.fetchone())
-    types = cur.fetchone()[0]
-    print(types)
-    if types:
-        return types[0]
+    result = cur.fetchone()
+    if result:
+        types = result[0]
+        print(types)
+        return types
     else:
         return False
+
 
 
 @bot.message_handler(commands=['admin/add_admin'])
