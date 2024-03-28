@@ -277,7 +277,6 @@ def agent2(message):
     if cur.fetchone():
         cur.execute("SELECT join_by_code FROM users WHERE client_code = %s", (client_code_moshtari,))
         mmd17 = cur.fetchone()[0]
-        print(mmd17)
         if mmd17 is None:
             cur.execute("SELECT referral_code FROM users WHERE client_code = %s", (client_code_agent,))
             referral_code = cur.fetchone()[0]
@@ -339,6 +338,61 @@ def takhsis_account(message, client_code_moshtari):
 
     else:
         bot.send_message(message.chat.id, "کیف پول شما موجودی کافی ندارد")
+
+
+@bot.message_handler(commands=['AGENT/EKHTESASI'])
+def admin_ehtesasi(message):
+    if chek_admin(message.chat.id) != False:
+        msg = bot.send_message(message.chat.id,
+                               "شما درحال حاضر در صفحه ادمین هستید برای  تهیه اکانت اختصاصی برای مشتریتون نام کاربری مشتری را وارد کنید ")
+        bot.register_next_step_handler(msg, agent3)
+
+
+def agent3(message):
+    client_code_moshtari = message.text
+    client_code_agent = message.chat.id
+    conn = connect_db()
+    cur = conn.cursor()
+
+    cur.execute("SELECT EXISTS(SELECT 1 FROM users WHERE client_code = %s)", (client_code_moshtari,))
+    if cur.fetchone():
+        cur.execute("SELECT join_by_code FROM users WHERE client_code = %s", (client_code_moshtari,))
+        mmd17 = cur.fetchone()[0]
+        if mmd17 is None:
+            cur.execute("SELECT referral_code FROM users WHERE client_code = %s", (client_code_agent,))
+            referral_code = cur.fetchone()[0]
+            if referral_code:
+                cur.execute("UPDATE users SET join_by_code = %s WHERE client_code =%s",
+                            (client_code_agent, client_code_moshtari,))
+                cur.execute("UPDATE referrals SET people = people + %s WHERE client_code = %s", (1, client_code_agent))
+
+                conn.commit()
+
+                msg = bot.send_message(message.chat.id,"زیر مجموعه شما شد 🤩\n برای ساخت اکانت اختصاصی لازمه که اول حجم رو مشخص کنید و حداقل حجم 30 گیگ میباشد \n حجم خودتون رو وارد کنید")
+                bot.register_next_step_handler(msg, account_shakhsi, client_code_moshtari)
+
+
+
+            else:
+                bot.send_message(message.chat.id,
+                                 "شما کد رفرال ندارید لطفا از دکمه درامد زایی کد رفرال بگیرید و سپس امتحان کنید")
+
+        else:
+            msg = bot.send_message(message.chat.id,
+                                   "قبلا اضافه شده بود \n برای ساخت اکانت اختصاصی لازمه که به فرمت زیر ارسال کنی \n )30 40 2( \n (حجم روز کاربر) \n  با یک اسپیس جدا کنید")
+            bot.register_next_step_handler(msg, account_shakhsi, client_code_moshtari)
+
+    else:
+        bot.send_message(message.chat.id, "این کاربر موجود نیست و دکمه استارت ربات رو نزده")
+
+
+def account_shakhsi(message):
+    hagm = str(message.text)
+    numbers_list = hagm.split()  # جدا کردن اعداد بر اساس فاصله
+    num1 = int(numbers_list[0])  # تبدیل اولین عدد به عدد صحیح
+    num2 = int(numbers_list[1])  # تبدیل دومین عدد به عدد صحیح
+    num3 = int(numbers_list[2])  # تبدیل سومین عدد به عدد صحیح
+    bot.send_message(message.chat.id,f'حجم شما {num1} و تعداد روز شما {num2} و تعداد کاربر شما {num3} در نظر گرفتید \n ')
 
 
 ###############################################################
