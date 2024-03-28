@@ -29,6 +29,39 @@ def check_membership(chat_id, channel_username):
 admin_pro = [366470485, 6696631466]
 
 
+@bot.message_handler(commands=['admin/add_admin'])
+def add_admin(message):
+    bot.send_message(message.chat.id, 'Admin  settings menu.')
+    msg = bot.send_message(message.chat.id, "client_code ra vared konid baraye ezafe kardan_admin")
+    bot.register_next_step_handler(msg, add_admin_add)
+
+
+def add_admin_add(message):
+    global admin_jadid
+    admin_jadid = message.text
+    conn = connect_db()
+    cur = conn.cursor()
+    cur.execute("SELECT EXISTS(SELECT 1 FROM users WHERE client_code = %s)", (admin_jadid,))
+    if cur.fetchone():
+        msg = bot.send_message(message.chat.id, "نوع ادمین رو مشخص کنید از بین AGENT , SUPERADMIN")
+        bot.register_next_step_handler(msg, add_admin_type)
+    else:
+        bot.send_message(message.chat.id, "client_code ghalat ast")
+
+
+def add_admin_type(message):
+    conn = connect_db()
+    cur = conn.cursor()
+    type = message.text
+    if type == 'AGENT' or type == 'SUPERADMIN':
+        cur.execute("INSERT INTO admins (username, type) VALUES (%s, %s);", (admin_jadid, type))
+        conn.commit()
+        bot.send_message(message.chat.id, "همچیز به درستی انجام شد")
+
+    else:
+        bot.send_message(message.chat.id, "type ghalat ast")
+
+
 @bot.message_handler(commands=['admin/balance'])
 def handle_admin_settings(message):
     if message.from_user.id in admin_pro:
@@ -61,6 +94,49 @@ def balance_admin(message, wallet_id):
     cur = conn.cursor()
     cur.execute("UPDATE wallets SET balance = balance + %s , all_buy = all_buy + %s WHERE user_id = %s",
                 (balance_client2, balance_client2, wallet_id))
+    conn.commit()
+    cur.execute("SELECT balance , all_buy FROM  wallets WHERE user_id = %s", (wallet_id,))
+    wallet = cur.fetchone()
+    if wallet:
+        bbbbb = wallet[0]
+        aaaaa = wallet[1]
+        bot.send_message(message.chat.id,
+                         f"با موفقیت انجام شد \n این کاربر درحال حاضر با موجودی {bbbbb} و در کل به مقدار {aaaaa}")
+
+
+@bot.message_handler(commands=['admin/balance_decrease'])
+def handle_admin_settings(message):
+    if message.from_user.id in admin_pro:
+        bot.send_message(message.chat.id, 'Admin decreasebalance settings menu.')
+        msg = bot.send_message(message.chat.id, "client_code ra vared konid baraye decreasebalance")
+        bot.register_next_step_handler(msg, search_client_code_for_decreasebalance)
+
+    else:
+        bot.send_message(message.chat.id, 'از دکمه های اماده زیر استفاده کنید لطفا')
+
+
+def search_client_code_for_decreasebalance(message):
+    balance_client_code = message.text
+    wallet_id = find_user_id_from_client_code(balance_client_code)
+    conn = connect_db()
+    cur = conn.cursor()
+    cur.execute("SELECT balance , all_buy FROM  wallets WHERE user_id = %s", (wallet_id,))
+    wallet = cur.fetchone()
+    if wallet:
+        balance = wallet[0]
+        all_buy = wallet[1]
+        msg = bot.send_message(message.chat.id,
+                               f'این کاربر درحال حاضر با موجودی {balance} و در کل به مقدار {all_buy} کیف پول خودشو شارژ کرده \n اگر میخاهید بالانس شخصی رو کاهش دهید فقط عددی ک میخاهید از بالانس کم  بشود رو وارد کنید⚠')
+        bot.register_next_step_handler(msg, decreasebalance_admin, wallet_id)
+
+
+def decreasebalance_admin(message, wallet_id):
+    balance_client2 = message.text
+    conn = connect_db()
+    cur = conn.cursor()
+    cur.execute("UPDATE wallets SET balance = balance - %s  WHERE user_id = %s",
+                (balance_client2, wallet_id))
+
     conn.commit()
     cur.execute("SELECT balance , all_buy FROM  wallets WHERE user_id = %s", (wallet_id,))
     wallet = cur.fetchone()
