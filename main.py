@@ -386,7 +386,7 @@ def agent3(message):
         bot.send_message(message.chat.id, "این کاربر موجود نیست و دکمه استارت ربات رو نزده")
 
 
-def account_shakhsi(message):
+def account_shakhsi(message,s):
     hagm = str(message.text)
     numbers_list = hagm.split()  # جدا کردن اعداد بر اساس فاصله
     num1 = int(numbers_list[0])  # تبدیل اولین عدد به عدد صحیح
