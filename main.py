@@ -986,9 +986,9 @@ def handle_buy_callback(call):
         pass
 
 
-def tron_price(chat_id):
-    bot.send_chat_action(chat_id, action='typing')
-    bot.send_message(chat_id, "چند لحظه صبر کنید")
+def tron_price(client_code):
+    bot.send_chat_action(client_code, action='typing')
+    bot.send_message(client_code, "چند لحظه صبر کنید")
     url = 'https://bitmit.co/price/TRX'
     response = requests.get(url)
     soup = BeautifulSoup(response.text, 'html.parser')
@@ -1005,7 +1005,7 @@ def tron_price(chat_id):
                         h5_tag = ahmad.find('h5')
                         my_string = h5_tag.text
                         time.sleep(10)
-                        bot.send_message(chat_id, f'ترون در حال حاضر {my_string} می باشد  . ')
+                        bot.send_message(client_code, f'ترون در حال حاضر {my_string} می باشد  . ')
 
                         break
                 break
