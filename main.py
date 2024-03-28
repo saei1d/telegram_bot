@@ -403,10 +403,10 @@ def account_shakhsi2(message):
     if num3 < 2:
         num3 = 2
 
-    num2 = num2 - 40
-    num3 = num3 - 2
+    mmd = num2 - 40
+    mmd2 = num3 - 2
 
-    su = (1200 * num1) + (700 * num2) + (num3 * 7000)
+    su = (1200 * num1) + (700 * mmd) + (mmd2 * 7000)
     global tron_ekhh
     tron_ekh = su / 7000
     tron_ekhh = round(tron_ekh, 2)  # گرد کردن به دو رقم اعشار
