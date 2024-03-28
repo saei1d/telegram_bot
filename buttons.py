@@ -124,7 +124,6 @@ def ekhtesasiii():
     markup = types.InlineKeyboardMarkup()
     buttons = [
         types.InlineKeyboardButton("شروع ساخت", callback_data="make_config"),
-        types.InlineKeyboardButton("بازگشت", callback_data="terefe"),
 
     ]
     markup.add(*buttons)

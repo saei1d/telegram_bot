@@ -20,8 +20,8 @@ bot = telebot.TeleBot(BOT_TOKEN)
 def check_membership(chat_id, channel_username):
     conn = connect_db()
     cur = conn.cursor()
-    cur.execute("SELECT deleted FROM users WHERE client_code = %s",(chat_id,))
-    if cur.fetchone()[0] is False :
+    cur.execute("SELECT deleted FROM users WHERE client_code = %s", (chat_id,))
+    if cur.fetchone()[0] is False:
         member = bot.get_chat_member(channel_username, chat_id)
         if member.status == 'member' or member.status == 'creator' or member.status == 'administrator':
             return True
@@ -30,7 +30,8 @@ def check_membership(chat_id, channel_username):
             bot.send_message(chat_id, 'اگر جوین شدید مجدد /start کنید')
             return False
     else:
-        bot.send_message(chat_id, f'شما محدود شدید لطفا دلیل ر از پشتیبانی جویا شوید',reply_markup=get_support_buttons())
+        bot.send_message(chat_id, f'شما محدود شدید لطفا دلیل ر از پشتیبانی جویا شوید',
+                         reply_markup=get_support_buttons())
 
 
 ###############################################################
@@ -460,57 +461,59 @@ def buy222222222222222222_ekhtesasi_agent(call):
 #
 #
 ########################################################
+channel_username = '@jimboo_vpn'
+
+
 @bot.message_handler(commands=['start'])
 def handle_start(message):
     chat_id = message.chat.id
-    channel_username = '@jimboo_vpn'
     client_code = message.from_user.id
     if check_membership(chat_id, channel_username):
         username = message.from_user.username or "NoUsername"
         save_user_and_create_wallet(client_code, username)
         reply_markup = get_main_buttons()
-        bot.send_message(message.chat.id,
-                         "♥️سلام دوست عزیز\n\nبه ربات جیمبو خوش آمدید🚀\n\nلطفا یک گزینه را انتخاب کنید👇",
+        bot.send_message(message.chat.id, f'متن تستی خوش آماد گویی \n نام کاربری شما : {chat_id}',
                          reply_markup=reply_markup)
-
-
 
 
 @bot.message_handler(func=lambda message: True)
 def handle_message(message):
     chat_id = message.chat.id
     if message.text == "خرید اشتراک":
-        bot.send_message(message.chat.id, "تعرفه مورد نظر خودتون رو انتخاب کنید", reply_markup=get_tariff_buttons())
+        if check_membership(chat_id, channel_username):
+            bot.send_message(message.chat.id, "تعرفه مورد نظر خودتون رو انتخاب کنید", reply_markup=get_tariff_buttons())
     elif message.text == 'پشتیبانی':
         bot.send_message(message.chat.id, "با مطالعه سوالات متداول ممکنه به جوابت برسی",
                          reply_markup=get_support_buttons())
     elif message.text == "کیف پول":
-
-        # فرض می‌شود تابع `find_user_id_from_client_code` ID کاربر را بر اساس chat_id بازگرداند
-        user_id = find_user_id_from_client_code(message.chat.id)
-        balance = show_user_wallet_balance(user_id)
-        bot.send_message(message.chat.id, f"مقدار موجودی شما: {balance} ترون",
-                         reply_markup=get_wallet_recharge_buttons())
+        if check_membership(chat_id, channel_username):
+            # فرض می‌شود تابع `find_user_id_from_client_code` ID کاربر را بر اساس chat_id بازگرداند
+            user_id = find_user_id_from_client_code(message.chat.id)
+            balance = show_user_wallet_balance(user_id)
+            bot.send_message(message.chat.id, f"مقدار موجودی شما: {balance} ترون",
+                             reply_markup=get_wallet_recharge_buttons())
     elif message.text == "آموزش استفاده":
         bot.send_message(message.chat.id, "آموزش مد نظرتو انتخاب کن", reply_markup=get_education_buttons())
 
     elif message.text == "قیمت لحظه ای ترون":
-        bot.send_message(message.chat.id, tron_price(chat_id))
+        if check_membership(chat_id, channel_username):
+            bot.send_message(message.chat.id, tron_price(chat_id))
 
     elif message.text == "عودت وجه":
         bot.send_message(message.chat.id, "متن تستی عودت وجه")
     elif message.text == "درامدزایی":
-
-        if check_safir(chat_id):
-            income_safir(chat_id)
-        else:
-            bot.send_message(message.chat.id, "متن تستی درامد زایی ", reply_markup=button_validate())
+        if check_membership(chat_id, channel_username):
+            if check_safir(chat_id):
+                income_safir(chat_id)
+            else:
+                bot.send_message(message.chat.id, "متن تستی درامد زایی ", reply_markup=button_validate())
     elif message.text == "ارسال ایمیل":
         msg = bot.send_message(message.chat.id, "لطفا ایمیل خودتون رو وارد کنید \n  مثال: example@gmail.com")
         bot.register_next_step_handler(msg, email)
 
     elif message.text == "تست یکروزه":
-        test_account(chat_id)
+        if check_membership(chat_id, channel_username):
+            test_account(chat_id)
 
 
     elif message.text == "اشتراک های من":
@@ -689,51 +692,53 @@ def kharid_azma(call):
 
 
 def buy_ekhtesasi(chat_id, tron, days, volume):
-    user_id = find_user_id_from_client_code(chat_id)
-    tron = Decimal(tron)
-    if user_id is not None:
-        balance = show_user_wallet_balance(user_id)
-        if balance >= tron != 0:
-            bot.send_message(chat_id, hiddify_api_put(chat_id, days, volume, ))
-            bot.send_message(chat_id,
-                             "لینک بالا برای اندروید و ios مورد استفاده است درصورت نیاز به فایل windowsکانفیگ همراه با uuid به پشتیبانی مراجعه کنید",
-                             reply_markup=get_education_platform_buttons())
-            buy_payment(user_id, tron)
-            balance -= tron  # بروزرسانی موجودی پس از خرید
-        else:
-            bot.send_message(chat_id, "شما پول کافی ندارید")
+    if check_membership(chat_id, channel_username):
+        user_id = find_user_id_from_client_code(chat_id)
+        tron = Decimal(tron)
+        if user_id is not None:
+            balance = show_user_wallet_balance(user_id)
+            if balance >= tron != 0:
+                bot.send_message(chat_id, hiddify_api_put(chat_id, days, volume, ))
+                bot.send_message(chat_id,
+                                 "لینک بالا برای اندروید و ios مورد استفاده است درصورت نیاز به فایل windowsکانفیگ همراه با uuid به پشتیبانی مراجعه کنید",
+                                 reply_markup=get_education_platform_buttons())
+                buy_payment(user_id, tron)
+                balance -= tron  # بروزرسانی موجودی پس از خرید
+            else:
+                bot.send_message(chat_id, "شما پول کافی ندارید")
 
 
 @bot.callback_query_handler(func=lambda call: call.data.startswith("tarefe"))
 def handle_buy_callback(call):
-    user_id = find_user_id_from_client_code(call.message.chat.id)
-    if user_id is not None:
-        balance = show_user_wallet_balance(user_id)
-        price = 0
-        if call.data == "tarefe30gig":
-            price = Decimal("11")
-        elif call.data == "tarefe50gig":
-            price = Decimal("17")
-        elif call.data == "tarefe70gig":
-            price = Decimal("22")
-        elif call.data == "tarefe90gig":
-            price = Decimal("27")
-        elif call.data == "tarefe120gig":
-            price = Decimal("31")
+    if check_membership(call.message.chat.id, channel_username):
+        user_id = find_user_id_from_client_code(call.message.chat.id)
+        if user_id is not None:
+            balance = show_user_wallet_balance(user_id)
+            price = 0
+            if call.data == "tarefe30gig":
+                price = Decimal("11")
+            elif call.data == "tarefe50gig":
+                price = Decimal("17")
+            elif call.data == "tarefe70gig":
+                price = Decimal("22")
+            elif call.data == "tarefe90gig":
+                price = Decimal("27")
+            elif call.data == "tarefe120gig":
+                price = Decimal("31")
 
-        if balance >= price != 0:
-            if send_purchase_confirmation(call.message.chat.id, call.data):
-                buy_payment(user_id, price)
-                balance -= price  # بروزرسانی موجودی پس از خرید
+            if balance >= price != 0:
+                if send_purchase_confirmation(call.message.chat.id, call.data):
+                    buy_payment(user_id, price)
+                    balance -= price  # بروزرسانی موجودی پس از خرید
 
-                bot.send_message(call.message.chat.id, f"خرید شما با موفقیت انجام شد. موجودی جدید شما: {balance} ترون")
+                    bot.send_message(call.message.chat.id, f"خرید شما با موفقیت انجام شد. موجودی جدید شما: {balance} ترون")
+                else:
+                    bot.send_message(call.message.chat.id, "خطایی در انجام تراکنش رخ داد.")
             else:
-                bot.send_message(call.message.chat.id, "خطایی در انجام تراکنش رخ داد.")
+                bot.send_message(call.message.chat.id, f"متاسفانه موجودی شما کافی نیست. موجودی فعلی شما: {balance} ترون",
+                                 reply_markup=get_wallet_recharge_buttons())
         else:
-            bot.send_message(call.message.chat.id, f"متاسفانه موجودی شما کافی نیست. موجودی فعلی شما: {balance} ترون",
-                             reply_markup=get_wallet_recharge_buttons())
-    else:
-        bot.send_message(call.message.chat.id, "کاربر یافت نشد.مجددا start کنید بات رو")
+            bot.send_message(call.message.chat.id, "کاربر یافت نشد.مجددا start کنید بات رو")
 
 
 @bot.callback_query_handler(func=lambda call: call.data == "Ekhtesasi")
