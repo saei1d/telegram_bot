@@ -26,19 +26,25 @@ def check_membership(chat_id, channel_username):
         return False
 
 
+###############################################################
+
+
+#                   PANEL ADMIN
+
+
+########################################################
+
+
 def chek_admin(client_code):
-    print(client_code)
     conn = connect_db()
     cur = conn.cursor()
     cur.execute("SELECT type FROM admins WHERE client_code = %s", (client_code,))
     result = cur.fetchone()
     if result:
         types = result[0]
-        print(types)
         return types
     else:
         return False
-
 
 
 @bot.message_handler(commands=['admin/add_admin'])
@@ -81,7 +87,7 @@ def add_admin_type(message):
 
 @bot.message_handler(commands=['admin/balance'])
 def handle_admin_settings(message):
-    if message.from_user.id in admin_pro:
+    if chek_admin(message.chat.id) == "SUPERADMIN":
         bot.send_message(message.chat.id, 'Admin balance settings menu.')
         msg = bot.send_message(message.chat.id, "client_code ra vared konid baraye balance")
         bot.register_next_step_handler(msg, search_client_code_for_balance)
@@ -123,7 +129,7 @@ def balance_admin(message, wallet_id):
 
 @bot.message_handler(commands=['admin/balance_decrease'])
 def handle_admin_settings(message):
-    if message.from_user.id in admin_pro:
+    if chek_admin(message.chat.id) == "SUPERADMIN":
         bot.send_message(message.chat.id, 'Admin decreasebalance settings menu.')
         msg = bot.send_message(message.chat.id, "client_code ra vared konid baraye decreasebalance")
         bot.register_next_step_handler(msg, search_client_code_for_decreasebalance)
@@ -166,7 +172,7 @@ def decreasebalance_admin(message, wallet_id):
 
 @bot.message_handler(commands=['admin/delete'])
 def handle_admin_settings(message):
-    if message.from_user.id in admin_pro:
+    if chek_admin(message.chat.id) == "SUPERADMIN":
         bot.send_message(message.chat.id, 'Admin delete settings menu.')
         msg = bot.send_message(message.chat.id, "client_code ra vared konid baraye delete")
         bot.register_next_step_handler(msg, search_client_code_for_delete)
@@ -186,7 +192,7 @@ def search_client_code_for_delete(message):
 
 @bot.message_handler(commands=['admin/undelete'])
 def handle_admin_settings(message):
-    if message.from_user.id in admin_pro:
+    if chek_admin(message.chat.id) == "SUPERADMIN":
         bot.send_message(message.chat.id, 'Admin undelete settings menu.')
         msg = bot.send_message(message.chat.id, "client_code ra vared konid baraye undelete")
         bot.register_next_step_handler(msg, search_client_code_for_undelete)
@@ -206,7 +212,7 @@ def search_client_code_for_undelete(message):
 
 @bot.message_handler(commands=['admin'])
 def handle_admin_settings(message):
-    if message.from_user.id in admin_pro:
+    if chek_admin(message.chat.id) == "SUPERADMIN":
         bot.send_message(message.chat.id, 'Admin settings menu.')
         msg = bot.send_message(message.chat.id, "client_code ra vared konid")
         bot.register_next_step_handler(msg, search_client_code)
@@ -244,6 +250,101 @@ def search_client_code(message):
         bot.send_message(message.chat.id, "karbar shenasaei nashod")
 
 
+###############################################################
+
+
+#                   PANEL AGENT
+
+
+########################################################
+
+
+@bot.message_handler(commands=['AGENT'])
+def agent(message):
+    if chek_admin(message.chat.id) != False:
+        msg = bot.send_message(message.chat.id,
+                               "شما درحال حاضر در صفحه ادمین هستید برای  تهیه اکانت آماده برای مشتریتون نام کاربری مشتری را وارد کنید ")
+        bot.register_next_step_handler(msg, agent2)
+
+
+def agent2(message):
+    client_code_moshtari = message.text
+    client_code_agent = message.chat.id
+    conn = connect_db()
+    cur = conn.cursor()
+
+    cur.execute("SELECT EXISTS(SELECT 1 FROM users WHERE client_code = %s)", (client_code_moshtari,))
+    if cur.fetchone():
+        cur.execute("SELECT join_by_code FROM users WHERE client_code = %s)", (client_code_moshtari,))
+        if cur.fetchone() is None:
+            cur.execute("SELECT referral_code FROM users WHERE client_code = %s", (client_code_agent,))
+            referral_code = cur.fetchone()[0]
+            if referral_code:
+                cur.execute("UPDATE users SET join_by_code = %s WHERE client_code =%s",
+                            (client_code_agent, client_code_moshtari,))
+                cur.execute("UPDATE referrals SET people = people + %s WHERE client_code = %s", (1, client_code_agent))
+
+                conn.commit()
+
+                msg = bot.send_message(message.chat.id,
+                                       "کاربر مد نظر شما با موفقیت زیر مجموعه شما شد و با هر خرید ۱۰ درصد رو شما دریافت خواهید کرد \n\n  اگر قصد خرید برای این کاربر رو دارید از پلن های موجود داخل ربات فقط عدد کانفیگ مورد  نظر رو انتخاب کنید \n 1:اکانت ۳۰ گیگ ۴۰ روزه 5.5 ترون \n 2: اکانت ۵۰ گیگ ۴۰ روزه 8.5 ترون \n 3: اکانت ۷۰ گیگ ۴۰ روزه 11 ترون \n 4: اکانت ۹۰ گیگ ۴۰ روزه 13.5 ترون \n 5: اکانت ۱۲۰ گیگ ۴۰ روزه 15.5 ترون \n \n این قیمت ها فقط برای فروشنده ها میباشد و تمام کانفیگ ها دو کاربره هستند \n \n برای ساخت اکانت اختصاصی از کامند /AGENT/EKHTESASI استفاده کنید \n لطفا فقط عدد کانفیگ مورد نظرتون رو ارسال کنید⚠ ")
+                bot.register_next_step_handler(msg, takhsis_account, client_code_moshtari)
+
+
+
+            else:
+                bot.send_message(message.chat.id,
+                                 "شما کد رفرال ندارید لطفا از دکمه درامد زایی کد رفرال بگیرید و سپس امتحان کنید")
+
+        else:
+            msg = bot.send_message(message.chat.id,
+                                   "این کاربر قبلا  دعوت شده و نمیتوانیم زیر مجموعه شما قرارش بدیم برای خرید کانفیگ برای این کد کاربری متن را بخونید \n \n اگر قصد خرید برای این کاربر رو دارید از پلن های موجود داخل ربات فقط عدد کانفیگ مورد  نظر رو انتخاب کنید \n 1:اکانت ۳۰ گیگ ۴۰ روزه 5.5 ترون \n 2: اکانت ۵۰ گیگ ۴۰ روزه 8.5 ترون \n 3: اکانت ۷۰ گیگ ۴۰ روزه 11 ترون \n 4: اکانت ۹۰ گیگ ۴۰ روزه 13.5 ترون \n 5: اکانت ۱۲۰ گیگ ۴۰ روزه 15.5 ترون \n \n این قیمت ها فقط برای فروشنده ها میباشد و تمام کانفیگ ها دو کاربره هستند \n \n برای ساخت اکانت اختصاصی از کامند /AGENT/EKHTESASI استفاده کنید \n لطفا فقط عدد کانفیگ مورد نظرتون رو ارسال کنید⚠ ")
+            bot.register_next_step_handler(msg, takhsis_account, client_code_moshtari)
+
+    else:
+        bot.send_message(message.chat.id, "این کاربر موجود نیست و دکمه استارت ربات رو نزده")
+
+
+def takhsis_account(message, client_code_moshtari):
+    user_id = find_user_id_from_client_code(message.chat.id)
+    balance = show_user_wallet_balance(user_id)
+    conf_moshtari = int(message.text)
+    price = 0
+    if conf_moshtari == 1:
+        price = Decimal("5.5")
+    elif conf_moshtari == 2:
+        price = Decimal("8.5")
+
+    elif conf_moshtari == 3:
+        price = Decimal("11")
+
+    elif conf_moshtari == 4:
+        price = Decimal("13.5")
+
+    elif conf_moshtari == 5:
+        price = Decimal("15.5")
+
+    else:
+        bot.send_message(message.chat.id,
+                         "عدد وارد شده شما خارج محدوده بود لطفا فقط عدد کانفیگ رو وارد کنید بین 1 تا 5")
+
+    if balance >= price != 0:
+        bot.send_message(client_code_moshtari, hiddify_api_put(conf_moshtari, 40, 30, ))
+        buy_payment(user_id, price)
+        balance -= price
+        bot.send_message(message.chat.id, f"خرید شما با موفقیت انجام شد. موجودی جدید شما: {balance} ترون")
+
+    else:
+        bot.send_message(message.chat.id, "کیف پول شما موجودی کافی ندارد")
+
+
+###############################################################
+
+
+#                   PANEL client
+
+
+########################################################
 @bot.message_handler(commands=['start'])
 def handle_start(message):
     chat_id = message.chat.id
@@ -304,6 +405,11 @@ def handle_message(message):
             bot.send_message(chat_id, message)
 
 
+################ ##################
+
+#                   referral generate
+
+#############################
 @bot.message_handler(content_types=['contact'])
 def handle_contact(message):
     contact_data = {
@@ -418,6 +524,11 @@ def make_refral_wallet_by_email(client_code, email_validate):
     conn.close()
 
 
+#################################
+#
+#
+#
+####################################333333
 def send_purchase_confirmation(chat_id, tariff):
     if tariff == "tarefe30gig":
         bot.send_message(chat_id, hiddify_api_put(chat_id, 40, 30, ))
