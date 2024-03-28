@@ -26,14 +26,26 @@ def check_membership(chat_id, channel_username):
         return False
 
 
-admin_pro = [366470485, 6696631466]
+def chek_admin(client_code):
+    conn = connect_db()
+    cur = conn.cursor()
+    cur.execute("SELECT type FROM admins WHERE client_code = %s", (client_code,))
+    types = cur.fetchone()
+    if types:
+        return types[0]
+    return False
 
 
 @bot.message_handler(commands=['admin/add_admin'])
 def add_admin(message):
-    bot.send_message(message.chat.id, 'Admin  settings menu.')
-    msg = bot.send_message(message.chat.id, "client_code ra vared konid baraye ezafe kardan_admin")
-    bot.register_next_step_handler(msg, add_admin_add)
+    if chek_admin(message.chat.id) == "SUPERADMIN":
+
+        bot.send_message(message.chat.id, 'Admin  settings menu.')
+        msg = bot.send_message(message.chat.id, "client_code ra vared konid baraye ezafe kardan_admin")
+        bot.register_next_step_handler(msg, add_admin_add)
+    else:
+        bot.send_message(message.chat.id, 'لطفا از کلید های زیر استفاده کنید')
+    print(chek_admin(message.chat.id))
 
 
 def add_admin_add(message):
