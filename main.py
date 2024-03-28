@@ -18,12 +18,18 @@ bot = telebot.TeleBot(BOT_TOKEN)
 
 
 def check_membership(chat_id, channel_username):
-    member = bot.get_chat_member(channel_username, chat_id)
-    if member.status == 'member' or member.status == 'creator' or member.status == 'administrator':
-        return True
+    conn = connect_db()
+    cur = conn.cursor()
+    cur.execute("SELECT deleted FROM users WHERE client_code = %s",(chat_id,))
+    if cur.fetchone()[0] is False :
+        member = bot.get_chat_member(channel_username, chat_id)
+        if member.status == 'member' or member.status == 'creator' or member.status == 'administrator':
+            return True
+        else:
+            bot.send_message(chat_id, f'برای استفاده از ربات، لطفا عضو کانال {channel_username} شوید.')
+            return False
     else:
-        bot.send_message(chat_id, f'برای استفاده از ربات، لطفا عضو کانال {channel_username} شوید.')
-        return False
+        bot.send_message(chat_id, f'شما محدود شدید لطفا دلیل ر از پشتیبانی جویا شوید',reply_markup=get_support_buttons())
 
 
 ###############################################################
@@ -408,8 +414,8 @@ def account_shakhsi2(message):
 
     su = (1300 * num1) + (700 * mmd1) + (mmd2 * 7000)
     global tron_ekhh
-    tron_ekh = su / 7000
-    tron_ekhh = round(tron_ekh, 2)  # گرد کردن به دو رقم اعشار
+    ttrr77rr = su / 7000
+    tron_ekhh = round(ttrr77rr, 2)  # گرد کردن به دو رقم اعشار
     bot.send_message(message.chat.id,
                      f'حجم شما {num1} و تعداد روز شما {num2} و تعداد کاربر شما {num3} در نظر گرفتید  این کانفیگ به مبلغ {tron_ekhh} ترون به شما اراعه خواهد شد\n ',
                      reply_markup=tarefe_ekhtesai_agent())
@@ -426,9 +432,11 @@ def buy_ekhtesasi_agent(call, tron_ekhh, num1, num2, client_code_moshtari):
                              "لینک بالا برای اندروید و ios مورد استفاده است درصورت نیاز به فایل windowsکانفیگ همراه با uuid به پشتیبانی مراجعه کنید",
                              reply_markup=get_education_platform_buttons())
             buy_payment(user_id, tron)
-            balance -= tron  #
+            balance -= tron
+            balance_pro = round(balance, 2)  # گرد کردن به دو رقم اعشار
+
             bot.send_message(call.message.chat.id,
-                             f'عملیات تخصیص اکانت با موفقیت انجام شد کیف پول شما درحال حاضر {balance} ترون دارد ')  # بروزرسانی موجودی پس از خرید
+                             f'عملیات تخصیص اکانت با موفقیت انجام شد کیف پول شما درحال حاضر {balance_pro} ترون دارد ')  # بروزرسانی موجودی پس از خرید
 
         else:
             bot.send_message(call.message.chat.id, "شما پول کافی ندارید")
@@ -457,7 +465,7 @@ def handle_start(message):
     channel_username = '@jimboo_vpn'
     client_code = message.from_user.id
     if check_membership(chat_id, channel_username):
-        username = message.from_user.username or "NoUsername"  # برای کاربرانی که username ندارند
+        username = message.from_user.username or "NoUsername"
         save_user_and_create_wallet(client_code, username)
         reply_markup = get_main_buttons()
         bot.send_message(message.chat.id,
