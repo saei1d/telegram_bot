@@ -276,7 +276,7 @@ def agent2(message):
     cur.execute("SELECT EXISTS(SELECT 1 FROM users WHERE client_code = %s)", (client_code_moshtari,))
     if cur.fetchone():
         cur.execute("SELECT join_by_code FROM users WHERE client_code = %s", (client_code_moshtari,))
-        mmd17 = cur.fetchone()
+        mmd17 = cur.fetchone()[0]
         print(mmd17)
         if mmd17 is None:
             cur.execute("SELECT referral_code FROM users WHERE client_code = %s", (client_code_agent,))
