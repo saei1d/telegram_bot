@@ -273,7 +273,7 @@ def agent2(message):
     conn = connect_db()
     cur = conn.cursor()
 
-    cur.execute("SELECT EXISTS(SELECT 1 FROM users WHERE client_code = %s", (client_code_moshtari,))
+    cur.execute("SELECT EXISTS(SELECT 1 FROM users WHERE client_code = %s)", (client_code_moshtari,))
     if cur.fetchone():
         cur.execute("SELECT join_by_code FROM users WHERE client_code = %s", (client_code_moshtari,))
         if cur.fetchone() is None:
