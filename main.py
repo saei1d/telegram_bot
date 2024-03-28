@@ -32,7 +32,8 @@ def chek_admin(client_code):
     cur = conn.cursor()
     cur.execute("SELECT type FROM admins WHERE client_code = %s", (client_code,))
     print(cur.fetchone())
-    types = cur.fetchone()
+    types = cur.fetchone()[0]
+    print(types)
     if types:
         return types[0]
     else:
