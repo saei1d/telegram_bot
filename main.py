@@ -331,7 +331,8 @@ def takhsis_account(message, client_code_moshtari):
                          "عدد وارد شده شما خارج محدوده بود لطفا فقط عدد کانفیگ رو وارد کنید بین 1 تا 5")
 
     if balance >= price != 0:
-        bot.send_message(client_code_moshtari, hiddify_api_put(client_code_moshtari, 40, 30, ),get_education_platform_buttons())
+        bot.send_message(client_code_moshtari, hiddify_api_put(client_code_moshtari, 40, 30, ),
+                         get_education_platform_buttons())
         buy_payment(user_id, price)
         balance -= price
         bot.send_message(message.chat.id, f"خرید شما با موفقیت انجام شد. موجودی جدید شما: {balance} ترون")
@@ -403,8 +404,11 @@ def handle_message(message):
 
     elif message.text == "اشتراک های من":
         user_configs = show_configs(chat_id)
-        for message in user_configs:
-            bot.send_message(chat_id, message)
+        if user_configs:
+            for message in user_configs:
+                bot.send_message(chat_id, message)
+        else:
+            bot.send_message(message.chat.id, "شما درحال حاضر کانفیگی ندارید")
 
 
 ################ ##################
