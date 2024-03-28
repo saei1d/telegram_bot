@@ -410,14 +410,11 @@ def account_shakhsi2(message):
     global tron_ekhh
     tron_ekh = su / 7000
     tron_ekhh = round(tron_ekh, 2)  # گرد کردن به دو رقم اعشار
-    print(tron_ekhh)
-    bot.send_message(message.chat.id,"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
     bot.send_message(message.chat.id,
                      f'حجم شما {num1} و تعداد روز شما {num2} و تعداد کاربر شما {num3} در نظر گرفتید  این کانفیگ به مبلغ {tron_ekhh} ترون به شما اراعه خواهد شد\n ',
                      reply_markup=tarefe_ekhtesai_agent())
 
 
-@bot.callback_query_handler(func=lambda call: call.data == "EEEE2")
 def buy_ekhtesasi_agent(call, tron_ekhh, num1, num2, client_code_moshtari):
     user_id = find_user_id_from_client_code(call.message.chat.id)
     tron = Decimal(tron_ekhh)
@@ -435,6 +432,11 @@ def buy_ekhtesasi_agent(call, tron_ekhh, num1, num2, client_code_moshtari):
 
         else:
             bot.send_message(call.message.chat.id, "شما پول کافی ندارید")
+
+
+@bot.callback_query_handler(func=lambda call: call.data == "EEEE2")
+def buy222222222222222222_ekhtesasi_agent(call):
+    buy_ekhtesasi_agent(call, tron_ekhh, num1, num2, client_code_moshtari)
 
 
 ###############################################################
