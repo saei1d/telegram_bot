@@ -371,7 +371,7 @@ def agent3(message):
 
                 msg = bot.send_message(message.chat.id,
                                        "زیر مجموعه شما شد 🤩\n برای ساخت اکانت اختصاصی لازمه که اول حجم رو مشخص کنید و حداقل حجم 30 گیگ میباشد \n حجم خودتون رو وارد کنید")
-                bot.register_next_step_handler(msg, account_shakhsi)
+                bot.register_next_step_handler(msg, account_shakhsi2)
 
 
 
@@ -382,13 +382,13 @@ def agent3(message):
         else:
             msg = bot.send_message(message.chat.id,
                                    "قبلا اضافه شده بود \n برای ساخت اکانت اختصاصی لازمه که به فرمت زیر ارسال کنی \n (30 40 2) \n (حجم روز کاربر) \n عدد اول حجم عدد دوم تعداد روز و عدد سوم تعداد کاربر را با یک اسپیس جدا کنید")
-            bot.register_next_step_handler(msg, account_shakhsi)
+            bot.register_next_step_handler(msg, account_shakhsi2)
 
     else:
         bot.send_message(message.chat.id, "این کاربر موجود نیست و دکمه استارت ربات رو نزده")
 
 
-def account_shakhsi(message):
+def account_shakhsi2(message):
     hagm = str(message.text)
     global num1
     global num2
@@ -410,7 +410,7 @@ def account_shakhsi(message):
     global tron_ekhh
     tron_ekh = su / 7000
     tron_ekhh = round(tron_ekh, 2)  # گرد کردن به دو رقم اعشار
-
+    print(num1,num2,num3)
     bot.send_message(message.chat.id,
                      f'حجم شما {num1} و تعداد روز شما {num2} و تعداد کاربر شما {num3} در نظر گرفتید  این کانفیگ به مبلغ {tron_ekhh} ترون به شما اراعه خواهد شد\n ',
                      reply_markup=tarefe_ekhtesai_agent())
