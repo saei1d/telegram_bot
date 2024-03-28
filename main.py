@@ -27,13 +27,16 @@ def check_membership(chat_id, channel_username):
 
 
 def chek_admin(client_code):
+    print(client_code)
     conn = connect_db()
     cur = conn.cursor()
     cur.execute("SELECT type FROM admins WHERE client_code = %s", (client_code,))
+    print(cur.fetchone())
     types = cur.fetchone()
     if types:
         return types[0]
-    return False
+    else:
+        return False
 
 
 @bot.message_handler(commands=['admin/add_admin'])
