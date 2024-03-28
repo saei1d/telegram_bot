@@ -159,3 +159,15 @@ def tarefe_ekhtesai_buy():
     ]
     markup.add(*buttons)
     return markup
+
+
+
+def tarefe_ekhtesai_agent():
+    markup = types.InlineKeyboardMarkup()
+    buttons = [
+        types.InlineKeyboardButton("خرید این تعرفه", callback_data="EEEE2"),
+        types.InlineKeyboardButton("اصلاح ", callback_data=""),
+
+    ]
+    markup.add(*buttons)
+    return markup

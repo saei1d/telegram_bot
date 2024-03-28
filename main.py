@@ -349,6 +349,7 @@ def admin_ehtesasi(message):
 
 
 def agent3(message):
+    global client_code_moshtari
     client_code_moshtari = message.text
     client_code_agent = message.chat.id
     conn = connect_db()
@@ -368,8 +369,9 @@ def agent3(message):
 
                 conn.commit()
 
-                msg = bot.send_message(message.chat.id,"زیر مجموعه شما شد 🤩\n برای ساخت اکانت اختصاصی لازمه که اول حجم رو مشخص کنید و حداقل حجم 30 گیگ میباشد \n حجم خودتون رو وارد کنید")
-                bot.register_next_step_handler(msg, account_shakhsi, client_code_moshtari)
+                msg = bot.send_message(message.chat.id,
+                                       "زیر مجموعه شما شد 🤩\n برای ساخت اکانت اختصاصی لازمه که اول حجم رو مشخص کنید و حداقل حجم 30 گیگ میباشد \n حجم خودتون رو وارد کنید")
+                bot.register_next_step_handler(msg, account_shakhsi)
 
 
 
@@ -379,28 +381,72 @@ def agent3(message):
 
         else:
             msg = bot.send_message(message.chat.id,
-                                   "قبلا اضافه شده بود \n برای ساخت اکانت اختصاصی لازمه که به فرمت زیر ارسال کنی \n )30 40 2( \n (حجم روز کاربر) \n  با یک اسپیس جدا کنید")
-            bot.register_next_step_handler(msg, account_shakhsi, client_code_moshtari)
+                                   "قبلا اضافه شده بود \n برای ساخت اکانت اختصاصی لازمه که به فرمت زیر ارسال کنی \n (30 40 2) \n (حجم روز کاربر) \n عدد اول حجم عدد دوم تعداد روز و عدد سوم تعداد کاربر را با یک اسپیس جدا کنید")
+            bot.register_next_step_handler(msg, account_shakhsi)
 
     else:
         bot.send_message(message.chat.id, "این کاربر موجود نیست و دکمه استارت ربات رو نزده")
 
 
-def account_shakhsi(message,s):
+def account_shakhsi(message):
     hagm = str(message.text)
-    numbers_list = hagm.split()  # جدا کردن اعداد بر اساس فاصله
-    num1 = int(numbers_list[0])  # تبدیل اولین عدد به عدد صحیح
-    num2 = int(numbers_list[1])  # تبدیل دومین عدد به عدد صحیح
-    num3 = int(numbers_list[2])  # تبدیل سومین عدد به عدد صحیح
-    bot.send_message(message.chat.id,f'حجم شما {num1} و تعداد روز شما {num2} و تعداد کاربر شما {num3} در نظر گرفتید \n ')
+    global num1
+    global num2
+    numbers_list = hagm.split()
+    num1 = int(numbers_list[0])
+    num2 = int(numbers_list[1])
+    num3 = int(numbers_list[2])
+    if num1 < 30:
+        num1 = 30
+    if num2 < 40:
+        num2 = 40
+    if num3 < 2:
+        num3 = 2
+
+    num2 = num2 - 40
+    num3 = num3 - 2
+
+    su = (1200 * num1) + (700 * num2) + (num3 * 7000)
+    global tron_ekhh
+    tron_ekh = su / 7000
+    tron_ekhh = round(tron_ekh, 2)  # گرد کردن به دو رقم اعشار
+
+    bot.send_message(message.chat.id,
+                     f'حجم شما {num1} و تعداد روز شما {num2} و تعداد کاربر شما {num3} در نظر گرفتید  این کانفیگ به مبلغ {tron_ekhh} ترون به شما اراعه خواهد شد\n ',
+                     reply_markup=tarefe_ekhtesai_agent())
+
+
+@bot.callback_query_handler(func=lambda call: call.data == "EEEE2")
+def buy_ekhtesasi_agent(call, tron_ekhh, num1, num2, client_code_moshtari):
+    user_id = find_user_id_from_client_code(call.message.chat.id)
+    tron = Decimal(tron_ekhh)
+    if user_id is not None:
+        balance = show_user_wallet_balance(user_id)
+        if balance >= tron != 0:
+            bot.send_message(client_code_moshtari, hiddify_api_put(client_code_moshtari, num2, num1))
+            bot.send_message(client_code_moshtari,
+                             "لینک بالا برای اندروید و ios مورد استفاده است درصورت نیاز به فایل windowsکانفیگ همراه با uuid به پشتیبانی مراجعه کنید",
+                             reply_markup=get_education_platform_buttons())
+            buy_payment(user_id, tron)
+            balance -= tron  #
+            bot.send_message(call.message.chat.id,
+                             f'عملیات تخصیص اکانت با موفقیت انجام شد کیف پول شما درحال حاضر {balance} ترون دارد ')  # بروزرسانی موجودی پس از خرید
+
+        else:
+            bot.send_message(call.message.chat.id, "شما پول کافی ندارید")
 
 
 ###############################################################
-
-
-#                   PANEL client
-
-
+#
+#
+#
+#
+#
+#                   PANEL          client
+#
+#
+#
+#
 ########################################################
 @bot.message_handler(commands=['start'])
 def handle_start(message):
