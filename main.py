@@ -54,7 +54,7 @@ def add_admin_type(message):
     cur = conn.cursor()
     type = message.text
     if type == 'AGENT' or type == 'SUPERADMIN':
-        cur.execute("INSERT INTO admins (username, type) VALUES (%s, %s);", (admin_jadid, type))
+        cur.execute("INSERT INTO admins (client_code, type) VALUES (%s, %s);", (admin_jadid, type))
         conn.commit()
         bot.send_message(message.chat.id, "همچیز به درستی انجام شد")
 
