@@ -406,14 +406,13 @@ def account_shakhsi2(message):
     mmd1 = num2 - 40
     mmd2 = num3 - 2
 
-    su = (1200 * num1) + (700 * mmd1) + (mmd2 * 7000)
+    su = (1300 * num1) + (700 * mmd1) + (mmd2 * 7000)
     global tron_ekhh
     tron_ekh = su / 7000
     tron_ekhh = round(tron_ekh, 2)  # گرد کردن به دو رقم اعشار
     print(tron_ekhh)
-    bot.send_message(client_code_moshtari,
-                     f'حجم شما {num1} و تعداد روز شما {num2} و تعداد کاربر شما {num3} در نظر گرفتید  این کانفیگ به مبلغ {tron_ekhh} ترون به شما اراعه خواهد شد\n ',
-                     reply_markup=tarefe_ekhtesai_agent())
+    msg = bot.send_message(message.chat.id,
+                           "قبلا اضافه شده بود \n برای ساخت اکانت اختصاصی لازمه که به فرمت زیر ارسال کنی \n (30 40 2) \n (حجم روز کاربر) \n عدد اول حجم عدد دوم تعداد روز و عدد سوم تعداد کاربر را با یک اسپیس جدا کنید")
 
 
 @bot.callback_query_handler(func=lambda call: call.data == "EEEE2")
