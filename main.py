@@ -27,6 +27,7 @@ def check_membership(chat_id, channel_username):
             return True
         else:
             bot.send_message(chat_id, f'برای استفاده از ربات، لطفا عضو کانال {channel_username} شوید.')
+            bot.send_message(chat_id, 'اگر جوین شدید مجدد /start کنید')
             return False
     else:
         bot.send_message(chat_id, f'شما محدود شدید لطفا دلیل ر از پشتیبانی جویا شوید',reply_markup=get_support_buttons())
@@ -472,8 +473,7 @@ def handle_start(message):
                          "♥️سلام دوست عزیز\n\nبه ربات جیمبو خوش آمدید🚀\n\nلطفا یک گزینه را انتخاب کنید👇",
                          reply_markup=reply_markup)
 
-    else:
-        bot.send_message(chat_id, 'اگر جوین شدید مجدد /start کنید')
+
 
 
 @bot.message_handler(func=lambda message: True)
