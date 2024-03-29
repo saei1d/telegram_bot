@@ -518,6 +518,7 @@ def handle_message(message):
 
     elif message.text == "مشخصات و اشتراک های من":
         user_configs = show_configs(chat_id)
+        bot.send_message(chat_id, f'شما با نام کاربری: {chat_id} \n')
         if user_configs:
             for message in user_configs:
                 bot.send_message(chat_id, message)
