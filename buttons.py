@@ -2,18 +2,14 @@ from telebot import types
 
 
 def get_main_buttons():
-    markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=2)
+    markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
     buttons = [
-        types.KeyboardButton("خرید اشتراک"),
-        types.KeyboardButton("کیف پول"),
-        types.KeyboardButton("تست یکروزه"),
-        types.KeyboardButton("عودت وجه"),
-        types.KeyboardButton("آموزش استفاده"),
-        types.KeyboardButton("پشتیبانی"),
-        types.KeyboardButton("مشخصات و اشتراک های من"),
-        types.KeyboardButton(" قیمت لحظه ای ترون"),
-        types.KeyboardButton("درامدزایی"),
-
+        [types.KeyboardButton("خرید اشتراک"), types.KeyboardButton("کیف پول")],
+        [types.KeyboardButton("مشخصات و اشتراک های من")],
+        [types.KeyboardButton("تست یکروزه"), types.KeyboardButton("عودت وجه")],
+        [types.KeyboardButton("درامدزایی")],
+        [types.KeyboardButton("آموزش استفاده"), types.KeyboardButton("پشتیبانی")],
+        [types.KeyboardButton(" قیمت لحظه ای ترون")],
     ]
     markup.add(*buttons)
     return markup
@@ -22,7 +18,7 @@ def get_main_buttons():
 def button_validate():
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=1)
     buttons = [
-        types.KeyboardButton("ارسال شماره",request_contact=True),
+        types.KeyboardButton("ارسال شماره", request_contact=True),
         types.KeyboardButton("ارسال ایمیل "),
         types.KeyboardButton("برگشت"),
     ]
@@ -151,6 +147,7 @@ def edame():
     markup.add(*buttons)
     return markup
 
+
 def tarefe_ekhtesai_buy():
     markup = types.InlineKeyboardMarkup()
     buttons = [
@@ -160,7 +157,6 @@ def tarefe_ekhtesai_buy():
     ]
     markup.add(*buttons)
     return markup
-
 
 
 def tarefe_ekhtesai_agent():
