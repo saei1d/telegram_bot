@@ -516,7 +516,7 @@ def handle_message(message):
             test_account(chat_id)
 
 
-    elif message.text == "اشتراک های من":
+    elif message.text == "مشخصات و اشتراک های من":
         user_configs = show_configs(chat_id)
         if user_configs:
             for message in user_configs:
