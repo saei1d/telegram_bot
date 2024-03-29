@@ -11,12 +11,16 @@ def get_main_buttons():
         types.KeyboardButton("اشتراک های من"),
         types.KeyboardButton(" قیمت لحظه ای ترون"),
         types.KeyboardButton("عودت وجه"),
-        types.KeyboardButton("درامدزایی"),
         types.KeyboardButton("تست یکروزه"),
+        types.KeyboardButton("درامدزایی"),
     ]
-    markup.add(*buttons)
-    return markup
+    for i in range(len(buttons)):
+        if i in [1, 3, 5]:  # Specify the indices of buttons you want in a row
+            markup.add(buttons[i])
+        else:
+            markup.add(buttons[i])
 
+    return markup
 
 def button_validate():
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=1)
