@@ -419,6 +419,9 @@ def account_shakhsi2(message):
     num3 = int(numbers_list[2])
     if num1 < 30:
         num1 = 30
+    elif num1 > 1000:
+        num1 = 1000
+        bot.send_message(message.chat.id , "عددی که برای حجم وارد کردید بیشتر از 1000 بود و برای شما 1000 در نظر گرفته شد")
     if num2 < 40:
         num2 = 40
     if num3 < 2:
@@ -484,7 +487,7 @@ def handle_start(message):
         username = message.from_user.username or "NoUsername"
         save_user_and_create_wallet(client_code, username)
         reply_markup = get_main_buttons()
-        bot.send_message(message.chat.id, f'سلام عزیزم ❤️\nخوش اومدی به خانواده بزرگ جیمبو ✈️\nیکی از کلید های پایین رو بزن 👇 \n نام کاربری شما : {chat_id}',
+        bot.send_message(message.chat.id, f'سلام عزیزم ❤️\nخوش اومدی به خانواده بزرگ جیمبو ✈️\nیکی از کلید های پایین رو بزن 👇 \n  \n نام کاربری شما : {chat_id}',
                          reply_markup=reply_markup)
 
 
@@ -536,6 +539,10 @@ def handle_message(message):
                 bot.send_message(chat_id, message)
         else:
             bot.send_message(message.chat.id, "شما درحال حاضر کانفیگی ندارید")
+
+    elif message.text == "بازگشت":
+        bot.send_message(chat_id,"شما به منوی اصلی برگشتید",reply_markup=get_main_buttons())
+
 
 
 ################ ##################
@@ -771,7 +778,7 @@ def Ekhtesasi(call):
 
 @bot.callback_query_handler(func=lambda call: call.data == "make_config")
 def mmd(call):
-    msg = bot.send_message(call.message.chat.id, "حجم مد نظر خودتون رو وارد کنید با عدد انگلیسی \n مثال:(150)")
+    msg = bot.send_message(call.message.chat.id, "حجم مد نظر خودتون رو وارد کنید با عدد انگلیسی نهایت حجم 1000 \n مثال:(150)")
     bot.register_next_step_handler(msg, vol)
 
 
@@ -802,7 +809,15 @@ def defa(message):
         bot.send_message(message.chat.id, "عددی که وارد کردید کوچکتر از 2 بود و برای شما همان 2 کاربر لحاظ شد")
     mmd = day - 40
     mmd2 = clieee - 2
-    su = (2400 * volume) + (1400 * mmd) + (mmd2 * 13000)
+
+    if volume > 1000 :
+        volume_asli = 1000
+        bot.send_message(message.chat.id,"حجمی که وارد کردید بیشتر از 1000بود و برای شما 1000 درنظرگرفته شد")
+
+    else:
+        volume_asli = volume
+
+    su = (2400 * volume_asli) + (1400 * mmd) + (mmd2 * 13000)
     global rounded_trtr
     trtr = su / 7000
     rounded_trtr = round(trtr, 2)  # گرد کردن به دو رقم اعشار
@@ -885,11 +900,6 @@ def disco(message, call):
                 bot.send_message(call.message.chat.id,
                                  "کد تخفیفی که وارد کردید رفرال بوده و قبلا شما توسط فرد دیگری دعوت شدید \n لطفا از کدتخفیف های عمومی استفاده کنید")
                 return
-
-
-
-
-
         else:
             bot.send_message(message.chat.id, f'کد تخفیف شما مورد تایید قرار گرفت به مقدار {discount_percentage}%')
             handle_edame_kharid_callback(call, discount_percentage)
@@ -931,7 +941,7 @@ def process_transaction_hash(message, percent_asli):
         return
 
     elif len(hash1) != 64:
-        bot.send_message(message.chat.id, "به نظر می‌رسد که کد هش وارد شده نامعتبر است. لطفاً مجدداً امتحان کنید.")
+        bot.send_message(message.chat.id, "به نظر می‌رسد که کد هش وارد شده نامعتبر است. لطفاً مجدداً امتحان کنید.",reply_markup=get_main_buttons())
         return
 
     # اتصال به دیتابیس
@@ -941,7 +951,7 @@ def process_transaction_hash(message, percent_asli):
     # بررسی تکراری بودن کد هش
     cur.execute("SELECT EXISTS(SELECT 1 FROM payments WHERE hash_code = %s);", (hash1,))
     if cur.fetchone()[0]:
-        bot.send_message(message.chat.id, "کد هش قبلا ثبت شده است.")
+        bot.send_message(message.chat.id, "کد هش قبلا ثبت شده است.",get_main_buttons())
         cur.close()
         conn.close()
         return
