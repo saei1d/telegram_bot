@@ -522,8 +522,7 @@ def handle_message(message):
             if my_string:
                 bot.send_message(chat_id, f'ترون در حال حاضر {my_string} می باشد  . ')
             else:
-                bot.send_message(chat_id, "خطا در دریافت قیمت :( لطفا مجددا تلاش کنید")
-
+                pass
     elif message.text == "عودت وجه":
         bot.send_message(message.chat.id, "متن تستی عودت وجه")
     elif message.text == "درامدزایی":
