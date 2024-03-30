@@ -421,9 +421,14 @@ def account_shakhsi2(message):
         num1 = 30
     elif num1 > 1000:
         num1 = 1000
-        bot.send_message(message.chat.id , "عددی که برای حجم وارد کردید بیشتر از 1000 بود و برای شما 1000 در نظر گرفته شد")
+        bot.send_message(message.chat.id,
+                         "عددی که برای حجم وارد کردید بیشتر از 1000 بود و برای شما 1000 در نظر گرفته شد")
     if num2 < 40:
         num2 = 40
+    elif num2 > 1000:
+        num2 = 1000
+        bot.send_message(message.chat.id,
+                         "عددی که برای روز وارد کردید بیشتر از 1000 بود و برای شما 1000 در نظر گرفته شد")
     if num3 < 2:
         num3 = 2
 
@@ -487,7 +492,8 @@ def handle_start(message):
         username = message.from_user.username or "NoUsername"
         save_user_and_create_wallet(client_code, username)
         reply_markup = get_main_buttons()
-        bot.send_message(message.chat.id, f'سلام عزیزم ❤️\nخوش اومدی به خانواده بزرگ جیمبو ✈️\nیکی از کلید های پایین رو بزن 👇 \n  \n نام کاربری شما : {chat_id}',
+        bot.send_message(message.chat.id,
+                         f'سلام عزیزم ❤️\nخوش اومدی به خانواده بزرگ جیمبو ✈️\nیکی از کلید های پایین رو بزن 👇 \n  \n نام کاربری شما : {chat_id}',
                          reply_markup=reply_markup)
 
 
@@ -541,8 +547,7 @@ def handle_message(message):
             bot.send_message(message.chat.id, "شما درحال حاضر کانفیگی ندارید")
 
     elif message.text == "بازگشت":
-        bot.send_message(chat_id,"شما به منوی اصلی برگشتید",reply_markup=get_main_buttons())
-
+        bot.send_message(chat_id, "شما به منوی اصلی برگشتید", reply_markup=get_main_buttons())
 
 
 ################ ##################
@@ -677,7 +682,6 @@ def make_refral_wallet_by_email(client_code, email_validate):
 ####################################
 
 
-
 def send_purchase_confirmation(chat_id, tariff):
     limit = 0
     if tariff == "tarefe30gig":
@@ -694,7 +698,7 @@ def send_purchase_confirmation(chat_id, tariff):
     if limit != 0:
         global buy_config
         buy_config = hiddify_api_put(chat_id, 40, limit)
-        bot.send_message(chat_id, buy_config, reply_markup=qr() )
+        bot.send_message(chat_id, buy_config, reply_markup=qr())
 
         bot.send_message(chat_id,
                          "لینک بالا برای اندروید و ios مورد استفاده است درصورت نیاز به فایل windowsکانفیگ همراه با uuid به پشتیبانی مراجعه کنید",
@@ -778,7 +782,8 @@ def Ekhtesasi(call):
 
 @bot.callback_query_handler(func=lambda call: call.data == "make_config")
 def mmd(call):
-    msg = bot.send_message(call.message.chat.id, "حجم مد نظر خودتون رو وارد کنید با عدد انگلیسی نهایت حجم 1000 \n مثال:(150)")
+    msg = bot.send_message(call.message.chat.id,
+                           "حجم مد نظر خودتون رو وارد کنید با عدد انگلیسی نهایت حجم 1000 \n مثال:(150)")
     bot.register_next_step_handler(msg, vol)
 
 
@@ -795,6 +800,9 @@ def client(message):
     day = int(message.text)
     if day < 40:
         day = 40
+    elif day > 1000:
+        day = 1000
+        bot.send_message(message.chat.id,"عددی که برای تعداد روز وارد کردید بزرگتر ۱۰۰۰ بود و برای شما ۱۰۰۰ درنظر گرفته شد")
         bot.send_message(message.chat.id, "عددی که وارد کردید کوچکتر از 40 بود و برای شما همان 40 روز لحاظ شد")
     client = bot.send_message(message.chat.id,
                               "تعداد کاربران رو مشخص کنید و حداقل دوکاربر درنظر گرفته خواهد شد \n مثال:(3) ")
@@ -810,9 +818,9 @@ def defa(message):
     mmd = day - 40
     mmd2 = clieee - 2
 
-    if volume > 1000 :
+    if volume > 1000:
         volume_asli = 1000
-        bot.send_message(message.chat.id,"حجمی که وارد کردید بیشتر از 1000بود و برای شما 1000 درنظرگرفته شد")
+        bot.send_message(message.chat.id, "حجمی که وارد کردید بیشتر از 1000بود و برای شما 1000 درنظرگرفته شد")
 
     else:
         volume_asli = volume
@@ -941,7 +949,8 @@ def process_transaction_hash(message, percent_asli):
         return
 
     elif len(hash1) != 64:
-        bot.send_message(message.chat.id, "به نظر می‌رسد که کد هش وارد شده نامعتبر است. لطفاً مجدداً امتحان کنید.",reply_markup=get_main_buttons())
+        bot.send_message(message.chat.id, "به نظر می‌رسد که کد هش وارد شده نامعتبر است. لطفاً مجدداً امتحان کنید.",
+                         reply_markup=get_main_buttons())
         return
 
     # اتصال به دیتابیس
@@ -951,7 +960,7 @@ def process_transaction_hash(message, percent_asli):
     # بررسی تکراری بودن کد هش
     cur.execute("SELECT EXISTS(SELECT 1 FROM payments WHERE hash_code = %s);", (hash1,))
     if cur.fetchone()[0]:
-        bot.send_message(message.chat.id, "کد هش قبلا ثبت شده است.",get_main_buttons())
+        bot.send_message(message.chat.id, "کد هش قبلا ثبت شده است.", get_main_buttons())
         cur.close()
         conn.close()
         return
@@ -967,7 +976,8 @@ def process_transaction_hash(message, percent_asli):
     if rounded_plus_bounos is not None and hash_verified:
         # در اینجا کد برای insert_payment_and_update_wallet اضافه می‌شود (فرضی)
         if insert_payment_and_update_wallet(conn, rounded_plus_bounos, hash1, message.chat.id, percent_asli, rounded):
-            bot.send_message(message.chat.id, f"داشبورد جیمبو شما با موفقیت شارژ شد. به مقدار: {rounded_plus_bounos} ترون")
+            bot.send_message(message.chat.id,
+                             f"داشبورد جیمبو شما با موفقیت شارژ شد. به مقدار: {rounded_plus_bounos} ترون")
             safirs = []
             current_client_code = client_code
 
