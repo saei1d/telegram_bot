@@ -884,6 +884,10 @@ def dis(call):
 
 def disco(message, call):
     discount_client = message.text
+    if message.text == "برگشت":
+        bot.send_message(message.chat.id, "شما به منوی اصلی برگشتید", reply_markup=get_main_buttons())
+        return
+
     client_code = message.chat.id
     conn = connect_db()
     cur = conn.cursor()
@@ -912,10 +916,7 @@ def disco(message, call):
             bot.send_message(message.chat.id, f'کد تخفیف شما مورد تایید قرار گرفت به مقدار {discount_percentage}%')
             handle_edame_kharid_callback(call, discount_percentage)
     else:
-        bot.send_message(message.chat.id, f' کد تخفیف شما مورد تایید قرار نگرفت ', reply_markup=get_back_buttons())
-    if message.text == "برگشت":
-        bot.send_message(message.chat.id, "شما به منوی اصلی برگشتید", reply_markup=get_main_buttons())
-        return
+        bot.send_message(message.chat.id, f' کد تخفیف شما مورد تایید قرار نگرفت ', reply_markup=get_main_buttons())
 
 
 def insert_payment_and_update_wallet(conn, amount, transaction_hash, client_code, percent_asli, rounded):
