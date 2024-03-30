@@ -684,16 +684,22 @@ def send_purchase_confirmation(chat_id, tariff):
         limit = 120
 
     if limit != 0:
+        global buy_config
         buy_config = hiddify_api_put(chat_id, 40, limit)
-        qr_code = f'api.qrserver.com/v1/create-qr-code/?data={buy_config}&size=400*400'
-        bot.send_message(chat_id, qr_code)
-        bot.send_message(chat_id, buy_config)
+        bot.send_message(chat_id, buy_config, reply_markup=qr())
+
         bot.send_message(chat_id,
                          "لینک بالا برای اندروید و ios مورد استفاده است درصورت نیاز به فایل windowsکانفیگ همراه با uuid به پشتیبانی مراجعه کنید",
                          reply_markup=get_education_platform_buttons())
         return True
     else:
         bot.send_message(chat_id, "شما تعرفه درستی رو انتخاب نکردید")
+
+
+@bot.callback_query_handler(func=lambda call: call.data == "qqq")
+def qr_code_code(call, buy_config):
+    qr_code = f'api.qrserver.com/v1/create-qr-code/?data={buy_config}&size=200*200'
+    bot.send_message(call.message.chat.id, qr_code)
 
 
 @bot.callback_query_handler(func=lambda call: call.data == "kharid_azma")

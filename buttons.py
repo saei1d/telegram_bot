@@ -171,3 +171,14 @@ def tarefe_ekhtesai_agent():
     ]
     markup.add(*buttons)
     return markup
+
+
+
+def qr():
+    markup = types.InlineKeyboardMarkup()
+    buttons = [
+        types.InlineKeyboardButton("گرفتن تصویر qr", callback_data="qqq"),
+
+    ]
+    markup.add(*buttons)
+    return markup
