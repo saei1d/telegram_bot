@@ -518,7 +518,11 @@ def handle_message(message):
 
     elif message.text == "قیمت لحظه ای ترون":
         if check_membership(chat_id, channel_username):
-            bot.send_message(message.chat.id, tron_price(chat_id))
+            my_string = tron_price(chat_id)
+            if my_string:
+                bot.send_message(chat_id, f'ترون در حال حاضر {my_string} می باشد  . ')
+            else:
+                bot.send_message(chat_id, "خطا در دریافت قیمت :( لطفا مجددا تلاش کنید")
 
     elif message.text == "عودت وجه":
         bot.send_message(message.chat.id, "متن تستی عودت وجه")
@@ -802,7 +806,8 @@ def client(message):
         day = 40
     elif day > 1000:
         day = 1000
-        bot.send_message(message.chat.id,"عددی که برای تعداد روز وارد کردید بزرگتر ۱۰۰۰ بود و برای شما ۱۰۰۰ درنظر گرفته شد")
+        bot.send_message(message.chat.id,
+                         "عددی که برای تعداد روز وارد کردید بزرگتر ۱۰۰۰ بود و برای شما ۱۰۰۰ درنظر گرفته شد")
         bot.send_message(message.chat.id, "عددی که وارد کردید کوچکتر از 40 بود و برای شما همان 40 روز لحاظ شد")
     client = bot.send_message(message.chat.id,
                               "تعداد کاربران رو مشخص کنید و حداقل دوکاربر درنظر گرفته خواهد شد \n مثال:(3) ")
