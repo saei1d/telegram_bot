@@ -46,6 +46,7 @@ def hiddify_api_get_conf(uuid):
         data_str = json.dumps(data)
         parsed_data = json.loads(data_str)
         first_link = parsed_data[0]['link']
+
         return first_link
     else:
         print("Error: %s - %s", response.status_code, response.reason)

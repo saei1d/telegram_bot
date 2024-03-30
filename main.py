@@ -15,6 +15,7 @@ from hiddify_api import *
 import re
 
 bot = telebot.TeleBot(BOT_TOKEN)
+channel_username = '@jimboo_vpn'
 
 
 def check_membership(chat_id, channel_username):
@@ -319,30 +320,42 @@ def takhsis_account(message, client_code_moshtari):
     balance = show_user_wallet_balance(user_id)
     conf_moshtari = int(message.text)
     price = 0
+    limit = 0
     if conf_moshtari == 1:
         price = Decimal("5.5")
+        limit = 30
     elif conf_moshtari == 2:
         price = Decimal("8.5")
+        limit = 50
+
 
     elif conf_moshtari == 3:
         price = Decimal("11")
+        limit = 70
 
     elif conf_moshtari == 4:
         price = Decimal("13.5")
+        limit = 90
 
     elif conf_moshtari == 5:
         price = Decimal("15.5")
+        limit = 120
 
     else:
         bot.send_message(message.chat.id,
                          "عدد وارد شده شما خارج محدوده بود لطفا فقط عدد کانفیگ رو وارد کنید بین 1 تا 5")
 
     if balance >= price != 0:
-        bot.send_message(client_code_moshtari, hiddify_api_put(client_code_moshtari, 40, 30, ),
-                         get_education_platform_buttons())
-        buy_payment(user_id, price)
-        balance -= price
-        bot.send_message(message.chat.id, f"خرید شما با موفقیت انجام شد. موجودی جدید شما: {balance} ترون")
+        if limit != 0:
+
+            bot.send_message(client_code_moshtari, hiddify_api_put(client_code_moshtari, 40, limit, ),
+                             get_education_platform_buttons())
+            buy_payment(user_id, price)
+            balance -= price
+            bot.send_message(message.chat.id, f"خرید شما با موفقیت انجام شد. موجودی جدید شما: {balance} ترون")
+
+        else:
+            bot.send_message(message.chat.id, "کانفیگی که انتخاب کردید نامشخص است")
 
     else:
         bot.send_message(message.chat.id, "کیف پول شما موجودی کافی ندارد")
@@ -461,7 +474,6 @@ def buy222222222222222222_ekhtesasi_agent(call):
 #
 #
 ########################################################
-channel_username = '@jimboo_vpn'
 
 
 @bot.message_handler(commands=['start'])
@@ -649,40 +661,35 @@ def make_refral_wallet_by_email(client_code, email_validate):
 #
 #
 #
-####################################333333
+#
+#           BUY
+#
+#
+#
+#
+####################################
+
+
 def send_purchase_confirmation(chat_id, tariff):
+    limit = 0
     if tariff == "tarefe30gig":
-        bot.send_message(chat_id, hiddify_api_put(chat_id, 40, 30, ))
-        bot.send_message(chat_id,
-                         "لینک بالا برای اندروید و ios مورد استفاده است درصورت نیاز به فایل windowsکانفیگ همراه با uuid به پشتیبانی مراجعه کنید",
-                         reply_markup=get_education_platform_buttons())
-        return True
+        limit = 30
     elif tariff == "tarefe50gig":
-        bot.send_message(chat_id, hiddify_api_put(chat_id, 40, 50, ))
-        bot.send_message(chat_id,
-                         "لینک بالا برای اندروید و ios مورد استفاده است درصورت نیاز به فایل windowsکانفیگ همراه با uuid به پشتیبانی مراجعه کنید",
-                         reply_markup=get_education_platform_buttons())
-        return True
+        limit = 50
     elif tariff == "tarefe70gig":
-        bot.send_message(chat_id, hiddify_api_put(chat_id, 40, 70, ))
-        bot.send_message(chat_id,
-                         "لینک بالا برای اندروید و ios مورد استفاده است درصورت نیاز به فایل windowsکانفیگ همراه با uuid به پشتیبانی مراجعه کنید",
-                         reply_markup=get_education_platform_buttons())
-        return True
+        limit = 70
     elif tariff == "tarefe90gig":
-        bot.send_message(chat_id, hiddify_api_put(chat_id, 40, 90, ))
-        bot.send_message(chat_id,
-                         "لینک بالا برای اندروید و ios مورد استفاده است درصورت نیاز به فایل windowsکانفیگ همراه با uuid به پشتیبانی مراجعه کنید",
-                         reply_markup=get_education_platform_buttons())
-        return True
+        limit = 90
     elif tariff == "tarefe120gig":
-        bot.send_message(chat_id, hiddify_api_put(chat_id, 40, 120, ))
+        limit = 120
+
+    if limit != 0:
+        bot.send_message(chat_id, hiddify_api_put(chat_id, 40, limit, ))
         bot.send_message(chat_id,
                          "لینک بالا برای اندروید و ios مورد استفاده است درصورت نیاز به فایل windowsکانفیگ همراه با uuid به پشتیبانی مراجعه کنید",
                          reply_markup=get_education_platform_buttons())
-        return True
-    elif tariff == "tarefeEkhk":
-        pass
+    else:
+        bot.send_message(chat_id, "شما تعرفه درستی رو انتخاب نکردید")
 
 
 @bot.callback_query_handler(func=lambda call: call.data == "kharid_azma")
@@ -732,11 +739,13 @@ def handle_buy_callback(call):
                     buy_payment(user_id, price)
                     balance -= price  # بروزرسانی موجودی پس از خرید
 
-                    bot.send_message(call.message.chat.id, f"خرید شما با موفقیت انجام شد. موجودی جدید شما: {balance} ترون")
+                    bot.send_message(call.message.chat.id,
+                                     f"خرید شما با موفقیت انجام شد. موجودی جدید شما: {balance} ترون")
                 else:
                     bot.send_message(call.message.chat.id, "خطایی در انجام تراکنش رخ داد.")
             else:
-                bot.send_message(call.message.chat.id, f"متاسفانه موجودی شما کافی نیست. موجودی فعلی شما: {balance} ترون",
+                bot.send_message(call.message.chat.id,
+                                 f"متاسفانه موجودی شما کافی نیست. موجودی فعلی شما: {balance} ترون",
                                  reply_markup=get_wallet_recharge_buttons())
         else:
             bot.send_message(call.message.chat.id, "کاربر یافت نشد.مجددا start کنید بات رو")
