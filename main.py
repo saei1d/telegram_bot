@@ -116,7 +116,7 @@ def search_client_code_for_balance(message):
         balance = wallet[0]
         all_buy = wallet[1]
         msg = bot.send_message(message.chat.id,
-                               f'این کاربر درحال حاضر با موجودی {balance} و در کل به مقدار {all_buy} کیف پول خودشو شارژ کرده \n اگر میخاهید بالانس شخصی رو افزایش دهید فقط عددی ک میخاهید با بالانس جمع بشود رو وارد کنید⚠')
+                               f'این کاربر درحال حاضر با موجودی {balance} و در کل به مقدار {all_buy} داشبورد جیمبو خودشو شارژ کرده \n اگر میخاهید بالانس شخصی رو افزایش دهید فقط عددی ک میخاهید با بالانس جمع بشود رو وارد کنید⚠')
         bot.register_next_step_handler(msg, balance_admin, wallet_id)
 
 
@@ -158,7 +158,7 @@ def search_client_code_for_decreasebalance(message):
         balance = wallet[0]
         all_buy = wallet[1]
         msg = bot.send_message(message.chat.id,
-                               f'این کاربر درحال حاضر با موجودی {balance} و در کل به مقدار {all_buy} کیف پول خودشو شارژ کرده \n اگر میخاهید بالانس شخصی رو کاهش دهید فقط عددی ک میخاهید از بالانس کم  بشود رو وارد کنید⚠')
+                               f'این کاربر درحال حاضر با موجودی {balance} و در کل به مقدار {all_buy} داشبورد جیمبو خودشو شارژ کرده \n اگر میخاهید بالانس شخصی رو کاهش دهید فقط عددی ک میخاهید از بالانس کم  بشود رو وارد کنید⚠')
         bot.register_next_step_handler(msg, decreasebalance_admin, wallet_id)
 
 
@@ -254,7 +254,7 @@ def search_client_code(message):
         for mmd in user_configss:
             bot.send_message(message.chat.id, mmd)
         bot.send_message(message.chat.id,
-                         f' یوزر آیدی{user_id},دعوت شده توسط {join_by_code} کد رفرال {referral_code} شماره موبایل{phone_number}و ایمیل {email} و کیف پول این شخص در حال حاضر مقدار {balance} و در کل به مقدار {all_buy} ترون شارژ شده است')
+                         f' یوزر آیدی{user_id},دعوت شده توسط {join_by_code} کد رفرال {referral_code} شماره موبایل{phone_number}و ایمیل {email} و داشبورد جیمبو این شخص در حال حاضر مقدار {balance} و در کل به مقدار {all_buy} ترون شارژ شده است')
     else:
         bot.send_message(message.chat.id, "karbar shenasaei nashod")
 
@@ -358,7 +358,7 @@ def takhsis_account(message, client_code_moshtari):
             bot.send_message(message.chat.id, "کانفیگی که انتخاب کردید نامشخص است")
 
     else:
-        bot.send_message(message.chat.id, "کیف پول شما موجودی کافی ندارد")
+        bot.send_message(message.chat.id, "داشبورد جیمبو شما موجودی کافی ندارد")
 
 
 @bot.message_handler(commands=['AGENT/EKHTESASI'])
@@ -451,7 +451,7 @@ def buy_ekhtesasi_agent(call, tron_ekhh, num1, num2, client_code_moshtari):
             balance_pro = round(balance, 2)  # گرد کردن به دو رقم اعشار
 
             bot.send_message(call.message.chat.id,
-                             f'عملیات تخصیص اکانت با موفقیت انجام شد کیف پول شما درحال حاضر {balance_pro} ترون دارد ')  # بروزرسانی موجودی پس از خرید
+                             f'عملیات تخصیص اکانت با موفقیت انجام شد داشبورد جیمبو شما درحال حاضر {balance_pro} ترون دارد ')  # بروزرسانی موجودی پس از خرید
 
         else:
             bot.send_message(call.message.chat.id, "شما پول کافی ندارید")
@@ -484,7 +484,7 @@ def handle_start(message):
         username = message.from_user.username or "NoUsername"
         save_user_and_create_wallet(client_code, username)
         reply_markup = get_main_buttons()
-        bot.send_message(message.chat.id, f'متن تستی خوش آماد گویی \n نام کاربری شما : {chat_id}',
+        bot.send_message(message.chat.id, f'سلام عزیزم ❤️\nخوش اومدی به خانواده بزرگ جیمبو ✈️\nیکی از کلید های پایین رو بزن 👇 \n نام کاربری شما : {chat_id}',
                          reply_markup=reply_markup)
 
 
@@ -497,12 +497,12 @@ def handle_message(message):
     elif message.text == 'پشتیبانی':
         bot.send_message(message.chat.id, "با مطالعه سوالات متداول ممکنه به جوابت برسی",
                          reply_markup=get_support_buttons())
-    elif message.text == "کیف پول":
+    elif message.text == "داشبورد جیمبو":
         if check_membership(chat_id, channel_username):
             # فرض می‌شود تابع `find_user_id_from_client_code` ID کاربر را بر اساس chat_id بازگرداند
             user_id = find_user_id_from_client_code(message.chat.id)
             balance = show_user_wallet_balance(user_id)
-            bot.send_message(message.chat.id, f"مقدار موجودی شما: {balance} ترون",
+            bot.send_message(message.chat.id, f" موجودی شما تو داشبورد جیمبو : {balance}  ترون",
                              reply_markup=get_wallet_recharge_buttons())
     elif message.text == "آموزش استفاده":
         bot.send_message(message.chat.id, "آموزش مد نظرتو انتخاب کن", reply_markup=get_education_buttons())
@@ -845,7 +845,7 @@ def handle_sharzh_callback(call):
 def handle_edame_kharid_callback(call, discount_percentage=0):
     address = "TRZw3VgCdJoz93akEAt7yrMC1Wr6FgUFqY"
     bot.send_message(call.message.chat.id,
-                     f"برای شارژ کیف پول خود، ترون را به آدرس زیر ارسال کنید:\n\n<code>{address}</code>",
+                     f"برای شارژ داشبورد جیمبو خود، ترون را به آدرس زیر ارسال کنید:\n\n<code>{address}</code>",
                      parse_mode="HTML")
     bot.send_message(call.message.chat.id, "پس از ارسال، کد هش تراکنش را اینجا وارد کنید:",
                      reply_markup=get_back_buttons())
@@ -912,7 +912,7 @@ def insert_payment_and_update_wallet(conn, amount, transaction_hash, client_code
             cur.execute(
                 "INSERT INTO payments (wallet_id, amount, hash_code,discount_percentage) VALUES (%s, %s, %s,%s);",
                 (wallet_id, amount, transaction_hash, percent_asli))
-            # به‌روزرسانی موجودی کیف پول
+            # به‌روزرسانی موجودی داشبورد جیمبو
             cur.execute("UPDATE wallets SET balance = balance + %s , all_buy = all_buy + %s  WHERE wallet_id = %s;",
                         (amount, rounded, wallet_id))
             conn.commit()
@@ -957,7 +957,7 @@ def process_transaction_hash(message, percent_asli):
     if rounded_plus_bounos is not None and hash_verified:
         # در اینجا کد برای insert_payment_and_update_wallet اضافه می‌شود (فرضی)
         if insert_payment_and_update_wallet(conn, rounded_plus_bounos, hash1, message.chat.id, percent_asli, rounded):
-            bot.send_message(message.chat.id, f"کیف پول شما با موفقیت شارژ شد. به مقدار: {rounded_plus_bounos} ترون")
+            bot.send_message(message.chat.id, f"داشبورد جیمبو شما با موفقیت شارژ شد. به مقدار: {rounded_plus_bounos} ترون")
             safirs = []
             current_client_code = client_code
 
@@ -997,7 +997,7 @@ def process_transaction_hash(message, percent_asli):
             conn.commit()
 
         else:
-            bot.send_message(message.chat.id, "مشکلی در بروزرسانی کیف پول به وجود آمد.")
+            bot.send_message(message.chat.id, "مشکلی در بروزرسانی داشبورد جیمبو به وجود آمد.")
     else:
         bot.send_message(message.chat.id, "تراکنش معتبر نیست یا تأیید نشده است.")
 

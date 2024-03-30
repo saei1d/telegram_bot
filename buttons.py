@@ -5,7 +5,7 @@ def get_main_buttons():
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=2)
     buttons = [
         types.KeyboardButton("خرید اشتراک"),
-        types.KeyboardButton("کیف پول"),
+        types.KeyboardButton("داشبورد جیمبو"),
         types.KeyboardButton("تست یکروزه"),
         types.KeyboardButton("عودت وجه"),
         types.KeyboardButton("آموزش استفاده"),
@@ -72,15 +72,15 @@ def get_support_buttons():
 
 def get_money():
     markup = types.InlineKeyboardMarkup()
-    recharge_button = types.InlineKeyboardButton("شارژ کیف پول", callback_data="sharzh")
+    recharge_button = types.InlineKeyboardButton("شارژ داشبورد جیمبو", callback_data="sharzh")
     markup.add(recharge_button)
 
 
 def get_wallet_recharge_buttons():
     markup = types.InlineKeyboardMarkup(row_width=1)
     buttons = [
-        types.InlineKeyboardButton("شارژ از ولت شخصی ترون (TRC20)", callback_data="sharzh"),
-        types.InlineKeyboardButton("خریدترون از ما (پیشنهادی)", callback_data="kharid_azma"),
+        types.InlineKeyboardButton("از ولت خودت داشبورد جیمبو رو شارژ کن (TRC20)", callback_data="sharzh"),
+        types.InlineKeyboardButton("از ما بخر ترون و داشبورتو شارژ کن(پیشنهادی)", callback_data="kharid_azma"),
     ]
     markup.add(*buttons)
     return markup
@@ -101,7 +101,7 @@ def get_education_buttons():
     """
     markup = types.InlineKeyboardMarkup()
     buttons = [
-        types.InlineKeyboardButton("آموزش شارژ کیف پول ترون", callback_data="ARZ"),
+        types.InlineKeyboardButton("آموزش شارژ داشبورد جیمبو ترون", callback_data="ARZ"),
         types.InlineKeyboardButton("آموزش استفاده از کانفیگ ها", callback_data="Dastgah"),
 
     ]
