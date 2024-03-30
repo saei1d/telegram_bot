@@ -670,6 +670,7 @@ def make_refral_wallet_by_email(client_code, email_validate):
 ####################################
 
 
+
 def send_purchase_confirmation(chat_id, tariff):
     limit = 0
     if tariff == "tarefe30gig":
@@ -686,7 +687,7 @@ def send_purchase_confirmation(chat_id, tariff):
     if limit != 0:
         global buy_config
         buy_config = hiddify_api_put(chat_id, 40, limit)
-        bot.send_message(chat_id, buy_config, reply_markup=qr())
+        bot.send_message(chat_id, buy_config, reply_markup=qr() )
 
         bot.send_message(chat_id,
                          "لینک بالا برای اندروید و ios مورد استفاده است درصورت نیاز به فایل windowsکانفیگ همراه با uuid به پشتیبانی مراجعه کنید",
@@ -697,7 +698,7 @@ def send_purchase_confirmation(chat_id, tariff):
 
 
 @bot.callback_query_handler(func=lambda call: call.data == "qqq")
-def qr_code_code(call, buy_config):
+def qr_code_code(call):
     qr_code = f'api.qrserver.com/v1/create-qr-code/?data={buy_config}&size=200*200'
     bot.send_message(call.message.chat.id, qr_code)
 
