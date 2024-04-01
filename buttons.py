@@ -190,7 +190,7 @@ def discount2():
     markup = types.InlineKeyboardMarkup()
     buttons = [
         types.InlineKeyboardButton("کد تخفیف داری ؟", callback_data="discount"),
-        types.InlineKeyboardButton("خرید تعرفه", callback_data="edame_kharid"),
+        types.InlineKeyboardButton("خرید تعرفه", callback_data="tarefe"),
 
     ]
     markup.add(*buttons)
