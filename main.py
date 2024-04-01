@@ -616,7 +616,7 @@ def make_refral_wallet_by_phone(client_code, first_name, phone):
                 (first_name, phone, discount_code, client_code))
 
     bot.send_message(client_code,
-                     f'متن تستی کد تخفیف \n   <code>{discount_code}</code>',
+                     f'شروع شد قراره باهم بترکونیم🔥\n کدتخفیف اختصاصی شما: \n   <code>{discount_code}</code> \ این کد رو برای دوستات ارسال کن',
                      parse_mode='HTML')
 
     cur.execute("INSERT INTO discount_codes (name, percentage, owner,status) VALUES (%s, %s, %s,%s);",
