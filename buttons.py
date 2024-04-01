@@ -195,3 +195,16 @@ def discount2():
     ]
     markup.add(*buttons)
     return markup
+
+
+
+
+
+def bardasht():
+    markup = types.InlineKeyboardMarkup()
+    buttons = [
+        types.InlineKeyboardButton("برداشت وجه", callback_data="bardasht"),
+
+    ]
+    markup.add(*buttons)
+    return markup

@@ -1098,7 +1098,7 @@ def income_safir(client_code):
             referral_code = referral_code[0]
             bot.send_message(client_code,
                              f' افراد زیر مجموعه: {people} نفر\n درامد فعلی شما: {income}ترون \n کد تخفیف اختصاصی شما \n <code>{referral_code}</code>',
-                             parse_mode='HTML')
+                             parse_mode='HTML', reply_markup=bardasht())
             return True
 
     return
@@ -1121,6 +1121,11 @@ def test_account(chat_id):
     else:
         bot.send_message(chat_id, "یکبار از اکانت تستی استفاده کردی \n الان میتونی با یه تخفیف خوب اکانت خودتو بسازی👇",
                          reply_markup=discount2())
+
+
+@bot.callback_query_handler(func=lambda call:call.data == "bardasht")
+def bardasht1(call):
+    bot.send_message(call.message.chat.id, "برای برداشت وجه به همراه نام کاربری خودتون --------- به آیدی پشتیبانی ------ پیام بدهید")
 
 
 if __name__ == "__main__":
