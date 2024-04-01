@@ -80,7 +80,7 @@ def get_wallet_recharge_buttons():
     markup = types.InlineKeyboardMarkup(row_width=1)
     buttons = [
         types.InlineKeyboardButton("از ولت خودت داشبورد جیمبو رو شارژ کن (TRC20)", callback_data="sharzh"),
-        types.InlineKeyboardButton("از ما بخر ترون و داشبورتو شارژ کن(پیشنهادی)", callback_data="kharid_azma"),
+        types.InlineKeyboardButton("از ما ترون بخر و داشبورتو شارژ کن(پیشنهادی)", callback_data="kharid_azma"),
     ]
     markup.add(*buttons)
     return markup

@@ -720,7 +720,7 @@ def qr_code_code(call):
 @bot.callback_query_handler(func=lambda call: call.data == "kharid_azma")
 def kharid_azma(call):
     bot.send_message(call.message.chat.id,
-                     "متن تستی خرید ازما بعلاوه یوزر نیم ترون فروش و دکمه زیر آموزش متنی تصویری لینک کانال",
+                     "با استفاده از ایدی زیر میتونی ترون رو به پایین ترین قیمت تهیه کنی \n  و داشبوردتو مستقیم شارژ کنی \n (این ایدی مورد تایید جیمبو میباشد) \n آیدی:@12345",
                      reply_markup=amozesh_kharid_tron_az_ma())
 
 
