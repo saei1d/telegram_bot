@@ -452,7 +452,7 @@ def buy_ekhtesasi_agent(call, tron_ekhh, num1, num2, client_code_moshtari):
         if balance >= tron != 0:
             bot.send_message(client_code_moshtari, hiddify_api_put(client_code_moshtari, num2, num1))
             bot.send_message(client_code_moshtari,
-                             "لینک بالا برای اندروید و ios مورد استفاده است درصورت نیاز به فایل windowsکانفیگ همراه با uuid به پشتیبانی مراجعه کنید",
+                             "لینک بالا برای استفاده روی سیستم عامل های Android و ios میباشد \n برای استفاده روی ویندوز لطفا نام کاربری خود را ----------- به آیدی ----- ارسال نمایید",
                              reply_markup=get_education_platform_buttons())
             buy_payment(user_id, tron)
             balance -= tron
@@ -504,7 +504,7 @@ def handle_message(message):
         if check_membership(chat_id, channel_username):
             bot.send_message(message.chat.id, "تعرفه مورد نظر خودتون رو انتخاب کنید", reply_markup=get_tariff_buttons())
     elif message.text == 'پشتیبانی👥':
-        bot.send_message(message.chat.id, "با مطالعه سوالات متداول ممکنه به جوابت برسی",
+        bot.send_message(message.chat.id, "سعی کردیم اکثر سوالات شمارا پاسخ دهیم اما اگر همچنان به جواب سوال خود در قسمت سوالات متداول نرسیدید میتوانید با پشتیبانی ارتباط برقرار نمایید",
                          reply_markup=get_support_buttons())
     elif message.text == "داشبورد جیمبو 🖥":
         if check_membership(chat_id, channel_username):
@@ -524,13 +524,13 @@ def handle_message(message):
             else:
                 pass
     elif message.text == "عودت وجه❌":
-        bot.send_message(message.chat.id, "متن تستی عودت وجه")
+        bot.send_message(message.chat.id, "برای برداشت موجودی داشبورد خود آیدی ----- خودرا برای پشتیبان ارسال نمایید ---------")
     elif message.text == "درآمدزایی⚡💵":
         if check_membership(chat_id, channel_username):
             if check_safir(chat_id):
                 income_safir(chat_id)
             else:
-                bot.send_message(message.chat.id, "متن تستی درامد زایی ", reply_markup=button_validate())
+                bot.send_message(message.chat.id, "جیمبو قراره این بار برات پول بسازه 😍  \n اگه فروشنده اکانت میتونی باشی به هر شکلی خانواده،دوستان و ... \n کافیه اینجا ثبت نام کنی تا برات یه کد تخفیف اختصاصی بسازم که باهاش هم به مخاطبات تخفیف بدی و هم از هر خرید اونها تا ابد سود به دست بیاری 😉\n نکته جالبش اینه که هرکدوم از زیر مجموعه هات مجددا کسی رو به خرید دعوت کنه تا 10 نفر زیرمجموعه بازم سودش تو جیب تو میره😱 ", reply_markup=button_validate())
     elif message.text == "ارسال ایمیل":
         msg = bot.send_message(message.chat.id, "لطفا ایمیل خودتون رو وارد کنید \n  مثال: example@gmail.com")
         bot.register_next_step_handler(msg, email)
@@ -704,7 +704,7 @@ def send_purchase_confirmation(chat_id, tariff):
         bot.send_message(chat_id, buy_config, reply_markup=qr())
 
         bot.send_message(chat_id,
-                         "لینک بالا برای اندروید و ios مورد استفاده است درصورت نیاز به فایل windowsکانفیگ همراه با uuid به پشتیبانی مراجعه کنید",
+                         "لینک بالا برای استفاده روی سیستم عامل های Android و ios میباشد \n برای استفاده روی ویندوز لطفا نام کاربری خود را ----------- به آیدی ----- ارسال نمایید",
                          reply_markup=get_education_platform_buttons())
         return True
     else:
@@ -731,7 +731,7 @@ def buy_ekhtesasi(chat_id, tron, days, volume):
             if balance >= tron != 0:
                 bot.send_message(chat_id, hiddify_api_put(chat_id, days, volume, ))
                 bot.send_message(chat_id,
-                                 "لینک بالا برای اندروید و ios مورد استفاده است درصورت نیاز به فایل windowsکانفیگ همراه با uuid به پشتیبانی مراجعه کنید",
+                                 "لینک بالا برای استفاده روی سیستم عامل های Android و ios میباشد \n برای استفاده روی ویندوز لطفا نام کاربری خود را ----------- به آیدی ----- ارسال نمایید",
                                  reply_markup=get_education_platform_buttons())
                 buy_payment(user_id, tron)
                 balance -= tron  # بروزرسانی موجودی پس از خرید
@@ -777,7 +777,7 @@ def handle_buy_callback(call):
 @bot.callback_query_handler(func=lambda call: call.data == "Ekhtesasi")
 def Ekhtesasi(call):
     bot.send_message(call.message.chat.id,
-                     " شمامیتوانید با وارد کردن تعداد روز مقدار حجم کانفیگ و تعداد کابر کانفیگ خودتون رو اختصاصی کنید \n\n  با وارد کردن عدد 0 اینگلیسی مقدار ثابت برای کانفیگ شما درنظر گرفته خواهد شد مثلا مقدار ثابت و حداقلی هر کانفیگ 40 روز و تعداد کاربر 2 میباشد ",
+                     " شمامیتوانید با وارد کردن تعداد روز مقدار حجم کانفیگ و تعداد کاربر کانفیگ خودتون رو اختصاصی کنید \n\n مقدار ثابت و حداقلی هر کانفیگ 30 گیگ 40 روز و تعداد کاربر 2 میباشد ",
                      reply_markup=ekhtesasiii())
 
 
@@ -908,14 +908,14 @@ def disco(message, call):
 
                 cur.execute("UPDATE users SET join_by_code = %s WHERE client_code = %s", (owner, client_code))
                 conn.commit()
-                bot.send_message(message.chat.id, f'کد تخفیف شما مورد تایید قرار گرفت به مقدار {discount_percentage}%')
+                bot.send_message(message.chat.id, f'کد تخفیف شما ثبت شد در اینجا با هر مقدار شارژ به مقدار کد تخفیف  {discount_percentage}%')
                 handle_edame_kharid_callback(call, discount_percentage)
             else:
                 bot.send_message(call.message.chat.id,
                                  "کد تخفیفی که وارد کردید رفرال بوده و قبلا شما توسط فرد دیگری دعوت شدید \n لطفا از کدتخفیف های عمومی استفاده کنید")
                 return
         else:
-            bot.send_message(message.chat.id, f'کد تخفیف شما مورد تایید قرار گرفت به مقدار {discount_percentage}%')
+            bot.send_message(message.chat.id, f'کد تخفیف شما ثبت شد در اینجا با هر مقدار شارژ به مقدار کدتخفیف خود شارژ رایگان دریافت کنید')
             handle_edame_kharid_callback(call, discount_percentage)
     else:
         bot.send_message(message.chat.id, f' کد تخفیف شما مورد تایید قرار نگرفت ', reply_markup=get_main_buttons())
@@ -1097,7 +1097,7 @@ def income_safir(client_code):
         if referral_code:
             referral_code = referral_code[0]
             bot.send_message(client_code,
-                             f' شما در حال حاضر {people} نفر\n درامد شما {income}\n متن تستی کد تخفیف \n <code>{referral_code}</code>',
+                             f' افراد زیر مجموعه: {people} نفر\n درامد فعلی شما: {income}ترون \n کد تخفیف اختصاصی شما \n <code>{referral_code}</code>',
                              parse_mode='HTML')
             return True
 
