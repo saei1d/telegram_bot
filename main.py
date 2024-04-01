@@ -500,32 +500,32 @@ def handle_start(message):
 @bot.message_handler(func=lambda message: True)
 def handle_message(message):
     chat_id = message.chat.id
-    if message.text == "خرید اشتراک":
+    if message.text == "خرید اشتراک🛍":
         if check_membership(chat_id, channel_username):
             bot.send_message(message.chat.id, "تعرفه مورد نظر خودتون رو انتخاب کنید", reply_markup=get_tariff_buttons())
-    elif message.text == 'پشتیبانی':
+    elif message.text == 'پشتیبانی👥':
         bot.send_message(message.chat.id, "با مطالعه سوالات متداول ممکنه به جوابت برسی",
                          reply_markup=get_support_buttons())
-    elif message.text == "داشبورد جیمبو":
+    elif message.text == "داشبورد جیمبو 🖥":
         if check_membership(chat_id, channel_username):
             # فرض می‌شود تابع `find_user_id_from_client_code` ID کاربر را بر اساس chat_id بازگرداند
             user_id = find_user_id_from_client_code(message.chat.id)
             balance = show_user_wallet_balance(user_id)
             bot.send_message(message.chat.id, f" موجودی شما تو داشبورد جیمبو : {balance}  ترون",
                              reply_markup=get_wallet_recharge_buttons())
-    elif message.text == "آموزش استفاده":
+    elif message.text == "آموزش استفاده💿📖":
         bot.send_message(message.chat.id, "آموزش مد نظرتو انتخاب کن", reply_markup=get_education_buttons())
 
-    elif message.text == "قیمت لحظه ای ترون":
+    elif message.text == "قیمت لحظه ای ترون🌐":
         if check_membership(chat_id, channel_username):
             my_string = tron_price(chat_id)
             if my_string:
                 bot.send_message(chat_id, f'ترون در حال حاضر {my_string} می باشد  . ')
             else:
                 pass
-    elif message.text == "عودت وجه":
+    elif message.text == "عودت وجه❌":
         bot.send_message(message.chat.id, "متن تستی عودت وجه")
-    elif message.text == "درامدزایی":
+    elif message.text == "درآمدزایی⚡💵":
         if check_membership(chat_id, channel_username):
             if check_safir(chat_id):
                 income_safir(chat_id)
@@ -535,7 +535,7 @@ def handle_message(message):
         msg = bot.send_message(message.chat.id, "لطفا ایمیل خودتون رو وارد کنید \n  مثال: example@gmail.com")
         bot.register_next_step_handler(msg, email)
 
-    elif message.text == "تست یکروزه":
+    elif message.text == "اکانت تستی رایگان🔥":
         if check_membership(chat_id, channel_username):
             test_account(chat_id)
 
