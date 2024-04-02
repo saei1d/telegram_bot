@@ -268,7 +268,7 @@ def search_client_code(message):
 ########################################################
 
 
-@bot.message_handler(commands=['sell'])
+@bot.message_handler(commands=['فروش'])
 def agent(message):
     if chek_admin(message.chat.id) != False:
         msg = bot.send_message(message.chat.id,
