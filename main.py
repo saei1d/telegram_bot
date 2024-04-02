@@ -452,7 +452,7 @@ def buy_ekhtesasi_agent(call, tron_ekhh, num1, num2, client_code_moshtari):
         if balance >= tron != 0:
             bot.send_message(client_code_moshtari, hiddify_api_put(client_code_moshtari, num2, num1))
             bot.send_message(client_code_moshtari,
-                             "لینک بالا برای استفاده روی سیستم عامل های Android و ios میباشد \n برای استفاده روی ویندوز لطفا نام کاربری خود را ----------- به آیدی ----- ارسال نمایید",
+                             "لینک بالا برای استفاده روی سیستم عامل های Android و ios میباشد \n نام کاربری شما:<code>{call.message.chat.id}</code> \n  روی شماره کاربریت کلیک کن و مستقیم به آیدی زیر ارسال کن. \n آیدی:@jimboovpn_Support",parse_mode="HTML",
                              reply_markup=get_education_platform_buttons())
             buy_payment(user_id, tron)
             balance -= tron
@@ -708,7 +708,7 @@ def send_purchase_confirmation(chat_id, tariff):
         bot.send_message(chat_id, buy_config, reply_markup=qr())
 
         bot.send_message(chat_id,
-                         "لینک بالا برای استفاده روی سیستم عامل های Android و ios میباشد \n برای استفاده روی ویندوز لطفا نام کاربری خود را ----------- به آیدی ----- ارسال نمایید",
+                         "لینک بالا برای استفاده روی سیستم عامل های Android و ios میباشد \n نام کاربری شما:<code>{call.message.chat.id}</code> \n  روی شماره کاربریت کلیک کن و مستقیم به آیدی زیر ارسال کن. \n آیدی:@jimboovpn_Support",parse_mode="HTML",
                          reply_markup=get_education_platform_buttons())
         return True
     else:
@@ -737,7 +737,7 @@ def buy_ekhtesasi(chat_id, tron, days, volume):
             if balance >= tron != 0:
                 bot.send_message(chat_id, hiddify_api_put(chat_id, days, volume, ))
                 bot.send_message(chat_id,
-                                 "لینک بالا برای استفاده روی سیستم عامل های Android و ios میباشد \n برای استفاده روی ویندوز لطفا نام کاربری خود را ----------- به آیدی ----- ارسال نمایید",
+                                 "لینک بالا برای استفاده روی سیستم عامل های Android و ios میباشد \n نام کاربری شما:<code>{call.message.chat.id}</code> \n  روی شماره کاربریت کلیک کن و مستقیم به آیدی زیر ارسال کن. \n آیدی:@jimboovpn_Support",parse_mode="HTML",
                                  reply_markup=get_education_platform_buttons())
                 buy_payment(user_id, tron)
                 balance -= tron  # بروزرسانی موجودی پس از خرید
