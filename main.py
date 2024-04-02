@@ -361,7 +361,7 @@ def takhsis_account(message, client_code_moshtari):
         bot.send_message(message.chat.id, "داشبورد جیمبو شما موجودی کافی ندارد")
 
 
-@bot.message_handler(commands=['AGENT/EKHTESASI'])
+@bot.message_handler(commands=['فروش/اختصاصی'])
 def admin_ehtesasi(message):
     if chek_admin(message.chat.id) != False:
         msg = bot.send_message(message.chat.id,
@@ -504,7 +504,8 @@ def handle_message(message):
         if check_membership(chat_id, channel_username):
             bot.send_message(message.chat.id, "تعرفه مورد نظر خودتون رو انتخاب کنید", reply_markup=get_tariff_buttons())
     elif message.text == 'پشتیبانی👥':
-        bot.send_message(message.chat.id, "سعی کردیم اکثر سوالات شمارا پاسخ دهیم اما اگر همچنان به جواب سوال خود در قسمت سوالات متداول نرسیدید میتوانید با پشتیبانی ارتباط برقرار نمایید",
+        bot.send_message(message.chat.id,
+                         "سعی کردیم اکثر سوالات شمارا پاسخ دهیم اما اگر همچنان به جواب سوال خود در قسمت سوالات متداول نرسیدید میتوانید با پشتیبانی ارتباط برقرار نمایید",
                          reply_markup=get_support_buttons())
     elif message.text == "داشبورد جیمبو 🖥":
         if check_membership(chat_id, channel_username):
@@ -524,13 +525,16 @@ def handle_message(message):
             else:
                 pass
     elif message.text == "عودت وجه❌":
-        bot.send_message(message.chat.id, "برای برداشت موجودی داشبورد خود آیدی ----- خودرا برای پشتیبان ارسال نمایید ---------")
+        bot.send_message(message.chat.id,
+                         "برای برداشت موجودی داشبورد خود آیدی ----- خودرا برای پشتیبان ارسال نمایید ---------")
     elif message.text == "درآمدزایی⚡💵":
         if check_membership(chat_id, channel_username):
             if check_safir(chat_id):
                 income_safir(chat_id)
             else:
-                bot.send_message(message.chat.id, "جیمبو قراره این بار برات پول بسازه 😍  \n اگه فروشنده اکانت میتونی باشی به هر شکلی خانواده،دوستان و ... \n کافیه اینجا ثبت نام کنی تا برات یه کد تخفیف اختصاصی بسازم که باهاش هم به مخاطبات تخفیف بدی و هم از هر خرید اونها تا ابد سود به دست بیاری 😉\n نکته جالبش اینه که هرکدوم از زیر مجموعه هات مجددا کسی رو به خرید دعوت کنه تا 10 نفر زیرمجموعه بازم سودش تو جیب تو میره😱 ", reply_markup=button_validate())
+                bot.send_message(message.chat.id,
+                                 "جیمبو قراره این بار برات پول بسازه 😍  \n اگه فروشنده اکانت میتونی باشی به هر شکلی خانواده،دوستان و ... \n کافیه اینجا ثبت نام کنی تا برات یه کد تخفیف اختصاصی بسازم که باهاش هم به مخاطبات تخفیف بدی و هم از هر خرید اونها تا ابد سود به دست بیاری 😉\n نکته جالبش اینه که هرکدوم از زیر مجموعه هات مجددا کسی رو به خرید دعوت کنه تا 10 نفر زیرمجموعه بازم سودش تو جیب تو میره😱 ",
+                                 reply_markup=button_validate())
     elif message.text == "ارسال ایمیل":
         msg = bot.send_message(message.chat.id, "لطفا ایمیل خودتون رو وارد کنید \n  مثال: example@gmail.com")
         bot.register_next_step_handler(msg, email)
@@ -719,7 +723,9 @@ def qr_code_code(call):
 
 @bot.callback_query_handler(func=lambda call: call.data == "kharid_azma")
 def kharid_azma(call):
-    bot.send_message(call.message.chat.id,f"با استفاده از ایدی زیر میتونی ترون رو به پایین ترین قیمت تهیه کنی \n و داشبوردتو مستقیم شارژ کنی. روی شماره کاربریت کلیک کن و مستقیم به آیدی زیر ارسال کن{call.message.chat.id} \n (این ایدی مورد تایید جیمبو میباشد)👇 \n آیدی:@12345",reply_markup=amozesh_kharid_tron_az_ma())
+    bot.send_message(call.message.chat.id,
+                     f" با استفاده از ایدی زیر میتونی ترون رو به پایین ترین قیمت تهیه کنی و داشبوردتو مستقیم شارژ کنی. \n نام کاربری شما:<code>{call.message.chat.id}</code> \n  روی شماره کاربریت کلیک کن و مستقیم به آیدی زیر ارسال کن. \n  (این ایدی مورد تایید جیمبو میباشد)👇  \n آیدی:@jimboovpn_Support",
+                     reply_markup=amozesh_kharid_tron_az_ma())
 
 
 def buy_ekhtesasi(chat_id, tron, days, volume):
@@ -908,14 +914,16 @@ def disco(message, call):
 
                 cur.execute("UPDATE users SET join_by_code = %s WHERE client_code = %s", (owner, client_code))
                 conn.commit()
-                bot.send_message(message.chat.id, f'کد تخفیف شما ثبت شد در اینجا با هر مقدار شارژ به مقدار کد تخفیف  {discount_percentage}%')
+                bot.send_message(message.chat.id,
+                                 f'کد تخفیف شما ثبت شد در اینجا با هر مقدار شارژ به مقدار کد تخفیف  {discount_percentage}%')
                 handle_edame_kharid_callback(call, discount_percentage)
             else:
                 bot.send_message(call.message.chat.id,
                                  "کد تخفیفی که وارد کردید رفرال بوده و قبلا شما توسط فرد دیگری دعوت شدید \n لطفا از کدتخفیف های عمومی استفاده کنید")
                 return
         else:
-            bot.send_message(message.chat.id, f'کد تخفیف شما ثبت شد در اینجا با هر مقدار شارژ به مقدار کدتخفیف خود شارژ رایگان دریافت کنید')
+            bot.send_message(message.chat.id,
+                             f'کد تخفیف شما ثبت شد در اینجا با هر مقدار شارژ به مقدار کدتخفیف خود شارژ رایگان دریافت کنید')
             handle_edame_kharid_callback(call, discount_percentage)
     else:
         bot.send_message(message.chat.id, f' کد تخفیف شما مورد تایید قرار نگرفت ', reply_markup=get_main_buttons())
@@ -1123,10 +1131,14 @@ def test_account(chat_id):
                          reply_markup=discount2())
 
 
-@bot.callback_query_handler(func=lambda call:call.data == "bardasht")
+@bot.callback_query_handler(func=lambda call: call.data == "bardasht")
 def bardasht1(call):
-    bot.send_message(call.message.chat.id, "برای برداشت وجه به همراه نام کاربری خودتون --------- به آیدی پشتیبانی ------ پیام بدهید")
+    bot.send_message(call.message.chat.id,f' با استفاده از ایدی زیر میتونی برداشت ترون انجام بدی حداقل مقدار برداشت ۱۰ ترون میباشد. \n نام کاربری شما:<code>{call.message.chat.id}</code> \n  روی شماره کاربریت کلیک کن و مستقیم به آیدی زیر ارسال کن. \n آیدی:@jimboovpn_Support')
 
+
+@bot.callback_query_handler(func=lambda call: call.data == "mmd2")
+def dddd(call):
+    bot.send_message(call.message.chat.id, "تعرفه مورد نظر خودتون رو انتخاب کنید", reply_markup=get_tariff_buttons())
 
 if __name__ == "__main__":
     bot.infinity_polling(skip_pending=True)

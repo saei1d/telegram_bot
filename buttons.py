@@ -189,7 +189,7 @@ def qr():
 def discount2():
     markup = types.InlineKeyboardMarkup()
     buttons = [
-        types.InlineKeyboardButton("کد تخفیف داری ؟", callback_data="discount"),
+        types.InlineKeyboardButton("کدتخفیف داری؟", callback_data="mmd2"),
         types.InlineKeyboardButton("خرید تعرفه", callback_data="tarefe"),
 
     ]
