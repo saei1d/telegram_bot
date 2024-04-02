@@ -724,7 +724,7 @@ def qr_code_code(call):
 @bot.callback_query_handler(func=lambda call: call.data == "kharid_azma")
 def kharid_azma(call):
     bot.send_message(call.message.chat.id,
-                     f" با استفاده از ایدی زیر میتونی ترون رو به پایین ترین قیمت تهیه کنی و داشبوردتو مستقیم شارژ کنی. \n نام کاربری شما:<code>{call.message.chat.id}</code> \n  روی شماره کاربریت کلیک کن و مستقیم به آیدی زیر ارسال کن. \n  (این ایدی مورد تایید جیمبو میباشد)👇  \n آیدی:@jimboovpn_Support",
+                     f" با استفاده از ایدی زیر میتونی ترون رو به پایین ترین قیمت تهیه کنی و داشبوردتو مستقیم شارژ کنی. \n نام کاربری شما:<code>{call.message.chat.id}</code> \n  روی شماره کاربریت کلیک کن و مستقیم به آیدی زیر ارسال کن. \n  (این ایدی مورد تایید جیمبو میباشد)👇  \n آیدی:@jimboovpn_Support",parse_mode="HTML",
                      reply_markup=amozesh_kharid_tron_az_ma())
 
 
@@ -1133,7 +1133,7 @@ def test_account(chat_id):
 
 @bot.callback_query_handler(func=lambda call: call.data == "bardasht")
 def bardasht1(call):
-    bot.send_message(call.message.chat.id,f' با استفاده از ایدی زیر میتونی برداشت ترون انجام بدی حداقل مقدار برداشت ۱۰ ترون میباشد. \n نام کاربری شما:<code>{call.message.chat.id}</code> \n  روی شماره کاربریت کلیک کن و مستقیم به آیدی زیر ارسال کن. \n آیدی:@jimboovpn_Support')
+    bot.send_message(call.message.chat.id,f' با استفاده از ایدی زیر میتونی برداشت ترون انجام بدی حداقل مقدار برداشت ۱۰ ترون میباشد. \n نام کاربری شما:<code>{call.message.chat.id}</code> \n  روی شماره کاربریت کلیک کن و مستقیم به آیدی زیر ارسال کن. \n آیدی:@jimboovpn_Support',parse_mode="HTML")
 
 
 @bot.callback_query_handler(func=lambda call: call.data == "mmd2")
