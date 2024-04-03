@@ -21,6 +21,21 @@ import re
 bot = telebot.TeleBot(BOT_TOKEN)
 channel_username = '@jimboo_vpn'
 
+prices = {
+    "tarefe30gig": Decimal("11"),
+    "tarefe50gig": Decimal("17"),
+    "tarefe70gig": Decimal("22"),
+    "tarefe90gig": Decimal("27"),
+    "tarefe120gig": Decimal("31"),
+}
+
+
+price30 = prices["tarefe30gig"] * Decimal(0.5)
+price50 = prices["tarefe50gig"] * Decimal(0.5)
+price70 = prices["tarefe70gig"] * Decimal(0.5)
+price90 = prices["tarefe90gig"] * Decimal(0.5)
+price120 = prices["tarefe120gig"] * Decimal(0.5)
+
 
 def check_membership(chat_id, channel_username):
     conn = connect_db()
@@ -300,8 +315,7 @@ def agent2(message):
 
                 conn.commit()
 
-                msg = bot.send_message(message.chat.id,
-                                       "کاربر مد نظر شما با موفقیت زیر مجموعه شما شد و با هر خرید ۱۰ درصد رو شما دریافت خواهید کرد \n\n  اگر قصد خرید برای این کاربر رو دارید از پلن های موجود داخل ربات فقط عدد کانفیگ مورد  نظر رو انتخاب کنید \n 1:اکانت ۳۰ گیگ ۴۰ روزه 5.5 ترون \n 2: اکانت ۵۰ گیگ ۴۰ روزه 8.5 ترون \n 3: اکانت ۷۰ گیگ ۴۰ روزه 11 ترون \n 4: اکانت ۹۰ گیگ ۴۰ روزه 13.5 ترون \n 5: اکانت ۱۲۰ گیگ ۴۰ روزه 15.5 ترون \n \n این قیمت ها فقط برای فروشنده ها میباشد و تمام کانفیگ ها دو کاربره هستند \n \n برای ساخت اکانت اختصاصی از کامند /AGENT/EKHTESASI استفاده کنید \n لطفا فقط عدد کانفیگ مورد نظرتون رو ارسال کنید⚠ ")
+                msg = bot.send_message(message.chat.id,f"کاربر مد نظر شما با موفقیت زیر مجموعه شما شد و با هر خرید ۱۰ درصد رو شما دریافت خواهید کرد \n\n  اگر قصد خرید برای این کاربر رو دارید از پلن های موجود داخل ربات فقط عدد کانفیگ مورد  نظر رو انتخاب کنید \n 1:اکانت ۳۰ گیگ ۴۰ روزه {price30} ترون \n 2: اکانت ۵۰ گیگ ۴۰ روزه {price50} ترون \n 3: اکانت ۷۰ گیگ ۴۰ روزه {price70} ترون \n 4: اکانت ۹۰ گیگ ۴۰ روزه {price90} ترون \n 5: اکانت ۱۲۰ گیگ ۴۰ روزه {price120} ترون \n \n این قیمت ها فقط برای فروشنده ها میباشد و تمام کانفیگ ها دو کاربره هستند \n \n برای ساخت اکانت اختصاصی از کامند /AGENT/EKHTESASI استفاده کنید \n لطفا فقط عدد کانفیگ مورد نظرتون رو ارسال کنید⚠ ")
                 bot.register_next_step_handler(msg, takhsis_account, client_code_moshtari)
 
 
@@ -311,8 +325,7 @@ def agent2(message):
                                  "شما کد رفرال ندارید لطفا از دکمه درامد زایی کد رفرال بگیرید و سپس امتحان کنید")
 
         else:
-            msg = bot.send_message(message.chat.id,
-                                   "این کاربر قبلا  دعوت شده و نمیتوانیم زیر مجموعه شما قرارش بدیم برای خرید کانفیگ برای این کد کاربری متن را بخونید \n \n اگر قصد خرید برای این کاربر رو دارید از پلن های موجود داخل ربات فقط عدد کانفیگ مورد  نظر رو انتخاب کنید \n 1:اکانت ۳۰ گیگ ۴۰ روزه 5.5 ترون \n 2: اکانت ۵۰ گیگ ۴۰ روزه 8.5 ترون \n 3: اکانت ۷۰ گیگ ۴۰ روزه 11 ترون \n 4: اکانت ۹۰ گیگ ۴۰ روزه 13.5 ترون \n 5: اکانت ۱۲۰ گیگ ۴۰ روزه 15.5 ترون \n \n این قیمت ها فقط برای فروشنده ها میباشد و تمام کانفیگ ها دو کاربره هستند \n \n برای ساخت اکانت اختصاصی از کامند /AGENT/EKHTESASI استفاده کنید \n لطفا فقط عدد کانفیگ مورد نظرتون رو ارسال کنید⚠ ")
+            msg = bot.send_message(message.chat.id,f"این کاربر قبلا  دعوت شده و نمیتوانیم زیر مجموعه شما قرارش بدیم برای خرید کانفیگ برای این کد کاربری متن را بخونید \n \n اگر قصد خرید برای این کاربر رو دارید از پلن های موجود داخل ربات فقط عدد کانفیگ مورد  نظر رو انتخاب کنید \n 1:اکانت ۳۰ گیگ ۴۰ روزه {price30} ترون \n 2: اکانت ۵۰ گیگ ۴۰ روزه {price50} ترون \n 3: اکانت ۷۰ گیگ ۴۰ روزه {price70} ترون \n 4: اکانت ۹۰ گیگ ۴۰ روزه {price90} ترون \n 5: اکانت ۱۲۰ گیگ ۴۰ روزه {price120} ترون \n \n این قیمت ها فقط برای فروشنده ها میباشد و تمام کانفیگ ها دو کاربره هستند \n \n برای ساخت اکانت اختصاصی از کامند /AGENT/EKHTESASI استفاده کنید \n لطفا فقط عدد کانفیگ مورد نظرتون رو ارسال کنید⚠ ")
             bot.register_next_step_handler(msg, takhsis_account, client_code_moshtari)
 
     else:
@@ -326,23 +339,23 @@ def takhsis_account(message, client_code_moshtari):
     price = 0
     limit = 0
     if conf_moshtari == 1:
-        price = Decimal("5.5")
+        price = price30
         limit = 30
     elif conf_moshtari == 2:
-        price = Decimal("8.5")
+        price = price50
         limit = 50
 
 
     elif conf_moshtari == 3:
-        price = Decimal("11")
+        price = price70
         limit = 70
 
     elif conf_moshtari == 4:
-        price = Decimal("13.5")
+        price = price90
         limit = 90
 
     elif conf_moshtari == 5:
-        price = Decimal("15.5")
+        price = price120
         limit = 120
 
     else:
@@ -352,8 +365,13 @@ def takhsis_account(message, client_code_moshtari):
     if balance >= price != 0:
         if limit != 0:
 
-            bot.send_message(client_code_moshtari, hiddify_api_put(client_code_moshtari, 40, limit, ),
-                             get_education_platform_buttons())
+            global buy_config
+            buy_config = hiddify_api_put(client_code_moshtari, 40, limit)
+            bot.send_message(client_code_moshtari, buy_config, reply_markup=qr())
+            bot.send_message(client_code_moshtari,
+                             f"لینک بالا برای استفاده روی سیستم عامل های Android و ios میباشد اگر فایل همین کانفیگ رو میخاهید به پشتیبانی مراجعه کنید\n نام کاربری شما:<code>{client_code_moshtari}</code> \n  روی شماره کاربریت کلیک کن و مستقیم به آیدی زیر ارسال کن. \n آیدی:@jimboovpn_Support",
+                             parse_mode="HTML",
+                             reply_markup=get_education_platform_buttons())
             buy_payment(user_id, price)
             balance -= price
             bot.send_message(message.chat.id, f"خرید شما با موفقیت انجام شد. موجودی جدید شما: {balance} ترون")
@@ -454,7 +472,11 @@ def buy_ekhtesasi_agent(call, tron_ekhh, num1, num2, client_code_moshtari):
     if user_id is not None:
         balance = show_user_wallet_balance(user_id)
         if balance >= tron != 0:
-            bot.send_message(client_code_moshtari, hiddify_api_put(client_code_moshtari, num2, num1))
+
+            global buy_config
+            buy_config = hiddify_api_put(client_code_moshtari, num2, num1)
+            bot.send_message(client_code_moshtari, buy_config, reply_markup=qr())
+
             bot.send_message(client_code_moshtari,
                              f"لینک بالا برای استفاده روی سیستم عامل های Android و ios میباشد اگر فایل همین کانفیگ رو میخاهید به پشتیبانی مراجعه کنید\n نام کاربری شما:<code>{call.message.chat.id}</code> \n  روی شماره کاربریت کلیک کن و مستقیم به آیدی زیر ارسال کن. \n آیدی:@jimboovpn_Support",
                              parse_mode="HTML",
@@ -760,7 +782,7 @@ def kharid_azma(call):
                      reply_markup=amozesh_kharid_tron_az_ma())
 
 
-def buy_ekhtesasi(chat_id, tron, days, volume):
+def buy_ekhtesasi(chat_id, tron, days, volume_asli):
     if check_membership(chat_id, channel_username):
         user_id = find_user_id_from_client_code(chat_id)
         tron = Decimal(tron)
@@ -768,7 +790,7 @@ def buy_ekhtesasi(chat_id, tron, days, volume):
             balance = show_user_wallet_balance(user_id)
             if balance >= tron != 0:
                 global buy_config
-                buy_config = hiddify_api_put(chat_id, days, volume)
+                buy_config = hiddify_api_put(chat_id, days, volume_asli)
                 bot.send_message(chat_id, buy_config, reply_markup=qr())
 
                 bot.send_message(chat_id,
@@ -789,15 +811,15 @@ def handle_buy_callback(call):
             balance = show_user_wallet_balance(user_id)
             price = 0
             if call.data == "tarefe30gig":
-                price = Decimal("11")
+                price = prices["tarefe30gig"]
             elif call.data == "tarefe50gig":
-                price = Decimal("17")
+                price = prices["tarefe50gig"]
             elif call.data == "tarefe70gig":
-                price = Decimal("22")
+                price = prices["tarefe70gig"]
             elif call.data == "tarefe90gig":
-                price = Decimal("27")
+                price = prices["tarefe900gig"]
             elif call.data == "tarefe120gig":
-                price = Decimal("31")
+                price = prices["tarefe100gig"]
 
             if balance >= price != 0:
                 if send_purchase_confirmation(call.message.chat.id, call.data):
@@ -831,8 +853,15 @@ def mmd(call):
 
 
 def vol(message):
-    global volume
+    global volume_asli
     volume = int(message.text)
+    if volume > 1000:
+        volume_asli = 1000
+        bot.send_message(message.chat.id, "حجمی که وارد کردید بیشتر از 1000بود و برای شما 1000 درنظرگرفته شد")
+    elif volume < 30:
+        volume_asli = 30
+    else:
+        volume_asli = volume
     days = bot.send_message(message.chat.id,
                             'تعداد روز های مدنظر خودتون رو با عدد انگلیسی وارد کنید که باید بیشتر از 40 باشد (کمتر از 40 روز 40 درنظر گرفته خواهد شد) \n برای مثال:(90)')
     bot.register_next_step_handler(days, client)
@@ -862,27 +891,19 @@ def defa(message):
     mmd = day - 40
     mmd2 = clieee - 2
 
-    if volume > 1000:
-        volume_asli = 1000
-        bot.send_message(message.chat.id, "حجمی که وارد کردید بیشتر از 1000بود و برای شما 1000 درنظرگرفته شد")
-    elif volume < 30:
-        volume_asli = 30
-    else:
-        volume_asli = volume
-
     su = (2400 * volume_asli) + (1400 * mmd) + (mmd2 * 13000)
     global rounded_trtr
     trtr = su / 7000
     rounded_trtr = round(trtr, 2)  # گرد کردن به دو رقم اعشار
 
     bot.send_message(message.chat.id,
-                     f'کانفیگ شما با حجم {volume} و تعداد {day} روز و با تعداد کاربر {clieee} محاسبه شد \n \n    این کانفیگ با مبلغ {su} هزار تومان معادل {rounded_trtr} ترون تقدیم شما قرار خواهد گرفت',
+                     f'کانفیگ شما با حجم {volume_asli} و تعداد {day} روز و با تعداد کاربر {clieee} محاسبه شد \n \n    این کانفیگ با مبلغ {su} هزار تومان معادل {rounded_trtr} ترون تقدیم شما قرار خواهد گرفت',
                      reply_markup=tarefe_ekhtesai_buy())
 
 
 @bot.callback_query_handler(func=lambda call: call.data == "EEEE")
 def buy_callback(call):
-    buy_ekhtesasi(call.message.chat.id, rounded_trtr, day, volume)
+    buy_ekhtesasi(call.message.chat.id, rounded_trtr, day, volume_asli)
 
 
 def fetch_trx_details(hash1, api_key, target_wallet_address):
