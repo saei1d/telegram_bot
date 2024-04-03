@@ -723,7 +723,7 @@ def send_purchase_confirmation(chat_id, tariff):
 
 @bot.callback_query_handler(func=lambda call: call.data == "qqq")
 def qr_code_code(call):
-
+    print(buy_config)
     slts_qrcode = segno.make_qr(f'{buy_config}')
     nirvana_url = urlopen(
         "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExbWc3YnJodWFjajV4bXluM3VpbzhnZHltaWtlb2xla3diMzA4N2VncyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/Mdn1CCaq4NF61N04AN/giphy.gif")  # Use Path object
