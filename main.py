@@ -721,26 +721,31 @@ def send_purchase_confirmation(chat_id, tariff):
         bot.send_message(chat_id, "شما تعرفه درستی رو انتخاب نکردید")
 
 
+import segno
+from pathlib import Path
+
 @bot.callback_query_handler(func=lambda call: call.data == "qqq")
 def qr_code_code(call):
     slts_qrcode = segno.make_qr(f'{buy_config}')
-    background_image_path = Path("/asli.jpg")
-    # Generate artistic QR code
-    slts_qrcode.to_artistic(
-        background=background_image_path,
-        target="animated_qrcode_telegram.png",
-        scale=10,
-    )
+    background_image_path = Path("root/telegram_bot/bot/telegram_bot/asli.jpg")
 
-    # Open the generated image (adjust for photo or animation)
-    with open("animated_qrcode_telegram.png", "rb") as image_file:
-        image_data = image_file.read()
+    try:
+        slts_qrcode.to_artistic(
+            background=background_image_path,
+            target="animated_qrcode_telegram.png",
+            scale=10,
+        )
 
-    # Send the image using the appropriate bot method (photo or animation)
-    bot.send_photo(call.message.chat.id, image_data)
+        # Open the generated image (adjust for photo or animation)
+        with open("animated_qrcode_telegram.png", "rb") as image_file:
+            image_data = image_file.read()
 
-    # Clean up (optional)
-    # os.remove("animated_qrcode_telegram.png")
+        # Send the image using the appropriate bot method (photo or animation)
+        bot.send_photo(call.message.chat.id, image_data)
+
+    except FileNotFoundError as e:
+        print(f"Error: Could not find background image: {e}")
+        # Handle error: send message to user, log the error, etc.
 
 
 @bot.callback_query_handler(func=lambda call: call.data == "kharid_azma")
