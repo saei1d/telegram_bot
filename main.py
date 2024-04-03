@@ -271,17 +271,28 @@ def search_client_code(message):
         cur.execute("SELECT balance,all_buy  FROM wallets WHERE user_id =%s",
                     (user_id,))
         wallet = cur.fetchone()
+
+        cur.execute("SELECT people,income  FROM referrals WHERE client_code =%s",
+                    (client_searched,))
+        referral = cur.fetchone()
+        people = 0
+        income = 0
+        if referral is not None:
+            people = referral[0]
+            income = referral[1]
+
         balance = wallet[0]
         all_buy = wallet[1]
         join_by_code = user[1]
         referral_code = user[2]
         phone_number = user[3]
         email = user[4]
+
         # user_configss = show_configs(client_searched)
         # for mmd in user_configss:
         #     bot.send_message(message.chat.id, mmd)
         bot.send_message(message.chat.id,
-                         f' یوزر آیدی{user_id},دعوت شده توسط {join_by_code} کد رفرال {referral_code} شماره موبایل{phone_number}و ایمیل {email} و داشبورد جیمبو این شخص در حال حاضر مقدار {balance} و در کل به مقدار {all_buy} ترون شارژ شده است')
+                         f' یوزر آیدی{user_id}\n,دعوت شده توسط {join_by_code}\n  کد رفرال {referral_code} شماره موبایل\n {phone_number} ایمیل {email} و داشبورد جیمبو این شخص در حال حاضر مقدار {balance}ترون و در کل به مقدار {all_buy} \n این شخص تعداد افراد مستقیمی که دعوت کرده {people} و درامدی که تا الان داشته {income} ترون شارژ شده است')
 
     else:
         bot.send_message(message.chat.id, "karbar shenasaei nashod")
@@ -349,7 +360,7 @@ def income_client_3(message):
         people = wallet[0]
         income = wallet[1]
         msg = bot.send_message(message.chat.id,
-                               f'این کاربر درحال حاضر با افراد {people} و  حقوق به مقدار {income} \n اگر میخاهید حقوق  شخصی رو افزایش دهید فقط عددی ک میخاهیداز حقوق کسر بشود رو وارد کنید⚠')
+                               f'این کاربر درحال حاضر با افراد {people} و  حقوق به مقدار {income} \n اگر میخاهید حقوق  شخصی رو کاهش دهید فقط عددی ک میخاهیداز حقوق کسر بشود رو وارد کنید⚠')
         bot.register_next_step_handler(msg, income_client_4, income_client_code)
 
 
