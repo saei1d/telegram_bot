@@ -727,7 +727,7 @@ from pathlib import Path
 @bot.callback_query_handler(func=lambda call: call.data == "qqq")
 def qr_code_code(call):
     slts_qrcode = segno.make_qr(f'{buy_config}')
-    background_image_path = Path("root/telegram_bot/bot/telegram_bot/asli.jpg")
+    background_image_path = Path("./asli.jpg")
 
     try:
         slts_qrcode.to_artistic(
