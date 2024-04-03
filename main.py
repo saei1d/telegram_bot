@@ -77,7 +77,9 @@ def chek_admin(client_code):
 @bot.message_handler(commands=['admin/list'])
 def add_admin(message):
     if chek_admin(message.chat.id) == "SUPERADMIN":
-        bot.send_message(message.chat.id, f'client_info: <code>/admin/info</code> \n add_admin : <code>/admin/add_admin</code>',parse_mode='HTML')
+        bot.send_message(message.chat.id,
+                         f'moshakhasat_karbar: <code>/admin/info</code> \n ezafe_kardan_admin : <code>/admin/add_admin</code> \n ezafe_kardan_balance : <code>/admin/balance</code> \n kam_kardan_balance : <code>/admin/balance_decrease</code> \n ban_kardan_karbar:<code>/admin/delete</code> \n unban_kardan_karbar : <code>/admin?undelete</code> ',
+                         parse_mode='HTML')
 
     else:
         bot.send_message(message.chat.id, 'لطفا از کلید های زیر استفاده کنید')
@@ -298,7 +300,8 @@ def search_client_code(message):
 def agent(message):
     if chek_admin(message.chat.id) != False:
         msg = bot.send_message(message.chat.id,
-                               f"اینجا پنلی هست که همکاران ما در فروش میتونن به راحتی درامدزایی داشته باشند \n اگر تمایل دارید که اکانت روی نام کاربری شما ارسال شود و توسط شما به مشتری ارائه شود نام کاربری خود را وارد کنید \n نام کاربری شما:<code> {message.chat.id}</code> \n  اما اگر میخواهید اکانت برای مشتری ارسال شود از مشتری خود بخواهید ربات را استارت کرده و نام کاربری مشتری را وارد کنید در اینصورت اکانت مستقیما برای مشتری ارسال خواهد شد و در هر دو حالت تخفیف ۵۰ درصدی برای شما لحاظ خواهد شد که میتوانید مبلغ اصلی را از مشتری خود دریافت نمایید.",parse_mode='HTML')
+                               f"اینجا پنلی هست که همکاران ما در فروش میتونن به راحتی درامدزایی داشته باشند \n اگر تمایل دارید که اکانت روی نام کاربری شما ارسال شود و توسط شما به مشتری ارائه شود نام کاربری خود را وارد کنید \n نام کاربری شما:<code> {message.chat.id}</code> \n  اما اگر میخواهید اکانت برای مشتری ارسال شود از مشتری خود بخواهید ربات را استارت کرده و نام کاربری مشتری را وارد کنید در اینصورت اکانت مستقیما برای مشتری ارسال خواهد شد و در هر دو حالت تخفیف ۵۰ درصدی برای شما لحاظ خواهد شد که میتوانید مبلغ اصلی را از مشتری خود دریافت نمایید.",
+                               parse_mode='HTML')
         bot.register_next_step_handler(msg, agent2)
 
 
@@ -533,7 +536,8 @@ def handle_start(message):
         save_user_and_create_wallet(client_code, username)
         reply_markup = get_main_buttons()
         bot.send_message(message.chat.id,
-                         f'سلام عزیزم ❤️\nخوش اومدی به خانواده بزرگ جیمبو ✈️\nیکی از کلید های پایین رو بزن 👇 \n  \n نام کاربری شما : <code>{chat_id}</code>',parse_mode='HTML',
+                         f'سلام عزیزم ❤️\nخوش اومدی به خانواده بزرگ جیمبو ✈️\nیکی از کلید های پایین رو بزن 👇 \n  \n نام کاربری شما : <code>{chat_id}</code>',
+                         parse_mode='HTML',
                          reply_markup=reply_markup)
 
 
