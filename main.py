@@ -78,7 +78,7 @@ def chek_admin(client_code):
 def add_admin(message):
     if chek_admin(message.chat.id) == "SUPERADMIN":
         bot.send_message(message.chat.id,
-                         f'moshakhasat_karbar: <code>/admin/info</code> \n\n ezafe_kardan_admin : <code>/admin/add_admin</code> \n\n ezafe_kardan_balance : <code>/admin/balance</code> \n\n kam_kardan_balance : <code>/admin/balance_decrease</code> \n\n ban_kardan_karbar:<code>/admin/delete</code> \n\n unban_kardan_karbar : <code>/admin?undelete</code> ',
+                         f'moshakhasat_karbar: <code>/admin/info</code> \n\n ezafe_kardan_admin : <code>/admin/add_admin</code> \n\n ezafe_kardan_balance : <code>/admin/balance</code> \n\n kam_kardan_balance : <code>/admin/balance_decrease</code> \n\n ban_kardan_karbar:<code>/admin/delete</code> \n\n unban_kardan_karbar : <code>/admin?undelete</code>  \n\n ezafe_kardan_hoghogh_karbar : <code>/admin/income</code>  \n\n kam_kardan_hoghogh_karbar : <code>/admin/income_decrease</code>',
                          parse_mode='HTML')
 
     else:
@@ -265,26 +265,108 @@ def search_client_code(message):
     cur.execute("SELECT user_id,join_by_code,referral_code,phone_number,email  FROM users WHERE client_code =%s",
                 (client_searched,))
     user = cur.fetchone()
-    user_id = user[0]
-
-    cur.execute("SELECT balance,all_buy  FROM wallets WHERE user_id =%s",
-                (user_id,))
-    wallet = cur.fetchone()
     if user:
+        user_id = user[0]
+        print(user_id)
+        cur.execute("SELECT balance,all_buy  FROM wallets WHERE user_id =%s",
+                    (user_id,))
+        wallet = cur.fetchone()
         balance = wallet[0]
         all_buy = wallet[1]
         join_by_code = user[1]
         referral_code = user[2]
         phone_number = user[3]
         email = user[4]
-        user_configss = show_configs(client_searched)
-        print(user_configss(client_searched))
-        for mmd in user_configss:
-            bot.send_message(message.chat.id, mmd)
+        # user_configss = show_configs(client_searched)
+        # for mmd in user_configss:
+        #     bot.send_message(message.chat.id, mmd)
         bot.send_message(message.chat.id,
                          f' یوزر آیدی{user_id},دعوت شده توسط {join_by_code} کد رفرال {referral_code} شماره موبایل{phone_number}و ایمیل {email} و داشبورد جیمبو این شخص در حال حاضر مقدار {balance} و در کل به مقدار {all_buy} ترون شارژ شده است')
+
     else:
         bot.send_message(message.chat.id, "karbar shenasaei nashod")
+
+
+@bot.message_handler(commands=['admin/income'])
+def handle_admin_settings(message):
+    if chek_admin(message.chat.id) == "SUPERADMIN":
+        bot.send_message(message.chat.id, 'Admin settings menu.')
+        msg = bot.send_message(message.chat.id, "client_code ra vared konid")
+        bot.register_next_step_handler(msg, income_client)
+
+    else:
+        bot.send_message(message.chat.id, 'از دکمه های اماده زیر استفاده کنید لطفا')
+
+
+def income_client(message):
+    income_client_code = message.text
+    conn = connect_db()
+    cur = conn.cursor()
+    cur.execute("SELECT people , income FROM  referrals WHERE client_code = %s", (income_client_code,))
+    wallet = cur.fetchone()
+    if wallet:
+        people = wallet[0]
+        income = wallet[1]
+        msg = bot.send_message(message.chat.id,
+                               f'این کاربر درحال حاضر با افراد {people} و  حقوق به مقدار {income} \n اگر میخاهید حقوق  شخصی رو افزایش دهید فقط عددی ک میخاهید با حقوق جمع بشود رو وارد کنید⚠')
+        bot.register_next_step_handler(msg, income_client_2, income_client_code)
+
+
+def income_client_2(message, income_client_code):
+    income_client2 = message.text
+    conn = connect_db()
+    cur = conn.cursor()
+    cur.execute("UPDATE referrals SET income = income + %s WHERE client_code = %s",
+                (income_client2, income_client_code))
+    conn.commit()
+    cur.execute("SELECT income , people FROM  referrals WHERE client_code = %s", (income_client_code,))
+    wallet = cur.fetchone()
+    if wallet:
+        bbbbb = wallet[0]
+        aaaaa = wallet[1]
+        bot.send_message(message.chat.id,
+                         f"با موفقیت انجام شد \n این کاربر درحال حاضر با افراد {bbbbb} و در کل به مقدار {aaaaa}")
+
+
+@bot.message_handler(commands=['admin/income_decrease'])
+def handle_admin_settings(message):
+    if chek_admin(message.chat.id) == "SUPERADMIN":
+        bot.send_message(message.chat.id, 'Admin settings menu.')
+        msg = bot.send_message(message.chat.id, "client_code ra vared konid")
+        bot.register_next_step_handler(msg, income_client_3)
+
+    else:
+        bot.send_message(message.chat.id, 'از دکمه های اماده زیر استفاده کنید لطفا')
+
+
+def income_client_3(message):
+    income_client_code = message.text
+    conn = connect_db()
+    cur = conn.cursor()
+    cur.execute("SELECT people , income FROM  referrals WHERE client_code = %s", (income_client_code,))
+    wallet = cur.fetchone()
+    if wallet:
+        people = wallet[0]
+        income = wallet[1]
+        msg = bot.send_message(message.chat.id,
+                               f'این کاربر درحال حاضر با افراد {people} و  حقوق به مقدار {income} \n اگر میخاهید حقوق  شخصی رو افزایش دهید فقط عددی ک میخاهیداز حقوق کسر بشود رو وارد کنید⚠')
+        bot.register_next_step_handler(msg, income_client_4, income_client_code)
+
+
+def income_client_4(message, income_client_code):
+    income_client2 = message.text
+    conn = connect_db()
+    cur = conn.cursor()
+    cur.execute("UPDATE referrals SET income = income - %s WHERE client_code = %s",
+                (income_client2, income_client_code))
+    conn.commit()
+    cur.execute("SELECT income , people FROM  referrals WHERE client_code = %s", (income_client_code,))
+    wallet = cur.fetchone()
+    if wallet:
+        bbbbb = wallet[0]
+        aaaaa = wallet[1]
+        bot.send_message(message.chat.id,
+                         f"با موفقیت انجام شد \n این کاربر درحال حاضر با افراد {bbbbb} و در کل به مقدار {aaaaa}")
 
 
 ###############################################################
