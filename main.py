@@ -392,7 +392,7 @@ def takhsis_account(message, client_code_moshtari):
         bot.send_message(message.chat.id, "داشبورد جیمبو شما موجودی کافی ندارد")
 
 
-@bot.message_handler(commands=['فروش/اختصاصی'])
+@bot.message_handler(commands=['فروش_اختصاصی'])
 def admin_ehtesasi(message):
     if chek_admin(message.chat.id) != False:
         msg = bot.send_message(message.chat.id,
