@@ -78,7 +78,7 @@ def chek_admin(client_code):
 def add_admin(message):
     if chek_admin(message.chat.id) == "SUPERADMIN":
         bot.send_message(message.chat.id,
-                         f'moshakhasat_karbar: <code>/admin/info</code> \n ezafe_kardan_admin : <code>/admin/add_admin</code> \n ezafe_kardan_balance : <code>/admin/balance</code> \n kam_kardan_balance : <code>/admin/balance_decrease</code> \n ban_kardan_karbar:<code>/admin/delete</code> \n unban_kardan_karbar : <code>/admin?undelete</code> ',
+                         f'moshakhasat_karbar: <code>/admin/info</code> \n\n ezafe_kardan_admin : <code>/admin/add_admin</code> \n\n ezafe_kardan_balance : <code>/admin/balance</code> \n\n kam_kardan_balance : <code>/admin/balance_decrease</code> \n\n ban_kardan_karbar:<code>/admin/delete</code> \n\n unban_kardan_karbar : <code>/admin?undelete</code> ',
                          parse_mode='HTML')
 
     else:
