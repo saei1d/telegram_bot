@@ -5,3 +5,4 @@ tronapi
 jdatetime
 bs4
 segno
+qrcode-artistic
