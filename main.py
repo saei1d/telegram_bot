@@ -721,16 +721,12 @@ def send_purchase_confirmation(chat_id, tariff):
         bot.send_message(chat_id, "شما تعرفه درستی رو انتخاب نکردید")
 
 
-import segno
-from pathlib import Path
-
-
 @bot.callback_query_handler(func=lambda call: call.data == "qqq")
 def qr_code_code(call):
     if buy_config is not None:
         slts_qrcode = segno.make_qr(f'{buy_config}')
         background_image_path = Path("./asli.jpg")
-
+        print(buy_config)
         try:
             slts_qrcode.to_artistic(
                 background=background_image_path,
@@ -753,7 +749,8 @@ def qr_code_code(call):
             print(f"Error: Could not find background image: {e}")
             # Handle error: send message to user, log the error, etc.
     else:
-        bot.send_message(call.message.chat.id,"یافت نشد")
+        bot.send_message(call.message.chat.id, "یافت نشد")
+
 
 @bot.callback_query_handler(func=lambda call: call.data == "kharid_azma")
 def kharid_azma(call):
@@ -771,7 +768,7 @@ def buy_ekhtesasi(chat_id, tron, days, volume):
             balance = show_user_wallet_balance(user_id)
             if balance >= tron != 0:
                 buy_config = hiddify_api_put(chat_id, days, volume)
-                bot.send_message(chat_id, buy_config, reply_markup=qr())
+                bot.send_message(chat_id, buy_config, reply_markup=qr(),reply_parameters=buy_config)
 
                 bot.send_message(chat_id,
                                  f"لینک بالا برای استفاده روی سیستم عامل های Android و ios میباشد گر فایل همین کانفیگ رو میخاهید به پشتیبانی مراجعه کنید \n نام کاربری شما:<code>{chat_id}</code> \n  روی شماره کاربریت کلیک کن و مستقیم به آیدی زیر ارسال کن. \n آیدی:@jimboovpn_Support",
