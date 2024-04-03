@@ -738,7 +738,7 @@ def qr_code_code(call):
         )
 
         # Open the generated image (adjust for photo or animation)
-        with open("animated_qrcode_telegram.png", "rb") as image_file:
+        with open("animated_qrcode.png", "rb") as image_file:
             image_data = image_file.read()
 
         # Send the image using the appropriate bot method (photo or animation)
