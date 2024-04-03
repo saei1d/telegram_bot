@@ -15,7 +15,7 @@ from hiddify_api import *
 import os
 
 import segno
-from urllib.request import urlopen
+from pathlib import Path
 import re
 
 bot = telebot.TeleBot(BOT_TOKEN)
@@ -723,17 +723,24 @@ def send_purchase_confirmation(chat_id, tariff):
 
 @bot.callback_query_handler(func=lambda call: call.data == "qqq")
 def qr_code_code(call):
-    print(buy_config)
     slts_qrcode = segno.make_qr(f'{buy_config}')
-    nirvana_url = urlopen(
-        "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExbWc3YnJodWFjajV4bXluM3VpbzhnZHltaWtlb2xla3diMzA4N2VncyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/Mdn1CCaq4NF61N04AN/giphy.gif")  # Use Path object
+    background_image_path = Path("root/telegram_bot/bot/telegram_bot/asli.jpg")
+    # Generate artistic QR code
     slts_qrcode.to_artistic(
-        background=nirvana_url,
-        target=f"animated_qrcode_telegram.gif",
+        background=background_image_path,
+        target="animated_qrcode_telegram.png",
         scale=10,
     )
 
-    bot.send_animation(call.message.chat.id,'/root/telegram_bot/bot/telegram_bot/animated_qrcode_telegram.gif')
+    # Open the generated image (adjust for photo or animation)
+    with open("animated_qrcode_telegram.png", "rb") as image_file:
+        image_data = image_file.read()
+
+    # Send the image using the appropriate bot method (photo or animation)
+    bot.send_photo(call.message.chat.id, image_data)
+
+    # Clean up (optional)
+    # os.remove("animated_qrcode_telegram.png")
 
 
 @bot.callback_query_handler(func=lambda call: call.data == "kharid_azma")
