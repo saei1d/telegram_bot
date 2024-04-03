@@ -692,6 +692,7 @@ def make_refral_wallet_by_email(client_code, email_validate):
 #
 #
 ####################################
+global buy_config
 
 
 def send_purchase_confirmation(chat_id, tariff):
@@ -708,7 +709,6 @@ def send_purchase_confirmation(chat_id, tariff):
         limit = 120
 
     if limit != 0:
-        global buy_config
         buy_config = hiddify_api_put(chat_id, 40, limit)
         bot.send_message(chat_id, buy_config, reply_markup=qr())
 
@@ -727,31 +727,33 @@ from pathlib import Path
 
 @bot.callback_query_handler(func=lambda call: call.data == "qqq")
 def qr_code_code(call):
-    slts_qrcode = segno.make_qr(f'{buy_config}')
-    background_image_path = Path("./asli.jpg")
+    if buy_config is not None:
+        slts_qrcode = segno.make_qr(f'{buy_config}')
+        background_image_path = Path("./asli.jpg")
 
-    try:
-        slts_qrcode.to_artistic(
-            background=background_image_path,
-            target="animated_qrcode.png",
-            scale=10,
-        )
+        try:
+            slts_qrcode.to_artistic(
+                background=background_image_path,
+                target="animated_qrcode.png",
+                scale=10,
+            )
 
-        # Open the generated image (adjust for photo or animation)
-        with open("animated_qrcode.png", "rb") as image_file:
-            image_data = image_file.read()
+            # Open the generated image (adjust for photo or animation)
+            with open("animated_qrcode.png", "rb") as image_file:
+                image_data = image_file.read()
 
-        # Send the image using the appropriate bot method (photo or animation)
-        bot.send_photo(call.message.chat.id, image_data)
-        os.remove("animated_qrcode.png")
-
-
+            # Send the image using the appropriate bot method (photo or animation)
+            bot.send_photo(call.message.chat.id, image_data)
+            os.remove("animated_qrcode.png")
 
 
-    except FileNotFoundError as e:
-        print(f"Error: Could not find background image: {e}")
-        # Handle error: send message to user, log the error, etc.
 
+
+        except FileNotFoundError as e:
+            print(f"Error: Could not find background image: {e}")
+            # Handle error: send message to user, log the error, etc.
+    else:
+        bot.send_message(call.message.chat.id,"یافت نشد")
 
 @bot.callback_query_handler(func=lambda call: call.data == "kharid_azma")
 def kharid_azma(call):
