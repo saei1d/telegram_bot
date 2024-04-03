@@ -729,12 +729,11 @@ def qr_code_code(call):
         "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExbWc3YnJodWFjajV4bXluM3VpbzhnZHltaWtlb2xla3diMzA4N2VncyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/Mdn1CCaq4NF61N04AN/giphy.gif")  # Use Path object
     slts_qrcode.to_artistic(
         background=nirvana_url,
-        target=f"animated_qrcode_telegram{buy_config}.gif",
+        target=f"animated_qrcode_telegram.gif",
         scale=10,
     )
 
-    bot.send_photo(call.message.chat.id,"dekxjcnenxksejnj")
-
+    bot.send_animation(call.message.chat.id,'/root/telegram_bot/bot/telegram_bot/animated_qrcode_telegram.gif')
 
 
 @bot.callback_query_handler(func=lambda call: call.data == "kharid_azma")
