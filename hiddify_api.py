@@ -30,7 +30,6 @@ def hiddify_api_put(client_code, dayss, limit):
 
     response_get = requests.get(url, auth=(secret_code, ''))
     lennnn = len(response_get.json())
-    print(lennnn)
     if lennnn >= 14:
         proxy_path_client = "nCbhYTw45iU17uynCnusqg3F"
         proxy_path_admin="KmEnSzHyFdmJO9sfbMo8790ckxuie"

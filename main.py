@@ -843,7 +843,7 @@ def send_purchase_confirmation(chat_id, tariff):
         bot.send_message(chat_id, buy_config, reply_markup=qr())
 
         bot.send_message(chat_id,
-                         f"لینک بالا برای استفاده روی سیستم عامل های Android و ios میباشد گر فایل همین کانفیگ رو میخاهید به پشتیبانی مراجعه کنید \n نام کاربری شما:<code>{chat_id}</code> \n  روی شماره کاربریت کلیک کن و مستقیم به آیدی زیر ارسال کن. \n آیدی:@jimboovpn_Support",
+                         f"لینک بالا برای استفاده روی سیستم عامل های Android و ios میباشد اگر فایل همین کانفیگ رو برای ویندوز هم میخوای به پشتیبانی مراجعه کن \n نام کاربری شما:<code>{chat_id}</code> \n  روی شماره کاربریت کلیک کن و مستقیم به آیدی زیر ارسال کن. \n آیدی:@jimboovpn_Support",
                          parse_mode="HTML",
                          reply_markup=get_education_platform_buttons())
         return True
@@ -901,7 +901,7 @@ def buy_ekhtesasi(chat_id, tron, days, volume_asli):
                 bot.send_message(chat_id, buy_config, reply_markup=qr())
 
                 bot.send_message(chat_id,
-                                 f"لینک بالا برای استفاده روی سیستم عامل های Android و ios میباشد گر فایل همین کانفیگ رو میخاهید به پشتیبانی مراجعه کنید \n نام کاربری شما:<code>{chat_id}</code> \n  روی شماره کاربریت کلیک کن و مستقیم به آیدی زیر ارسال کن. \n آیدی:@jimboovpn_Support",
+                                 f"لینک بالا برای استفاده روی سیستم عامل های Android و ios میباشد اگر فایل همین کانفیگ رو برای ویندوز هم میخوای به پشتیبانی مراجعه کن \n نام کاربری شما:<code>{chat_id}</code> \n  روی شماره کاربریت کلیک کن و مستقیم به آیدی زیر ارسال کن. \n آیدی:@jimboovpn_Support",
                                  parse_mode="HTML",
                                  reply_markup=get_education_platform_buttons())
                 buy_payment(user_id, tron)
