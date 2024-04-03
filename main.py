@@ -692,7 +692,6 @@ def make_refral_wallet_by_email(client_code, email_validate):
 #
 #
 ####################################
-global buy_config
 
 
 def send_purchase_confirmation(chat_id, tariff):
@@ -709,6 +708,7 @@ def send_purchase_confirmation(chat_id, tariff):
         limit = 120
 
     if limit != 0:
+        global buy_config
         buy_config = hiddify_api_put(chat_id, 40, limit)
         bot.send_message(chat_id, buy_config, reply_markup=qr())
 
@@ -767,8 +767,9 @@ def buy_ekhtesasi(chat_id, tron, days, volume):
         if user_id is not None:
             balance = show_user_wallet_balance(user_id)
             if balance >= tron != 0:
+                global buy_config
                 buy_config = hiddify_api_put(chat_id, days, volume)
-                bot.send_message(chat_id, buy_config, reply_markup=qr(),reply_parameters=buy_config)
+                bot.send_message(chat_id, buy_config, reply_markup=qr())
 
                 bot.send_message(chat_id,
                                  f"لینک بالا برای استفاده روی سیستم عامل های Android و ios میباشد گر فایل همین کانفیگ رو میخاهید به پشتیبانی مراجعه کنید \n نام کاربری شما:<code>{chat_id}</code> \n  روی شماره کاربریت کلیک کن و مستقیم به آیدی زیر ارسال کن. \n آیدی:@jimboovpn_Support",
@@ -864,7 +865,8 @@ def defa(message):
     if volume > 1000:
         volume_asli = 1000
         bot.send_message(message.chat.id, "حجمی که وارد کردید بیشتر از 1000بود و برای شما 1000 درنظرگرفته شد")
-
+    elif volume < 30:
+        volume_asli = 30
     else:
         volume_asli = volume
 
