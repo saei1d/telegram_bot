@@ -724,6 +724,7 @@ def send_purchase_confirmation(chat_id, tariff):
 import segno
 from pathlib import Path
 
+
 @bot.callback_query_handler(func=lambda call: call.data == "qqq")
 def qr_code_code(call):
     slts_qrcode = segno.make_qr(f'{buy_config}')
@@ -732,7 +733,7 @@ def qr_code_code(call):
     try:
         slts_qrcode.to_artistic(
             background=background_image_path,
-            target="animated_qrcode_telegram.png",
+            target="animated_qrcode.png",
             scale=10,
         )
 
@@ -742,6 +743,10 @@ def qr_code_code(call):
 
         # Send the image using the appropriate bot method (photo or animation)
         bot.send_photo(call.message.chat.id, image_data)
+        os.remove("animated_qrcode.png")
+
+
+
 
     except FileNotFoundError as e:
         print(f"Error: Could not find background image: {e}")
