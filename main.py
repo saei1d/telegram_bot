@@ -77,7 +77,7 @@ def chek_admin(client_code):
 @bot.message_handler(commands=['admin/list'])
 def add_admin(message):
     if chek_admin(message.chat.id) == "SUPERADMIN":
-        bot.send_message(message.chat.id, f'مشخصات کامل یک کاربر:admin/info/ \n  ')
+        bot.send_message(message.chat.id, f'مشخصات کامل یک کاربر:</code>/admin/info<code> \n اضافه کردن یک ادمین: </code>/admin/add_admin<code> \n   ',parse_mode='HTML')
 
     else:
         bot.send_message(message.chat.id, 'لطفا از کلید های زیر استفاده کنید')
@@ -392,7 +392,7 @@ def takhsis_account(message, client_code_moshtari):
         bot.send_message(message.chat.id, "داشبورد جیمبو شما موجودی کافی ندارد")
 
 
-@bot.message_handler(commands=['فروش_اختصاصی'])
+@bot.message_handler(commands=['اختصاصی'])
 def admin_ehtesasi(message):
     if chek_admin(message.chat.id) != False:
         msg = bot.send_message(message.chat.id,
