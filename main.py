@@ -12,6 +12,7 @@ from datetime import datetime
 from bs4 import BeautifulSoup
 import time
 from hiddify_api import *
+import os
 
 import segno
 from urllib.request import urlopen
@@ -728,11 +729,11 @@ def qr_code_code(call):
         "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExbWc3YnJodWFjajV4bXluM3VpbzhnZHltaWtlb2xla3diMzA4N2VncyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/Mdn1CCaq4NF61N04AN/giphy.gif")  # Use Path object
     slts_qrcode.to_artistic(
         background=nirvana_url,
+        target=f"animated_qrcode_telegram{buy_config}.gif",
         scale=10,
     )
 
-    qr_image = slts_qrcode.png_data_uri(scale=10)
-    bot.send_photo(call.message.chat.id, qr_image)
+    bot.send_photo(call.message.chat.id,"dekxjcnenxksejnj")
 
 
 
