@@ -4,3 +4,4 @@ pyTelegramBotAPI
 tronapi
 jdatetime
 bs4
+segno

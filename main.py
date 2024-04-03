@@ -12,6 +12,9 @@ from datetime import datetime
 from bs4 import BeautifulSoup
 import time
 from hiddify_api import *
+
+import segno
+from urllib.request import urlopen
 import re
 
 bot = telebot.TeleBot(BOT_TOKEN)
@@ -452,7 +455,8 @@ def buy_ekhtesasi_agent(call, tron_ekhh, num1, num2, client_code_moshtari):
         if balance >= tron != 0:
             bot.send_message(client_code_moshtari, hiddify_api_put(client_code_moshtari, num2, num1))
             bot.send_message(client_code_moshtari,
-                             f"لینک بالا برای استفاده روی سیستم عامل های Android و ios میباشد \n نام کاربری شما:<code>{call.message.chat.id}</code> \n  روی شماره کاربریت کلیک کن و مستقیم به آیدی زیر ارسال کن. \n آیدی:@jimboovpn_Support",parse_mode="HTML",
+                             f"لینک بالا برای استفاده روی سیستم عامل های Android و ios میباشد اگر فایل همین کانفیگ رو میخاهید به پشتیبانی مراجعه کنید\n نام کاربری شما:<code>{call.message.chat.id}</code> \n  روی شماره کاربریت کلیک کن و مستقیم به آیدی زیر ارسال کن. \n آیدی:@jimboovpn_Support",
+                             parse_mode="HTML",
                              reply_markup=get_education_platform_buttons())
             buy_payment(user_id, tron)
             balance -= tron
@@ -708,7 +712,8 @@ def send_purchase_confirmation(chat_id, tariff):
         bot.send_message(chat_id, buy_config, reply_markup=qr())
 
         bot.send_message(chat_id,
-                         f"لینک بالا برای استفاده روی سیستم عامل های Android و ios میباشد \n نام کاربری شما:<code>{chat_id}</code> \n  روی شماره کاربریت کلیک کن و مستقیم به آیدی زیر ارسال کن. \n آیدی:@jimboovpn_Support",parse_mode="HTML",
+                         f"لینک بالا برای استفاده روی سیستم عامل های Android و ios میباشد گر فایل همین کانفیگ رو میخاهید به پشتیبانی مراجعه کنید \n نام کاربری شما:<code>{chat_id}</code> \n  روی شماره کاربریت کلیک کن و مستقیم به آیدی زیر ارسال کن. \n آیدی:@jimboovpn_Support",
+                         parse_mode="HTML",
                          reply_markup=get_education_platform_buttons())
         return True
     else:
@@ -717,14 +722,25 @@ def send_purchase_confirmation(chat_id, tariff):
 
 @bot.callback_query_handler(func=lambda call: call.data == "qqq")
 def qr_code_code(call):
-    qr_code = f'api.qrserver.com/v1/create-qr-code/?data={buy_config}&size=200*200'
-    bot.send_message(call.message.chat.id, qr_code)
+
+    slts_qrcode = segno.make_qr(f'{buy_config}')
+    nirvana_url = urlopen(
+        "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExbWc3YnJodWFjajV4bXluM3VpbzhnZHltaWtlb2xla3diMzA4N2VncyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/Mdn1CCaq4NF61N04AN/giphy.gif")  # Use Path object
+    slts_qrcode.to_artistic(
+        background=nirvana_url,
+        scale=10,
+    )
+
+    qr_image = slts_qrcode.png_data_uri(scale=10)
+    bot.send_photo(call.message.chat.id, qr_image)
+
 
 
 @bot.callback_query_handler(func=lambda call: call.data == "kharid_azma")
 def kharid_azma(call):
     bot.send_message(call.message.chat.id,
-                     f" با استفاده از ایدی زیر میتونی ترون رو به پایین ترین قیمت تهیه کنی و داشبوردتو مستقیم شارژ کنی. \n نام کاربری شما:<code>{call.message.chat.id}</code> \n  روی شماره کاربریت کلیک کن و مستقیم به آیدی زیر ارسال کن. \n  (این ایدی مورد تایید جیمبو میباشد)👇  \n آیدی:@jimboovpn_Support",parse_mode="HTML",
+                     f" با استفاده از ایدی زیر میتونی ترون رو به پایین ترین قیمت تهیه کنی و داشبوردتو مستقیم شارژ کنی. \n نام کاربری شما:<code>{call.message.chat.id}</code> \n  روی شماره کاربریت کلیک کن و مستقیم به آیدی زیر ارسال کن. \n  (این ایدی مورد تایید جیمبو میباشد)👇  \n آیدی:@jimboovpn_Support",
+                     parse_mode="HTML",
                      reply_markup=amozesh_kharid_tron_az_ma())
 
 
@@ -737,7 +753,8 @@ def buy_ekhtesasi(chat_id, tron, days, volume):
             if balance >= tron != 0:
                 bot.send_message(chat_id, hiddify_api_put(chat_id, days, volume, ))
                 bot.send_message(chat_id,
-                                 f"لینک بالا برای استفاده روی سیستم عامل های Android و ios میباشد \n نام کاربری شما:<code>{chat_id}</code> \n  روی شماره کاربریت کلیک کن و مستقیم به آیدی زیر ارسال کن. \n آیدی:@jimboovpn_Support",parse_mode="HTML",
+                                 f"لینک بالا برای استفاده روی سیستم عامل های Android و ios میباشد گر فایل همین کانفیگ رو میخاهید به پشتیبانی مراجعه کنید \n نام کاربری شما:<code>{chat_id}</code> \n  روی شماره کاربریت کلیک کن و مستقیم به آیدی زیر ارسال کن. \n آیدی:@jimboovpn_Support",
+                                 parse_mode="HTML",
                                  reply_markup=get_education_platform_buttons())
                 buy_payment(user_id, tron)
                 balance -= tron  # بروزرسانی موجودی پس از خرید
@@ -1133,12 +1150,15 @@ def test_account(chat_id):
 
 @bot.callback_query_handler(func=lambda call: call.data == "bardasht")
 def bardasht1(call):
-    bot.send_message(call.message.chat.id,f' با استفاده از ایدی زیر میتونی برداشت ترون انجام بدی حداقل مقدار برداشت ۱۰ ترون میباشد. \n نام کاربری شما:<code>{call.message.chat.id}</code> \n  روی شماره کاربریت کلیک کن و مستقیم به آیدی زیر ارسال کن. \n آیدی:@jimboovpn_Support',parse_mode="HTML")
+    bot.send_message(call.message.chat.id,
+                     f' با استفاده از ایدی زیر میتونی برداشت ترون انجام بدی حداقل مقدار برداشت ۱۰ ترون میباشد. \n نام کاربری شما:<code>{call.message.chat.id}</code> \n  روی شماره کاربریت کلیک کن و مستقیم به آیدی زیر ارسال کن. \n آیدی:@jimboovpn_Support',
+                     parse_mode="HTML")
 
 
 @bot.callback_query_handler(func=lambda call: call.data == "mmd2")
 def dddd(call):
     bot.send_message(call.message.chat.id, "تعرفه مورد نظر خودتون رو انتخاب کنید", reply_markup=get_tariff_buttons())
+
 
 if __name__ == "__main__":
     bot.infinity_polling(skip_pending=True)
