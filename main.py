@@ -7,7 +7,6 @@ import random
 import string
 import math
 from decimal import Decimal
-import jdatetime
 from datetime import datetime
 from bs4 import BeautifulSoup
 import time
@@ -267,7 +266,6 @@ def search_client_code(message):
     user = cur.fetchone()
     if user:
         user_id = user[0]
-        print(user_id)
         cur.execute("SELECT balance,all_buy  FROM wallets WHERE user_id =%s",
                     (user_id,))
         wallet = cur.fetchone()
@@ -292,7 +290,7 @@ def search_client_code(message):
         # for mmd in user_configss:
         #     bot.send_message(message.chat.id, mmd)
         bot.send_message(message.chat.id,
-                         f' یوزر آیدی{user_id}\n,دعوت شده توسط {join_by_code}\n  کد رفرال {referral_code} شماره موبایل\n {phone_number} ایمیل {email} و داشبورد جیمبو این شخص در حال حاضر مقدار {balance}ترون و در کل به مقدار {all_buy} \n این شخص تعداد افراد مستقیمی که دعوت کرده {people} و درامدی که تا الان داشته {income} ترون شارژ شده است')
+                         f' یوزر آیدی{user_id}\n,دعوت شده توسط {join_by_code}\n  کد رفرال {referral_code} شماره موبایل\n {phone_number} ایمیل {email} و داشبورد جیمبو این شخص در حال حاضر مقدار {balance}ترون و در کل به مقدار {all_buy} \n این شخص تعداد افراد مستقیمی که دعوت کرده {people} و درامدی که تا الان داشته {income} ترون شده است')
 
     else:
         bot.send_message(message.chat.id, "karbar shenasaei nashod")
@@ -858,7 +856,6 @@ def qr_code_code(call):
     if buy_config is not None:
         slts_qrcode = segno.make_qr(f'{buy_config}')
         background_image_path = Path("./asli.jpg")
-        print(buy_config)
         try:
             slts_qrcode.to_artistic(
                 background=background_image_path,
