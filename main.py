@@ -29,7 +29,6 @@ prices = {
     "tarefe120gig": Decimal("31"),
 }
 
-
 price30 = prices["tarefe30gig"] * Decimal(0.5)
 price50 = prices["tarefe50gig"] * Decimal(0.5)
 price70 = prices["tarefe70gig"] * Decimal(0.5)
@@ -75,6 +74,14 @@ def chek_admin(client_code):
         return False
 
 
+@bot.message_handler(commands=['admin/list'])
+def add_admin(message):
+    if chek_admin(message.chat.id) == "SUPERADMIN":
+        bot.send_message(message.chat.id,f'مشخصات کامل یک کاربر: /admin/info \n  ')
+
+    else:
+        bot.send_message(message.chat.id, 'لطفا از کلید های زیر استفاده کنید')
+
 @bot.message_handler(commands=['admin/add_admin'])
 def add_admin(message):
     if chek_admin(message.chat.id) == "SUPERADMIN":
@@ -84,7 +91,6 @@ def add_admin(message):
         bot.register_next_step_handler(msg, add_admin_add)
     else:
         bot.send_message(message.chat.id, 'لطفا از کلید های زیر استفاده کنید')
-    print(chek_admin(message.chat.id))
 
 
 def add_admin_add(message):
@@ -238,7 +244,7 @@ def search_client_code_for_undelete(message):
     bot.send_message(message.chat.id, "کاربر شما تماما رفع محدودیت شد")
 
 
-@bot.message_handler(commands=['admin'])
+@bot.message_handler(commands=['admin/info'])
 def handle_admin_settings(message):
     if chek_admin(message.chat.id) == "SUPERADMIN":
         bot.send_message(message.chat.id, 'Admin settings menu.')
@@ -315,7 +321,8 @@ def agent2(message):
 
                 conn.commit()
 
-                msg = bot.send_message(message.chat.id,f"کاربر مد نظر شما با موفقیت زیر مجموعه شما شد و با هر خرید ۱۰ درصد رو شما دریافت خواهید کرد \n\n  اگر قصد خرید برای این کاربر رو دارید از پلن های موجود داخل ربات فقط عدد کانفیگ مورد  نظر رو انتخاب کنید \n 1:اکانت ۳۰ گیگ ۴۰ روزه {price30} ترون \n 2: اکانت ۵۰ گیگ ۴۰ روزه {price50} ترون \n 3: اکانت ۷۰ گیگ ۴۰ روزه {price70} ترون \n 4: اکانت ۹۰ گیگ ۴۰ روزه {price90} ترون \n 5: اکانت ۱۲۰ گیگ ۴۰ روزه {price120} ترون \n \n این قیمت ها فقط برای فروشنده ها میباشد و تمام کانفیگ ها دو کاربره هستند \n \n برای ساخت اکانت اختصاصی از کامند /AGENT/EKHTESASI استفاده کنید \n لطفا فقط عدد کانفیگ مورد نظرتون رو ارسال کنید⚠ ")
+                msg = bot.send_message(message.chat.id,
+                                       f"کاربر مد نظر شما با موفقیت زیر مجموعه شما شد و با هر خرید ۱۰ درصد رو شما دریافت خواهید کرد \n\n  اگر قصد خرید برای این کاربر رو دارید از پلن های موجود داخل ربات فقط عدد کانفیگ مورد  نظر رو انتخاب کنید \n 1:اکانت ۳۰ گیگ ۴۰ روزه {price30} ترون \n 2: اکانت ۵۰ گیگ ۴۰ روزه {price50} ترون \n 3: اکانت ۷۰ گیگ ۴۰ روزه {price70} ترون \n 4: اکانت ۹۰ گیگ ۴۰ روزه {price90} ترون \n 5: اکانت ۱۲۰ گیگ ۴۰ روزه {price120} ترون \n \n این قیمت ها فقط برای فروشنده ها میباشد و تمام کانفیگ ها دو کاربره هستند \n \n برای ساخت اکانت اختصاصی از کامند /AGENT/EKHTESASI استفاده کنید \n لطفا فقط عدد کانفیگ مورد نظرتون رو ارسال کنید⚠ ")
                 bot.register_next_step_handler(msg, takhsis_account, client_code_moshtari)
 
 
@@ -325,7 +332,8 @@ def agent2(message):
                                  "شما کد رفرال ندارید لطفا از دکمه درامد زایی کد رفرال بگیرید و سپس امتحان کنید")
 
         else:
-            msg = bot.send_message(message.chat.id,f"این کاربر قبلا  دعوت شده و نمیتوانیم زیر مجموعه شما قرارش بدیم برای خرید کانفیگ برای این کد کاربری متن را بخونید \n \n اگر قصد خرید برای این کاربر رو دارید از پلن های موجود داخل ربات فقط عدد کانفیگ مورد  نظر رو انتخاب کنید \n 1:اکانت ۳۰ گیگ ۴۰ روزه {price30} ترون \n 2: اکانت ۵۰ گیگ ۴۰ روزه {price50} ترون \n 3: اکانت ۷۰ گیگ ۴۰ روزه {price70} ترون \n 4: اکانت ۹۰ گیگ ۴۰ روزه {price90} ترون \n 5: اکانت ۱۲۰ گیگ ۴۰ روزه {price120} ترون \n \n این قیمت ها فقط برای فروشنده ها میباشد و تمام کانفیگ ها دو کاربره هستند \n \n برای ساخت اکانت اختصاصی از کامند /AGENT/EKHTESASI استفاده کنید \n لطفا فقط عدد کانفیگ مورد نظرتون رو ارسال کنید⚠ ")
+            msg = bot.send_message(message.chat.id,
+                                   f"این کاربر قبلا  دعوت شده و نمیتوانیم زیر مجموعه شما قرارش بدیم برای خرید کانفیگ برای این کد کاربری متن را بخونید \n \n اگر قصد خرید برای این کاربر رو دارید از پلن های موجود داخل ربات فقط عدد کانفیگ مورد  نظر رو انتخاب کنید \n 1:اکانت ۳۰ گیگ ۴۰ روزه {price30} ترون \n 2: اکانت ۵۰ گیگ ۴۰ روزه {price50} ترون \n 3: اکانت ۷۰ گیگ ۴۰ روزه {price70} ترون \n 4: اکانت ۹۰ گیگ ۴۰ روزه {price90} ترون \n 5: اکانت ۱۲۰ گیگ ۴۰ روزه {price120} ترون \n \n این قیمت ها فقط برای فروشنده ها میباشد و تمام کانفیگ ها دو کاربره هستند \n \n برای ساخت اکانت اختصاصی از کامند /AGENT/EKHTESASI استفاده کنید \n لطفا فقط عدد کانفیگ مورد نظرتون رو ارسال کنید⚠ ")
             bot.register_next_step_handler(msg, takhsis_account, client_code_moshtari)
 
     else:
@@ -456,8 +464,12 @@ def account_shakhsi2(message):
 
     mmd1 = num2 - 40
     mmd2 = num3 - 2
-
-    su = (1300 * num1) + (700 * mmd1) + (mmd2 * 7000)
+    if num1 >= 300:
+        su = ((1300 * 0.7) * num1) + (700 * mmd1) + (mmd2 * 7000)
+    elif num1 >= 100:
+        su = ((1300 * 0.9) * num1) + (700 * mmd1) + (mmd2 * 7000)
+    else:
+        su = (1300 * num1) + (700 * mmd1) + (mmd2 * 7000)
     global tron_ekhh
     ttrr77rr = su / 7000
     tron_ekhh = round(ttrr77rr, 2)  # گرد کردن به دو رقم اعشار
@@ -648,7 +660,7 @@ def make_refral_wallet_by_phone(client_code, first_name, phone):
 
     bot.send_message(client_code,
                      f'شروع شد قراره باهم بترکونیم🔥\n کدتخفیف اختصاصی شما: \n   <code>{discount_code}</code> \ این کد رو برای دوستات ارسال کن',
-                     parse_mode='HTML')
+                     parse_mode='HTML',reply_markup=get_main_buttons())
 
     cur.execute("INSERT INTO discount_codes (name, percentage, owner,status) VALUES (%s, %s, %s,%s);",
                 (discount_code, 10, client_code, 1))
@@ -690,7 +702,7 @@ def make_refral_wallet_by_email(client_code, email_validate):
 
     bot.send_message(client_code,
                      f'متن تستی کد تخفیف \n   <code>{discount_code}</code>',
-                     parse_mode='HTML')
+                     parse_mode='HTML',reply_markup=get_main_buttons())
     cur.execute("INSERT INTO discount_codes (name, percentage, owner,status) VALUES (%s, %s, %s,%s);",
                 (discount_code, 10, client_code, 1))
 
@@ -890,8 +902,13 @@ def defa(message):
         bot.send_message(message.chat.id, "عددی که وارد کردید کوچکتر از 2 بود و برای شما همان 2 کاربر لحاظ شد")
     mmd = day - 40
     mmd2 = clieee - 2
+    if volume_asli >= 300:
+        su = ((2400 * 0.7) * volume_asli) + (1400 * mmd) + (mmd2 * 13000)
 
-    su = (2400 * volume_asli) + (1400 * mmd) + (mmd2 * 13000)
+    elif volume_asli >= 100:
+        su = ((2400 * 0.9) * volume_asli) + (1400 * mmd) + (mmd2 * 13000)
+    else:
+        su = (2400 * volume_asli) + (1400 * mmd) + (mmd2 * 13000)
     global rounded_trtr
     trtr = su / 7000
     rounded_trtr = round(trtr, 2)  # گرد کردن به دو رقم اعشار
@@ -950,7 +967,7 @@ def dis(call):
 
 def disco(message, call):
     discount_client = message.text
-    if message.text == "برگشت":
+    if message.text == "بازگشت":
         bot.send_message(message.chat.id, "شما به منوی اصلی برگشتید", reply_markup=get_main_buttons())
         return
 
@@ -1013,7 +1030,7 @@ def process_transaction_hash(message, percent_asli):
     hash1 = message.text
     client_code = message.chat.id
 
-    if message.text == "برگشت":
+    if message.text == "بازگشت":
         bot.send_message(message.chat.id, "شما به منوی اصلی برگشتید", reply_markup=get_main_buttons())
         return
 
@@ -1046,7 +1063,7 @@ def process_transaction_hash(message, percent_asli):
         # در اینجا کد برای insert_payment_and_update_wallet اضافه می‌شود (فرضی)
         if insert_payment_and_update_wallet(conn, rounded_plus_bounos, hash1, message.chat.id, percent_asli, rounded):
             bot.send_message(message.chat.id,
-                             f"داشبورد جیمبو شما با موفقیت شارژ شد. به مقدار: {rounded_plus_bounos} ترون")
+                             f"داشبورد جیمبو شما با موفقیت شارژ شد. به مقدار: {rounded_plus_bounos} ترون",reply_markup=get_main_buttons())
             safirs = []
             current_client_code = client_code
 

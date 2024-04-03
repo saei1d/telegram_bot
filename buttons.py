@@ -24,7 +24,7 @@ def button_validate():
     buttons = [
         types.KeyboardButton("ارسال شماره", request_contact=True),
         types.KeyboardButton("ارسال ایمیل "),
-        types.KeyboardButton("برگشت"),
+        types.KeyboardButton("بازگشت"),
     ]
     markup.add(*buttons)
     return markup
@@ -33,7 +33,7 @@ def button_validate():
 def get_back_buttons():
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=1)
     buttons = [
-        types.KeyboardButton("برگشت"),
+        types.KeyboardButton("بازگشت"),
 
     ]
     markup.add(*buttons)
