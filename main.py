@@ -768,7 +768,9 @@ def buy_ekhtesasi(chat_id, tron, days, volume):
         if user_id is not None:
             balance = show_user_wallet_balance(user_id)
             if balance >= tron != 0:
-                bot.send_message(chat_id, hiddify_api_put(chat_id, days, volume, ))
+                buy_config = hiddify_api_put(chat_id, days, volume)
+                bot.send_message(chat_id, buy_config, reply_markup=qr())
+
                 bot.send_message(chat_id,
                                  f"لینک بالا برای استفاده روی سیستم عامل های Android و ios میباشد گر فایل همین کانفیگ رو میخاهید به پشتیبانی مراجعه کنید \n نام کاربری شما:<code>{chat_id}</code> \n  روی شماره کاربریت کلیک کن و مستقیم به آیدی زیر ارسال کن. \n آیدی:@jimboovpn_Support",
                                  parse_mode="HTML",
