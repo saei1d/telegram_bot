@@ -658,9 +658,16 @@ def handle_message(message):
                 bot.send_message(chat_id, f'ترون در حال حاضر {my_string} می باشد  . ')
             else:
                 pass
+
+
+
+
+
     elif message.text == "عودت وجه❌":
-        bot.send_message(message.chat.id,
-                         f"برای برداشت موجودی داشبورد خود ، نام کاربری خودتون رو : </code>{message.chat.id}<code> برای پشتیبانی ارسال کنید \n آیدی پشتیبانی : @jimboovpn_Support",parse_mode='HTML')
+        bot.send_message(message.chat.id,f'برای برداشت موجودی داشبورد خود ، نام کاربری خودتون رو : </code{message.chat.id}<code> برای پشتیبانی ارسال کنید \n آیدی پشتیبانی : @jimboovpn_Support=' , parse_mode='HTML')
+
+
+
     elif message.text == "درآمدزایی⚡💵":
         if check_membership(chat_id, channel_username):
             if check_safir(chat_id):
