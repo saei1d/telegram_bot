@@ -622,14 +622,13 @@ def buy222222222222222222_ekhtesasi_agent(call):
 def handle_start(message):
     chat_id = message.chat.id
     client_code = message.from_user.id
-    if check_membership(chat_id, channel_username):
-        username = message.from_user.username or "NoUsername"
-        save_user_and_create_wallet(client_code, username)
-        reply_markup = get_main_buttons()
-        bot.send_message(message.chat.id,
-                         f'سلام عزیزم ❤️\nخوش اومدی به خانواده بزرگ جیمبو ✈️\nیکی از کلید های پایین رو بزن 👇 \n  \n نام کاربری شما : <code>{chat_id}</code>',
-                         parse_mode='HTML',
-                         reply_markup=reply_markup)
+    username = message.from_user.username or "NoUsername"
+    save_user_and_create_wallet(client_code, username)
+    reply_markup = get_main_buttons()
+    bot.send_message(message.chat.id,
+                     f'سلام عزیزم ❤️\nخوش اومدی به خانواده بزرگ جیمبو ✈️\nیکی از کلید های پایین رو بزن 👇 \n  \n نام کاربری شما : <code>{chat_id}</code>',
+                     parse_mode='HTML',
+                     reply_markup=reply_markup)
 
 
 @bot.message_handler(func=lambda message: True)
