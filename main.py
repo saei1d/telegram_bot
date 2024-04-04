@@ -1106,10 +1106,11 @@ def disco(message, call):
                 handle_edame_kharid_callback(call, discount_percentage)
 
         else:
-            bot.send_message(message.chat.id, f'شما کد تخفیف خودتون رو وارد کردید !!! لطفا از کد تخفیف عمومی یا اشخاص دیگر استفاده کنید', reply_markup=get_main_buttons())
+            bot.send_message(message.chat.id, f' کد تخفیف شما مورد تایید قرار نگرفت ', reply_markup=get_main_buttons())
 
     else:
-        bot.send_message(message.chat.id, f' کد تخفیف شما مورد تایید قرار نگرفت ', reply_markup=get_main_buttons())
+        bot.send_message(message.chat.id, f'شما کد تخفیف خودتون رو وارد کردید !!! لطفا از کد تخفیف عمومی یا اشخاص دیگر استفاده کنید', reply_markup=get_main_buttons())
+
 
 
 def insert_payment_and_update_wallet(conn, amount, transaction_hash, client_code, percent_asli, rounded):
