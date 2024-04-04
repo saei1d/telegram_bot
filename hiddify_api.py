@@ -30,27 +30,24 @@ def hiddify_api_put(client_code, dayss, limit):
 
     response_get = requests.get(url, auth=(secret_code, ''))
     lennnn = len(response_get.json())
-    if lennnn >= 14:
+    if lennnn >= 150:
         proxy_path_client = "nCbhYTw45iU17uynCnusqg3F"
-        proxy_path_admin="KmEnSzHyFdmJO9sfbMo8790ckxuie"
+        proxy_path_admin = "KmEnSzHyFdmJO9sfbMo8790ckxuie"
         url1 = f"https://wub.jimboserver1.fun/{proxy_path_admin}/"
         url = f'{url1}api/v2/admin/user/'
         url5 = f"https://wub.jimboserver1.fun/{proxy_path_client}/"
         secret_code = "c7e64d9b-812b-43f9-aa8b-b8ba1cd1158b"
 
-
-
     response_put = requests.put(url, json=user_data, auth=(secret_code, ''))
 
     if response_put.status_code == 200:
-        return hiddify_api_get_conf(pk_value,url5)
+        return hiddify_api_get_conf(pk_value, url5)
 
     else:
         print("Error adding user", response_put.status_code, response_put.reason)
 
 
-
-def hiddify_api_get_conf(uuid,url5):
+def hiddify_api_get_conf(uuid, url5):
     url = f"{url5}{uuid}/api/v2/user/all-configs/"
     response = requests.get(url)
     if response.status_code == 200:
@@ -60,6 +57,7 @@ def hiddify_api_get_conf(uuid,url5):
         first_link = parsed_data[0]['link']
 
         return first_link
+
 
 #              configs
 
@@ -89,7 +87,7 @@ def show_configs(chat_id):
                     start_date = "هنوز شروع به استفاده نکردید"
                 url5 = f"https://dub.barfarazabr.fun/gbrBNWz1ma/"
                 uuid = user['uuid']
-                link = hiddify_api_get_conf(uuid,url5)
+                link = hiddify_api_get_conf(uuid, url5)
                 message = f'لینک دسترسی:{link} \n استفاده فعلی: {current_usages}  \n سقف مصرف:{rounded_usage_limit} GB روزهای باقی مانده: {pakages_date}\n\n تاریخ شروع: {start_date}\n\n کد شناسایی: {uuid}'
                 user_configs.append(message)
 
@@ -108,9 +106,9 @@ def show_configs(chat_id):
                 start_date = user2['start_date']
                 if start_date is None:
                     start_date = "هنوز شروع به استفاده نکردید"
-                url5=f"https://wub.jimboserver1.fun/nCbhYTw45iU17uynCnusqg3F/"
+                url5 = f"https://wub.jimboserver1.fun/nCbhYTw45iU17uynCnusqg3F/"
                 uuid2 = user2['uuid']
-                link2 = hiddify_api_get_conf(uuid2,url5)
+                link2 = hiddify_api_get_conf(uuid2, url5)
                 message = f'لینک دسترسی:{link2} \n استفاده فعلی: {current_usages}  \n سقف مصرف:{rounded_usage_limit} GB روزهای باقی مانده: {pakages_date}\n\n تاریخ شروع: {start_date}\n\n کد شناسایی: {uuid2}'
                 user_configs.append(message)
     else:

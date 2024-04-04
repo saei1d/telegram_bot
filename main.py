@@ -39,7 +39,7 @@ def check_membership(chat_id, channel_username):
     conn = connect_db()
     cur = conn.cursor()
     cur.execute("SELECT deleted FROM users WHERE client_code = %s", (chat_id,))
-    if cur.fetchone()[0] is False:
+    if cur.fetchone()[0] is None:
         member = bot.get_chat_member(channel_username, chat_id)
         if member.status == 'member' or member.status == 'creator' or member.status == 'administrator':
             return True
