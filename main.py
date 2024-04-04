@@ -660,7 +660,7 @@ def handle_message(message):
                 pass
     elif message.text == "عودت وجه❌":
         bot.send_message(message.chat.id,
-                         f"<code>برای برداشت موجودی داشبورد خود، نام کاربری خودتون رو : {message.chat.id}</code> برای پشتیبان ارسال نمایید  آیدی :@jimboovpn_Support",parse_mode='HTML')
+                         f"برای برداشت موجودی داشبورد خود ، نام کاربری خودتون رو : </code>{message.chat.id}<code> برای پشتیبانی ارسال کنید \n آیدی پشتیبانی : @jimboovpn_Support",parse_mode='HTML')
     elif message.text == "درآمدزایی⚡💵":
         if check_membership(chat_id, channel_username):
             if check_safir(chat_id):
