@@ -1075,32 +1075,39 @@ def disco(message, call):
     client_code = message.chat.id
     conn = connect_db()
     cur = conn.cursor()
-    cur.execute("SELECT percentage,status,owner FROM discount_codes WHERE name = %s", (discount_client,))
-    is_done = cur.fetchone()
-    if is_done:
-        discount_percentage = is_done[0]
-        status = is_done[1]
-        owner = is_done[2]
-        if status == 1:
-            cur.execute("SELECT join_by_code FROM users WHERE client_code = %s", (client_code,))
-            cliiii = cur.fetchone()[0]
-            if cliiii is None or cliiii == str(owner):
-                if cliiii is None:
-                    cur.execute("UPDATE referrals SET people = people + %s WHERE client_code = %s", (1, owner))
+    cur.execute("SELECT name FROM discount_codes WHERE owner = %s", (client_code,))
+    name = cur.fetchone()[0]
+    if name != discount_client:
+        cur.execute("SELECT percentage,status,owner FROM discount_codes WHERE name = %s", (discount_client,))
+        is_done = cur.fetchone()
+        if is_done:
+            discount_percentage = is_done[0]
+            status = is_done[1]
+            owner = is_done[2]
+            if status == 1:
+                cur.execute("SELECT join_by_code FROM users WHERE client_code = %s", (client_code,))
+                cliiii = cur.fetchone()[0]
+                if cliiii is None or cliiii == str(owner):
+                    if cliiii is None:
+                        cur.execute("UPDATE referrals SET people = people + %s WHERE client_code = %s", (1, owner))
 
-                cur.execute("UPDATE users SET join_by_code = %s WHERE client_code = %s", (owner, client_code))
-                conn.commit()
-                bot.send_message(message.chat.id,
-                                 f'کد تخفیف شما ثبت شد در اینجا با هر مقدار شارژ به مقدار کد تخفیف  {discount_percentage}%')
-                handle_edame_kharid_callback(call, discount_percentage)
+                    cur.execute("UPDATE users SET join_by_code = %s WHERE client_code = %s", (owner, client_code))
+                    conn.commit()
+                    bot.send_message(message.chat.id,
+                                     f'کد تخفیف شما ثبت شد در اینجا با هر مقدار شارژ به مقدار کد تخفیف  {discount_percentage}%')
+                    handle_edame_kharid_callback(call, discount_percentage)
+                else:
+                    bot.send_message(call.message.chat.id,
+                                     "کد تخفیفی که وارد کردید رفرال بوده و قبلا شما توسط فرد دیگری دعوت شدید \n لطفا از کدتخفیف های عمومی استفاده کنید")
+                    return
             else:
-                bot.send_message(call.message.chat.id,
-                                 "کد تخفیفی که وارد کردید رفرال بوده و قبلا شما توسط فرد دیگری دعوت شدید \n لطفا از کدتخفیف های عمومی استفاده کنید")
-                return
+                bot.send_message(message.chat.id,
+                                 f'کد تخفیف شما ثبت شد در اینجا با هر مقدار شارژ به مقدار کدتخفیف خود شارژ رایگان دریافت کنید')
+                handle_edame_kharid_callback(call, discount_percentage)
+
         else:
-            bot.send_message(message.chat.id,
-                             f'کد تخفیف شما ثبت شد در اینجا با هر مقدار شارژ به مقدار کدتخفیف خود شارژ رایگان دریافت کنید')
-            handle_edame_kharid_callback(call, discount_percentage)
+            bot.send_message(message.chat.id, f'شما کد تخفیف خودتون رو وارد کردید !!! لطفا از کد تخفیف عمومی یا اشخاص دیگر استفاده کنید', reply_markup=get_main_buttons())
+
     else:
         bot.send_message(message.chat.id, f' کد تخفیف شما مورد تایید قرار نگرفت ', reply_markup=get_main_buttons())
 
