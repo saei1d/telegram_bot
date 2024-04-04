@@ -664,7 +664,7 @@ def handle_message(message):
 
 
     elif message.text == "عودت وجه❌":
-        bot.send_message(message.chat.id,f'برای برداشت موجودی داشبورد خودتون نام کاربری خودتون رو که {message.chat.id}  است و قابل کپی میباشد برای آیدی پشتیبانی ارسال کنید \n آیدی پشتیبانی:@jimboovpn_Support')
+        bot.send_message(message.chat.id,f'برای برداشت موجودی داشبورد خودتون نام کاربری خودتون رو که {message.chat.id}  است برای آیدی پشتیبانی ارسال کنید \n آیدی پشتیبانی:@jimboovpn_Support')
 
 
 
