@@ -80,7 +80,7 @@ def get_wallet_recharge_buttons():
     markup = types.InlineKeyboardMarkup(row_width=1)
     buttons = [
         types.InlineKeyboardButton("از ولت خودت داشبورد جیمبو رو شارژ کن (TRC20)", callback_data="sharzh"),
-        types.InlineKeyboardButton("از ما ترون بخر و داشبورتو شارژ کن(پیشنهادی)", callback_data="kharid_azma"),
+        types.InlineKeyboardButton("خرید ریالی ترون و شارژ داشبورد(پیشنهادی🎁)", callback_data="kharid_azma"),
     ]
     markup.add(*buttons)
     return markup
@@ -173,7 +173,6 @@ def tarefe_ekhtesai_agent():
     return markup
 
 
-
 def qr():
     markup = types.InlineKeyboardMarkup()
     buttons = [
@@ -182,8 +181,6 @@ def qr():
     ]
     markup.add(*buttons)
     return markup
-
-
 
 
 def discount2():
@@ -195,9 +192,6 @@ def discount2():
     ]
     markup.add(*buttons)
     return markup
-
-
-
 
 
 def bardasht():
