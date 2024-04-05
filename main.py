@@ -1073,11 +1073,13 @@ def disco(message, call):
         return
 
     client_code = message.chat.id
+    print(client_code)
     conn = connect_db()
     cur = conn.cursor()
     cur.execute("SELECT name FROM discount_codes WHERE owner = %s", (client_code,))
     name = cur.fetchone()[0]
-    print("inja")
+    print(name)
+    print(discount_client)
     if name != discount_client:
         print("ok")
         cur.execute("SELECT percentage,status,owner FROM discount_codes WHERE name = %s", (discount_client,))
