@@ -154,6 +154,7 @@ def balance_admin(message, wallet_id):
     cur = conn.cursor()
     cur.execute("INSERT INTO admin_sharzhed (admin_name,amount,wallet_id) VALUES (%s, %s, %s);",
                 (admin, balance_client2, wallet_id))
+    bot.send_message(366470485,f'آقای {admin} به مقدار {balance_client2} کیف پول با آیدی {wallet_id} رو شارژ کرد')
     cur.execute("UPDATE wallets SET balance = balance + %s , all_buy = all_buy + %s WHERE user_id = %s",
                 (balance_client2, balance_client2, wallet_id))
     conn.commit()
