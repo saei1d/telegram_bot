@@ -150,7 +150,10 @@ def search_client_code_for_balance(message):
 def balance_admin(message, wallet_id):
     balance_client2 = message.text
     conn = connect_db()
+    admin = message.chat.id
     cur = conn.cursor()
+    cur.execute("INSERT INTO admin_sharzhed (admin_name,amount,wallet_id) VALUES (%s, %s, %s);",
+                (admin, balance_client2, wallet_id))
     cur.execute("UPDATE wallets SET balance = balance + %s , all_buy = all_buy + %s WHERE user_id = %s",
                 (balance_client2, balance_client2, wallet_id))
     conn.commit()
@@ -664,7 +667,8 @@ def handle_message(message):
 
 
     elif message.text == "عودت وجه❌":
-        bot.send_message(message.chat.id,f'برای برداشت موجودی داشبورد خودتون نام کاربری خودتون رو که {message.chat.id}  است برای آیدی پشتیبانی ارسال کنید \n آیدی پشتیبانی:@jimboovpn_Support')
+        bot.send_message(message.chat.id,
+                         f'برای برداشت موجودی داشبورد خودتون نام کاربری خودتون رو که {message.chat.id}  است برای آیدی پشتیبانی ارسال کنید \n آیدی پشتیبانی:@jimboovpn_Support')
 
 
 
@@ -1110,8 +1114,9 @@ def disco(message, call):
             bot.send_message(message.chat.id, f' کد تخفیف شما مورد تایید قرار نگرفت ', reply_markup=get_main_buttons())
 
     else:
-        bot.send_message(message.chat.id, f'شما کد تخفیف خودتون رو وارد کردید !!! لطفا از کد تخفیف عمومی یا اشخاص دیگر استفاده کنید', reply_markup=get_main_buttons())
-
+        bot.send_message(message.chat.id,
+                         f'شما کد تخفیف خودتون رو وارد کردید !!! لطفا از کد تخفیف عمومی یا اشخاص دیگر استفاده کنید',
+                         reply_markup=get_main_buttons())
 
 
 def insert_payment_and_update_wallet(conn, amount, transaction_hash, client_code, percent_asli, rounded):
