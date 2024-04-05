@@ -1073,15 +1073,12 @@ def disco(message, call):
         return
 
     client_code = message.chat.id
-    print(client_code)
     conn = connect_db()
     cur = conn.cursor()
     cur.execute("SELECT name FROM discount_codes WHERE owner = %s", (client_code,))
     name = cur.fetchone()[0]
-    print(name)
-    print(discount_client)
+
     if name != discount_client:
-        print("ok")
         cur.execute("SELECT percentage,status,owner FROM discount_codes WHERE name = %s", (discount_client,))
         is_done = cur.fetchone()
         if is_done:
@@ -1098,7 +1095,7 @@ def disco(message, call):
                     cur.execute("UPDATE users SET join_by_code = %s WHERE client_code = %s", (owner, client_code))
                     conn.commit()
                     bot.send_message(message.chat.id,
-                                     f'کد تخفیف شما ثبت شد در اینجا با هر مقدار شارژ به مقدار کد تخفیف  {discount_percentage}%')
+                                     f'کد تخفیف شما ثبت شد در اینجا با هر مقدار شارژ به مقدار کدتخفیف خود شارژ رایگان دریافت کنید')
                     handle_edame_kharid_callback(call, discount_percentage)
                 else:
                     bot.send_message(call.message.chat.id,
@@ -1113,7 +1110,6 @@ def disco(message, call):
             bot.send_message(message.chat.id, f' کد تخفیف شما مورد تایید قرار نگرفت ', reply_markup=get_main_buttons())
 
     else:
-        print("pooooooooooof")
         bot.send_message(message.chat.id, f'شما کد تخفیف خودتون رو وارد کردید !!! لطفا از کد تخفیف عمومی یا اشخاص دیگر استفاده کنید', reply_markup=get_main_buttons())
 
 
