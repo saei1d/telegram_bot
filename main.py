@@ -1096,6 +1096,8 @@ def disco(message, call):
         status = is_done[1]
         owner = is_done[2]
         cur.execute("SELECT name FROM discount_codes WHERE owner = %s", (client_code,))
+        print(cur.fetchone())
+        print(cur.fetchone()[0])
         name = cur.fetchone()[0]
         if name != discount_client:
 
