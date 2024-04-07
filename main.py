@@ -154,7 +154,7 @@ def balance_admin(message, wallet_id):
     cur = conn.cursor()
     cur.execute("INSERT INTO admin_sharzhed (admin_name,amount,wallet_id) VALUES (%s, %s, %s);",
                 (admin, balance_client2, wallet_id))
-    bot.send_message(366470485,f'آقای {admin} به مقدار {balance_client2} کیف پول با آیدی {wallet_id} رو شارژ کرد')
+    bot.send_message(366470485, f'آقای {admin} به مقدار {balance_client2} کیف پول با آیدی {wallet_id} رو شارژ کرد')
     cur.execute("UPDATE wallets SET balance = balance + %s , all_buy = all_buy + %s WHERE user_id = %s",
                 (balance_client2, balance_client2, wallet_id))
     conn.commit()
@@ -894,14 +894,8 @@ def qr_code_code(call):
 
 @bot.callback_query_handler(func=lambda call: call.data == "support")
 def support(call):
-    bot.send_message(call.message.chat.id,"شمامیتوانید از ساعت ۹ الی ۲۲ با پشتیبانی در ارتباط باشید \n آیدی پشتیبانی:@jimboovpn_support")
-
-
-
-
-
-
-
+    bot.send_message(call.message.chat.id,
+                     "شمامیتوانید از ساعت ۹ الی ۲۲ با پشتیبانی در ارتباط باشید \n آیدی پشتیبانی:@jimboovpn_support")
 
 
 @bot.callback_query_handler(func=lambda call: call.data == "kharid_azma")
@@ -910,8 +904,6 @@ def kharid_azma(call):
                      f" با استفاده از ایدی زیر میتونی ترون رو به پایین ترین قیمت تهیه کنی و داشبوردتو مستقیم شارژ کنی. \n نام کاربری شما:<code>{call.message.chat.id}</code> \n  روی شماره کاربریت کلیک کن و مستقیم به آیدی زیر ارسال کن. \n  (این ایدی مورد تایید جیمبو میباشد)👇  \n آیدی:@jimboovpn_Support",
                      parse_mode="HTML",
                      reply_markup=amozesh_kharid_tron_az_ma())
-
-
 
 
 def buy_ekhtesasi(chat_id, tron, days, volume_asli):
@@ -1094,17 +1086,16 @@ def disco(message, call):
     client_code = message.chat.id
     conn = connect_db()
     cur = conn.cursor()
-    cur.execute("SELECT name FROM discount_codes WHERE owner = %s", (client_code,))
-
+    cur.execute("SELECT percentage,status,owner FROM discount_codes WHERE name = %s", (discount_client,))
     if cur.fetchone()[0]:
+        is_done = cur.fetchone()[0]
+        discount_percentage = is_done[0]
+        status = is_done[1]
+        owner = is_done[2]
+        cur.execute("SELECT name FROM discount_codes WHERE owner = %s", (client_code,))
         name = cur.fetchone()[0]
-        cur.execute("SELECT percentage,status,owner FROM discount_codes WHERE name = %s", (discount_client,))
-        is_done = cur.fetchone()
-        print(is_done)
-        if is_done:
-            discount_percentage = is_done[0]
-            status = is_done[1]
-            owner = is_done[2]
+        if name != discount_client:
+
             if status == 1:
                 cur.execute("SELECT join_by_code FROM users WHERE client_code = %s", (client_code,))
                 cliiii = cur.fetchone()[0]
@@ -1125,14 +1116,12 @@ def disco(message, call):
                 bot.send_message(message.chat.id,
                                  f'کد تخفیف شما ثبت شد در اینجا با هر مقدار شارژ به مقدار کدتخفیف خود شارژ رایگان دریافت کنید')
                 handle_edame_kharid_callback(call, discount_percentage)
-
         else:
-            bot.send_message(message.chat.id, f' کد تخفیف شما مورد تایید قرار نگرفت ', reply_markup=get_main_buttons())
-
+            bot.send_message(message.chat.id,
+                             f'شما کد تخفیف خودتون رو وارد کردید !!! لطفا از کد تخفیف عمومی یا اشخاص دیگر استفاده کنید',
+                             reply_markup=get_main_buttons())
     else:
-        bot.send_message(message.chat.id,
-                         f'شما کد تخفیف خودتون رو وارد کردید !!! لطفا از کد تخفیف عمومی یا اشخاص دیگر استفاده کنید',
-                         reply_markup=get_main_buttons())
+        bot.send_message(message.chat.id, f' کد تخفیف شما مورد تایید قرار نگرفت ', reply_markup=get_main_buttons())
 
 
 def insert_payment_and_update_wallet(conn, amount, transaction_hash, client_code, percent_asli, rounded):
