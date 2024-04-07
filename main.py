@@ -1095,9 +1095,9 @@ def disco(message, call):
     conn = connect_db()
     cur = conn.cursor()
     cur.execute("SELECT name FROM discount_codes WHERE owner = %s", (client_code,))
-    name = cur.fetchone()[0]
 
-    if name != discount_client:
+    if cur.fetchone()[0]:
+        name = cur.fetchone()[0]
         cur.execute("SELECT percentage,status,owner FROM discount_codes WHERE name = %s", (discount_client,))
         is_done = cur.fetchone()
         print(is_done)
