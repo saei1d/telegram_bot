@@ -904,9 +904,6 @@ def support(call):
 
 
 
-
-
-
 @bot.callback_query_handler(func=lambda call: call.data == "kharid_azma")
 def kharid_azma(call):
     bot.send_message(call.message.chat.id,
@@ -1103,6 +1100,7 @@ def disco(message, call):
     if name != discount_client:
         cur.execute("SELECT percentage,status,owner FROM discount_codes WHERE name = %s", (discount_client,))
         is_done = cur.fetchone()
+        print(is_done)
         if is_done:
             discount_percentage = is_done[0]
             status = is_done[1]
