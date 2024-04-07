@@ -1089,7 +1089,9 @@ def disco(message, call):
     cur.execute("SELECT percentage,status,owner FROM discount_codes WHERE name = %s", (discount_client,))
     is_done = cur.fetchone()
 
+
     if is_done is not None:
+        print(is_done)
         is_done = cur.fetchone()[0]
         discount_percentage = is_done[0]
         status = is_done[1]
