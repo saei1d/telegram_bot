@@ -1092,7 +1092,6 @@ def disco(message, call):
 
     if is_done is not None:
         print(is_done)
-        is_done = cur.fetchone()[0]
         discount_percentage = is_done[0]
         status = is_done[1]
         owner = is_done[2]
