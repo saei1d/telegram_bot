@@ -903,7 +903,8 @@ def support(call):
 
 @bot.callback_query_handler(func=lambda call: call.data == "AMOZESH_windows")
 def windows(call):
-    bot.send_message(call.message.chat.id,"آموزش (https://t.me/jimboo_vpn/5)")
+    bot.send_message(call.message.chat.id,"https://t.me/jimboo_vpn/5")
+    bot.channel_post_handler("آموزش (https://t.me/jimboo_vpn/5)")
 
 
 
