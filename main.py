@@ -74,7 +74,7 @@ def chek_admin(client_code):
 
 
 @bot.message_handler(commands=['admin/list'])
-def add_admin(message):
+def admin(message):
     if chek_admin(message.chat.id) == "SUPERADMIN":
         bot.send_message(message.chat.id,
                          f'moshakhasat_karbar: <code>/admin/info</code> \n\n ezafe_kardan_admin : <code>/admin/add_admin</code> \n\n ezafe_kardan_balance : <code>/admin/balance</code> \n\n kam_kardan_balance : <code>/admin/balance_decrease</code> \n\n ban_kardan_karbar:<code>/admin/delete</code> \n\n unban_kardan_karbar : <code>/admin?undelete</code>  \n\n ezafe_kardan_hoghogh_karbar : <code>/admin/income</code>  \n\n kam_kardan_hoghogh_karbar : <code>/admin/income_decrease</code>',
@@ -892,12 +892,31 @@ def qr_code_code(call):
         bot.send_message(call.message.chat.id, "یافت نشد")
 
 
+@bot.callback_query_handler(func=lambda call: call.data == "support")
+def support(call):
+    bot.send_message(call.message.chat.id,"شمامیتوانید از ساعت ۹ الی ۲۲ با پشتیبانی در ارتباط باشید \n آیدی پشتیبانی:@jimboovpn_support")
+
+
+
+
+
+
+@bot.callback_query_handler(func=lambda call: call.data == "AMOZESH_windows")
+def windows(call):
+    bot.send_message(call.message.chat.id,"آموزش (https://t.me/jimboo_vpn/5)")
+
+
+
+
+
 @bot.callback_query_handler(func=lambda call: call.data == "kharid_azma")
 def kharid_azma(call):
     bot.send_message(call.message.chat.id,
                      f" با استفاده از ایدی زیر میتونی ترون رو به پایین ترین قیمت تهیه کنی و داشبوردتو مستقیم شارژ کنی. \n نام کاربری شما:<code>{call.message.chat.id}</code> \n  روی شماره کاربریت کلیک کن و مستقیم به آیدی زیر ارسال کن. \n  (این ایدی مورد تایید جیمبو میباشد)👇  \n آیدی:@jimboovpn_Support",
                      parse_mode="HTML",
                      reply_markup=amozesh_kharid_tron_az_ma())
+
+
 
 
 def buy_ekhtesasi(chat_id, tron, days, volume_asli):
