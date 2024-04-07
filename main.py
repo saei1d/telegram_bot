@@ -1088,18 +1088,13 @@ def disco(message, call):
     cur = conn.cursor()
     cur.execute("SELECT percentage,status,owner FROM discount_codes WHERE name = %s", (discount_client,))
     is_done = cur.fetchone()
-
-
     if is_done is not None:
         discount_percentage = is_done[0]
         status = is_done[1]
         owner = is_done[2]
         cur.execute("SELECT name FROM discount_codes WHERE owner = %s", (client_code,))
-        print(cur.fetchone())
-        print(cur.fetchone()[0])
-        name = cur.fetchone()[0]
-        if name != discount_client:
-
+        result = cur.fetchone()
+        if result is None or result[0] != discount_client:
             if status == 1:
                 cur.execute("SELECT join_by_code FROM users WHERE client_code = %s", (client_code,))
                 cliiii = cur.fetchone()[0]
