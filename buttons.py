@@ -114,8 +114,7 @@ def get_education_platform_buttons():
     buttons = [
         types.InlineKeyboardButton("اندروید", callback_data="AMOZESH_android"),
         types.InlineKeyboardButton("iOS", callback_data="AMOZESH_ios"),
-        types.InlineKeyboardButton("Windows", callback_data="AMOZESH_windows"),
-        # types.InlineKeyboardButton("Mac", callback_data="AMOZESH_mac")
+        types.InlineKeyboardButton("Windows", url="https://t.me/jimboo_vpn/5"),
     ]
     markup.add(*buttons)
     return markup
