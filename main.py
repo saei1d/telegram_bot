@@ -1091,7 +1091,6 @@ def disco(message, call):
 
 
     if is_done is not None:
-        print(is_done)
         discount_percentage = is_done[0]
         status = is_done[1]
         owner = is_done[2]
