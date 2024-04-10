@@ -64,7 +64,7 @@ def get_support_buttons():
     markup = types.InlineKeyboardMarkup(row_width=2)
     buttons = [
         types.InlineKeyboardButton("پشتیبانی در اسرع وقت", callback_data="support"),
-        types.InlineKeyboardButton("سوالات متداول", callback_data="faq")
+        types.InlineKeyboardButton("سوالات متداول", url="https://t.me/jimboo_vpn/18")
     ]
     markup.add(*buttons)
     return markup
@@ -112,9 +112,9 @@ def get_education_buttons():
 def get_education_platform_buttons():
     markup = types.InlineKeyboardMarkup()
     buttons = [
-        types.InlineKeyboardButton("اندروید", callback_data="AMOZESH_android"),
-        types.InlineKeyboardButton("iOS", callback_data="AMOZESH_ios"),
-        types.InlineKeyboardButton("Windows", url="https://t.me/jimboo_vpn/5"),
+        types.InlineKeyboardButton("اندروید", url="https://t.me/jimboo_vpn/11"),
+        types.InlineKeyboardButton("iOS", url="https://t.me/jimboo_vpn/10"),
+        types.InlineKeyboardButton("Windows", url="https://t.me/jimboo_vpn/9"),
     ]
     markup.add(*buttons)
     return markup
