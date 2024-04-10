@@ -1062,8 +1062,7 @@ def handle_sharzh_callback(call):
 @bot.callback_query_handler(func=lambda call: call.data == "edame_kharid")
 def handle_edame_kharid_callback(call, discount_percentage=0):
     address = "TRZw3VgCdJoz93akEAt7yrMC1Wr6FgUFqY"
-    bot.send_message(call.message.chat.id,
-                     f"برای شارژ داشبورد جیمبو خود، ترون را به آدرس زیر ارسال کنید:\n\n<code>{address}</code>",
+    bot.send_photo(call.message.chat.id,open("/home/saeid/Desktop/qr.jpg", "rb").read(),caption = f"برای شارژ داشبورد جیمبو خود، ترون را به آدرس زیر ارسال کنید:\n\n<code>{address}</code>",
                      parse_mode="HTML")
     bot.send_message(call.message.chat.id, "پس از ارسال، کد هش تراکنش را اینجا وارد کنید:",
                      reply_markup=get_back_buttons())
