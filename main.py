@@ -653,7 +653,7 @@ def handle_message(message):
             bot.send_message(message.chat.id, f" موجودی شما تو داشبورد جیمبو : {balance}  ترون",
                              reply_markup=get_wallet_recharge_buttons())
     elif message.text == "آموزش استفاده💿📖":
-        bot.send_message(message.chat.id, "آموزش مد نظرتو انتخاب کن", reply_markup=get_education_buttons())
+        bot.send_message(message.chat.id, "آموزش مورد نظرتو انتخاب کن", reply_markup=get_education_buttons())
 
     elif message.text == "قیمت لحظه ای ترون🌐":
         if check_membership(chat_id, channel_username):

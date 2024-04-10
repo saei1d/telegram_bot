@@ -99,7 +99,7 @@ def get_education_buttons():
     """
     ایجاد و بازگرداندن کیبورد ساده برای انتخاب آموزش‌ها.
     """
-    markup = types.InlineKeyboardMarkup()
+    markup = types.InlineKeyboardMarkup(row_width=1)
     buttons = [
         types.InlineKeyboardButton("آموزش شارژ داشبورد جیمبو ترون", callback_data="ARZ"),
         types.InlineKeyboardButton("آموزش استفاده از کانفیگ ها", callback_data="Dastgah"),
