@@ -941,9 +941,9 @@ def handle_buy_callback(call):
             elif call.data == "tarefe70gig":
                 price = prices["tarefe70gig"]
             elif call.data == "tarefe90gig":
-                price = prices["tarefe900gig"]
+                price = prices["tarefe90gig"]
             elif call.data == "tarefe120gig":
-                price = prices["tarefe100gig"]
+                price = prices["tarefe120gig"]
 
             if balance >= price != 0:
                 if send_purchase_confirmation(call.message.chat.id, call.data):
