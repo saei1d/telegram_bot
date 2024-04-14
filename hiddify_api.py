@@ -12,6 +12,7 @@ def hiddify_api_put(client_code, dayss, limit):
     data = json.loads(json_str)
     pk_value = data.get('pk')
     mmd = str(client_code)
+    print('lkjhgfdfghjkl')
     user_data = {
         "added_by_uuid": "80e67893-7490-43e8-aa8b-c8fa5adbb822",
         "mode": "no_reset",

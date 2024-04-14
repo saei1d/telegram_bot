@@ -851,6 +851,7 @@ def send_purchase_confirmation(chat_id, tariff):
     if limit != 0:
         global buy_config
         buy_config = hiddify_api_put(chat_id, 40, limit)
+        print(buy_config)
         bot.send_message(chat_id, buy_config, reply_markup=qr())
 
         bot.send_message(chat_id,
