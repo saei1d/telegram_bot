@@ -30,7 +30,7 @@ def hiddify_api_put(client_code, dayss, limit):
 
     response_get = requests.get(url, auth=(secret_code, ''))
     lennnn = len(response_get.json())
-    if lennnn >= 150:
+    if lennnn >= 250:
         proxy_path_client = "nCbhYTw45iU17uynCnusqg3F"
         proxy_path_admin = "KmEnSzHyFdmJO9sfbMo8790ckxuie"
         url1 = f"https://wub.jimboserver1.fun/{proxy_path_admin}/"
@@ -55,7 +55,7 @@ def hiddify_api_get_conf(uuid, url5):
         data_str = json.dumps(data)
         parsed_data = json.loads(data_str)
         first_link = parsed_data[0]['link']
-
+        print(parsed_data)
         return first_link
 
 

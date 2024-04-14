@@ -80,19 +80,19 @@ def get_wallet_recharge_buttons():
     markup = types.InlineKeyboardMarkup(row_width=1)
     buttons = [
         types.InlineKeyboardButton("از ولت خودت داشبورد جیمبو رو شارژ کن (TRC20)", callback_data="sharzh"),
-        types.InlineKeyboardButton("خرید ریالی ترون و شارژ داشبورد(پیشنهادی🎁)", callback_data="kharid_azma"),
+        # types.InlineKeyboardButton("خرید ریالی ترون و شارژ داشبورد(پیشنهادی🎁)", callback_data="kharid_azma"),
     ]
     markup.add(*buttons)
     return markup
 
 
-def amozesh_kharid_tron_az_ma():
-    markup = types.InlineKeyboardMarkup(row_width=1)
-    buttons = [
-        types.InlineKeyboardButton("آموزش خریدترون از ما", callback_data="amozesh_kharid_azma"),
-    ]
-    markup.add(*buttons)
-    return markup
+# def amozesh_kharid_tron_az_ma():
+#     markup = types.InlineKeyboardMarkup(row_width=1)
+#     buttons = [
+#         types.InlineKeyboardButton("آموزش خریدترون از ما", callback_data="amozesh_kharid_azma"),
+#     ]
+#     markup.add(*buttons)
+#     return markup
 
 
 def get_education_buttons():

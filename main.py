@@ -898,12 +898,12 @@ def support(call):
                      "شمامیتوانید از ساعت ۹ الی ۲۲ با پشتیبانی در ارتباط باشید \n آیدی پشتیبانی:@jimboovpn_support")
 
 
-@bot.callback_query_handler(func=lambda call: call.data == "kharid_azma")
-def kharid_azma(call):
-    bot.send_message(call.message.chat.id,
-                     f" با استفاده از ایدی زیر میتونی ترون رو به پایین ترین قیمت تهیه کنی و داشبوردتو مستقیم شارژ کنی. \n نام کاربری شما:<code>{call.message.chat.id}</code> \n  روی شماره کاربریت کلیک کن و مستقیم به آیدی زیر ارسال کن. \n  (این ایدی مورد تایید جیمبو میباشد)👇  \n آیدی:@Tronexchangerr",
-                     parse_mode="HTML",
-                     reply_markup=amozesh_kharid_tron_az_ma())
+# @bot.callback_query_handler(func=lambda call: call.data == "kharid_azma")
+# def kharid_azma(call):
+#     bot.send_message(call.message.chat.id,
+#                      f" با استفاده از ایدی زیر میتونی ترون رو به پایین ترین قیمت تهیه کنی و داشبوردتو مستقیم شارژ کنی. \n نام کاربری شما:<code>{call.message.chat.id}</code> \n  روی شماره کاربریت کلیک کن و مستقیم به آیدی زیر ارسال کن. \n  (این ایدی مورد تایید جیمبو میباشد)👇  \n آیدی:@Tronexchangerr",
+#                      parse_mode="HTML",
+#                      reply_markup=amozesh_kharid_tron_az_ma())
 
 
 def buy_ekhtesasi(chat_id, tron, days, volume_asli):
