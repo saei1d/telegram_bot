@@ -30,7 +30,6 @@ def hiddify_api_put(client_code, dayss, limit):
     url5 = f"https://dub.barfarazabr.fun/{proxy_path_client}/"
 
     response_get = requests.get(url, auth=(secret_code, ''))
-    print(response_get)
     lennnn = len(response_get.json())
     if lennnn >= 250:
         proxy_path_client = "nCbhYTw45iU17uynCnusqg3F"
@@ -39,9 +38,9 @@ def hiddify_api_put(client_code, dayss, limit):
         url = f'{url1}api/v2/admin/user/'
         url5 = f"https://wub.jimboserver1.fun/{proxy_path_client}/"
         secret_code = "c7e64d9b-812b-43f9-aa8b-b8ba1cd1158b"
-
+    print(url)
     response_put = requests.put(url, json=user_data, auth=(secret_code, ''))
-
+    print(response_put)
     if response_put.status_code == 200:
         return hiddify_api_get_conf(pk_value, url5)
 
