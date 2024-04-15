@@ -30,6 +30,7 @@ def hiddify_api_put(client_code, dayss, limit):
     url5 = f"https://dub.barfarazabr.fun/{proxy_path_client}/"
 
     response_get = requests.get(url, auth=(secret_code, ''))
+    print(response_get)
     lennnn = len(response_get.json())
     if lennnn >= 250:
         proxy_path_client = "nCbhYTw45iU17uynCnusqg3F"
